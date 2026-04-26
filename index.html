@@ -619,6 +619,59 @@
       font-size: 0.82rem;
       background: var(--bg-2);
     }
+    footer a { color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+    .footer-sep { margin: 0 0.5rem; opacity: 0.4; }
+
+    /* ─── COOKIE BANNER ─── */
+    #cookieBanner {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 3rem);
+      max-width: 680px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    #cookieBanner p {
+      flex: 1;
+      font-size: 0.83rem;
+      color: var(--text-2);
+      margin: 0;
+      line-height: 1.55;
+    }
+    #cookieBanner a { color: var(--accent); text-decoration: none; }
+    #cookieBanner a:hover { text-decoration: underline; }
+    #cookieAccept {
+      flex-shrink: 0;
+      background: var(--accent);
+      color: #08080F;
+      border: none;
+      border-radius: 6px;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    #cookieAccept:hover { opacity: 0.85; }
+    @media (max-width: 540px) {
+      #cookieBanner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
@@ -920,7 +973,20 @@
 
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para pymes</p>
+  <p style="margin-top:0.5rem;">
+    <a href="aviso-legal.html">Aviso Legal</a>
+    <span class="footer-sep">·</span>
+    <a href="privacidad.html">Privacidad</a>
+    <span class="footer-sep">·</span>
+    <a href="cookies.html">Cookies</a>
+  </p>
 </footer>
+
+<!-- Cookie notice -->
+<div id="cookieBanner" style="display:none;">
+  <p>Esta web usa <strong style="color:var(--text);">Google Fonts</strong>, que transmite tu IP a servidores de Google para cargar las tipografías. No usamos cookies analíticas ni publicitarias. Más info en nuestra <a href="cookies.html">Política de Cookies</a>.</p>
+  <button id="cookieAccept">Entendido</button>
+</div>
 
 <script>
   // Header on scroll
@@ -977,6 +1043,18 @@
       answer.style.maxHeight = answer.scrollHeight + 'px';
     }
   }
+
+  // Cookie banner
+  (function() {
+    var banner = document.getElementById('cookieBanner');
+    if (!localStorage.getItem('cookieAccepted')) {
+      banner.style.display = 'flex';
+    }
+    document.getElementById('cookieAccept').addEventListener('click', function() {
+      localStorage.setItem('cookieAccepted', '1');
+      banner.style.display = 'none';
+    });
+  })();
 
   // Form
   document.getElementById('contactForm').addEventListener('submit', function(e) {
