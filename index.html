@@ -4,298 +4,362 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automatización inteligente para pymes | ismaelnlai</title>
-  <meta name="description" content="Automatiza procesos manuales, escala sin contratar. Soluciones de IA y automatización para pymes.">
+  <meta name="description" content="Automatiza procesos manuales, escala sin contratar. Soluciones de IA y automatización para pymes y autónomos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0052cc;
-      --primary-dark: #003fa3;
-      --primary-bg: #eef4ff;
-      --text: #111;
-      --text-secondary: #555;
-      --text-muted: #999;
-      --bg: #fff;
-      --bg-subtle: #f7f8fa;
-      --border: #e4e4e7;
-      --radius: 10px;
+      --accent:        #C49A6C;
+      --accent-dark:   #A87E54;
+      --accent-glow:   rgba(196,154,108,0.12);
+      --accent-border: rgba(196,154,108,0.25);
+      --bg:            #08080F;
+      --bg-2:          #0D0D18;
+      --bg-card:       #111120;
+      --text:          #ECEAE4;
+      --text-2:        #8A8278;
+      --text-3:        #3E3A36;
+      --border:        #1A1A28;
+      --radius:        10px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --primary: #5fa3ff;
-        --primary-dark: #4d9fff;
-        --primary-bg: #0d2540;
-        --text: #f2f2f2;
-        --text-secondary: #b0b0b0;
-        --text-muted: #666;
-        --bg: #0a0a0a;
-        --bg-subtle: #111;
-        --border: #222;
-      }
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(24px);
+      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
     /* ─── HEADER ─── */
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.6rem 5%;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav {
       max-width: 1200px;
       margin: 0 auto;
-      width: 100%;
+      padding: 0 5%;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
     .logo {
-      font-size: 1.25rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--text);
       text-decoration: none;
-      text-transform: lowercase;
       letter-spacing: -0.3px;
     }
+    .logo span { color: var(--accent); }
 
     .nav-links {
       display: flex;
       gap: 2.5rem;
       list-style: none;
     }
-
     .nav-links a {
-      color: var(--text-secondary);
+      color: var(--text-2);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
       transition: color 0.2s;
       position: relative;
     }
-
-    .nav-links a:hover { color: var(--primary); }
-
+    .nav-links a:hover { color: var(--text); }
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
       transition: width 0.25s;
     }
-
     .nav-links a:hover::after { width: 100%; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 40px;
+      padding: 0 1.5rem;
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      border-radius: 100px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      background: transparent;
+      font-family: inherit;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 52px;
+      padding: 0 2.2rem;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(196,154,108,0.25);
+    }
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(196,154,108,0.35);
+    }
 
     /* ─── HERO ─── */
     .hero-wrapper {
-      background: radial-gradient(ellipse at 50% 0%, rgba(0,82,204,0.09) 0%, transparent 65%);
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
     }
-
-    @media (prefers-color-scheme: dark) {
-      .hero-wrapper {
-        background: radial-gradient(ellipse at 50% 0%, rgba(95,163,255,0.07) 0%, transparent 65%);
-      }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(196,154,108,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,154,108,0.04) 0%, transparent 50%);
+      pointer-events: none;
     }
-
-    .hero {
-      text-align: center;
-      padding: 6rem 5% 5rem;
+    .hero-decoration {
+      position: absolute;
+      right: -2%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46%;
+      opacity: 0.055;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 10rem 5% 6rem;
+      width: 100%;
     }
-
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--primary-bg);
-      color: var(--primary);
-      font-size: 0.75rem;
+      background: rgba(196,154,108,0.08);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-size: 0.72rem;
       font-weight: 700;
       padding: 0.35rem 1rem;
       border-radius: 100px;
-      margin-bottom: 1.8rem;
-      letter-spacing: 0.5px;
+      margin-bottom: 2rem;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
-      border: 1px solid rgba(0,82,204,0.15);
     }
-
-    @media (prefers-color-scheme: dark) {
-      .hero-badge { border-color: rgba(95,163,255,0.2); }
-    }
-
-    .hero h1 {
-      font-size: 3.8rem;
-      font-weight: 800;
-      margin-bottom: 1.4rem;
-      line-height: 1.1;
+    .hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.08;
       letter-spacing: -1.5px;
+      margin-bottom: 1.8rem;
+      max-width: 720px;
     }
-
-    .hero h1 span { color: var(--primary); }
-
+    .hero-content h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
     .hero-subtitle {
-      font-size: 1.18rem;
-      color: var(--text-secondary);
-      margin: 0 auto 2.5rem;
-      max-width: 580px;
-      line-height: 1.7;
+      font-size: 1.15rem;
+      color: var(--text-2);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 3rem;
     }
-
     .hero-ctas {
       display: flex;
       gap: 1rem;
-      justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 4rem;
+      margin-bottom: 5rem;
     }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      padding: 1rem 2.4rem;
-      border-radius: 6px;
-      font-size: 0.97rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 16px rgba(0,82,204,0.2);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0,82,204,0.3);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .btn-primary { color: #000; box-shadow: 0 4px 16px rgba(95,163,255,0.2); }
-      .btn-primary:hover { box-shadow: 0 6px 24px rgba(95,163,255,0.3); }
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      padding: 1rem 2.4rem;
-      border-radius: 6px;
-      font-size: 0.97rem;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1.5px solid var(--border);
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-
     .trust-bar {
       display: flex;
-      justify-content: center;
-      gap: 3.5rem;
+      gap: 3rem;
       flex-wrap: wrap;
       padding-top: 2.5rem;
       border-top: 1px solid var(--border);
-      max-width: 660px;
-      margin: 0 auto;
+      max-width: 580px;
     }
-
-    .trust-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
     .trust-item strong {
-      font-size: 1.45rem;
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--accent);
       letter-spacing: -0.5px;
     }
-
     .trust-item span {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-2);
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-section {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      background: var(--bg-2);
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding-right: 2rem;
+    }
+    .marquee-track span b { color: var(--accent); font-weight: 700; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
     /* ─── SECTIONS ─── */
     .section {
-      padding: 6rem 5%;
+      padding: 7rem 5%;
       max-width: 1200px;
       margin: 0 auto;
     }
-
-    .section-alt { background: var(--bg-subtle); }
-    .section-inner { max-width: 1200px; margin: 0 auto; padding: 6rem 5%; }
-
-    .section h2, .section-inner h2 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 0.9rem;
-      letter-spacing: -0.5px;
+    .bg-alt { background: var(--bg-2); }
+    .bg-alt-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 7rem 5%;
     }
 
-    .section-subtitle {
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
       font-size: 1.05rem;
-      color: var(--text-secondary);
-      margin-bottom: 3.5rem;
-      max-width: 600px;
+      color: var(--text-2);
+      max-width: 580px;
       line-height: 1.75;
+      margin-bottom: 4rem;
     }
 
     /* ─── PROBLEMA ─── */
-    .problema-grid {
+    .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
     }
-
-    .problema-card {
+    .card {
       padding: 2.2rem;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: var(--bg);
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s,
-                  opacity 0.55s ease-out;
-      opacity: 0;
-      transform: translateY(22px);
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     }
-
-    .problema-card.visible { opacity: 1; transform: translateY(0); }
-
-    .problema-card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 8px 28px rgba(0,82,204,0.09);
+    .card:hover {
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 32px var(--accent-glow);
       transform: translateY(-4px);
     }
-
-    @media (prefers-color-scheme: dark) {
-      .problema-card:hover { box-shadow: 0 8px 28px rgba(95,163,255,0.09); }
+    .card-icon {
+      width: 44px; height: 44px;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
     }
-
-    .problema-icon { width: 42px; height: 42px; margin-bottom: 1.1rem; color: var(--primary); }
-
-    .problema-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.55rem; }
-
-    .problema-card p { color: var(--text-secondary); line-height: 1.75; font-size: 0.93rem; }
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .card p { color: var(--text-2); font-size: 0.92rem; line-height: 1.75; }
 
     /* ─── CÓMO FUNCIONA ─── */
-    .steps {
+    .steps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
       position: relative;
     }
-
-    .steps::before {
+    .steps-grid::before {
       content: '';
       position: absolute;
       top: 2rem;
@@ -303,305 +367,336 @@
       right: calc(16.7% + 1rem);
       height: 1px;
       background: var(--border);
-      z-index: 0;
     }
-
-    .step {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
-    }
-
-    .step.visible { opacity: 1; transform: translateY(0); }
-
-    .step-number {
-      width: 4rem;
-      height: 4rem;
-      background: var(--primary);
-      color: #fff;
+    .step { text-align: center; position: relative; z-index: 1; }
+    .step-num {
+      width: 4rem; height: 4rem;
+      background: var(--accent);
+      color: var(--bg);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
       font-weight: 800;
       margin: 0 auto 1.4rem;
-      position: relative;
-      z-index: 1;
     }
+    .step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .step p { color: var(--text-2); font-size: 0.9rem; line-height: 1.75; }
 
-    @media (prefers-color-scheme: dark) { .step-number { color: #000; } }
-
-    .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.55rem; }
-
-    .step p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.75; }
+    /* ─── MANIFIESTO ─── */
+    .manifesto-section {
+      background: var(--bg-2);
+      padding: 7rem 5%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .manifesto-inner { max-width: 900px; margin: 0 auto; }
+    .manifesto-line {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .manifesto-line.visible { opacity: 1; transform: translateY(0); }
+    .manifesto-line.accent { color: var(--accent); }
+    .manifesto-line.muted  { color: var(--text); }
+    .manifesto-cta {
+      margin-top: 3.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .manifesto-cta.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── SOLUCIÓN ─── */
-    .solucion-content {
+    .solution-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: center;
     }
-
-    .solucion-text {
-      opacity: 0;
-      transform: translateX(-20px);
-      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
-    }
-
-    .solucion-text.visible { opacity: 1; transform: translateX(0); }
-
-    .solucion-text ul { list-style: none; margin-top: 1rem; }
-
-    .solucion-text li {
-      padding: 0.9rem 0 0.9rem 2rem;
+    .solution-list { list-style: none; }
+    .solution-list li {
+      padding: 1rem 0 1rem 2rem;
       position: relative;
-      color: var(--text-secondary);
-      font-size: 0.93rem;
-      line-height: 1.75;
       border-bottom: 1px solid var(--border);
+      color: var(--text-2);
+      font-size: 0.92rem;
+      line-height: 1.75;
     }
-
-    .solucion-text li:last-child { border-bottom: none; }
-
-    .solucion-text li strong {
-      color: var(--text);
+    .solution-list li:last-child { border-bottom: none; }
+    .solution-list li strong {
       display: block;
+      color: var(--text);
       font-weight: 600;
       margin-bottom: 0.1rem;
     }
-
-    .solucion-text li::before {
+    .solution-list li::before {
       content: "✓";
       position: absolute;
-      left: 0;
-      top: 0.95rem;
-      color: var(--primary);
+      left: 0; top: 1rem;
+      color: var(--accent);
       font-weight: 700;
-      font-size: 0.85rem;
     }
-
-    .solucion-visual {
-      opacity: 0;
-      transform: translateX(20px);
-      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
-      background: var(--primary-bg);
+    .workflow-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 2.5rem 2rem;
-      border: 1px solid rgba(0,82,204,0.12);
+      padding: 2.2rem 1.8rem;
     }
-
-    @media (prefers-color-scheme: dark) {
-      .solucion-visual { border-color: rgba(95,163,255,0.15); }
-    }
-
-    .solucion-visual.visible { opacity: 1; transform: translateX(0); }
-
-    .workflow { display: flex; flex-direction: column; gap: 0.9rem; }
-
-    .workflow-label {
-      font-size: 0.7rem;
+    .wf-label {
+      font-size: 0.65rem;
       font-weight: 700;
+      letter-spacing: 0.5em;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--text-muted);
+      color: var(--text-3);
       text-align: center;
+      margin-bottom: 0.75rem;
     }
-
-    .workflow-row { display: flex; gap: 0.6rem; align-items: center; }
-
+    .wf-row { display: flex; gap: 0.6rem; }
     .wf-node {
       flex: 1;
-      background: var(--bg);
+      background: var(--bg-2);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 0.6rem 0.5rem;
-      font-size: 0.78rem;
+      padding: 0.6rem 0.4rem;
+      font-size: 0.76rem;
       font-weight: 500;
       color: var(--text);
       text-align: center;
     }
-
     .wf-center {
       flex: 1;
-      background: var(--primary);
-      color: #fff;
-      font-weight: 700;
-      border: none;
-      padding: 0.85rem 1rem;
-      font-size: 0.85rem;
+      background: var(--accent);
+      color: var(--bg);
       border-radius: 10px;
+      padding: 0.9rem;
+      font-size: 0.85rem;
+      font-weight: 700;
       text-align: center;
-      box-shadow: 0 4px 16px rgba(0,82,204,0.25);
+      box-shadow: 0 4px 20px rgba(196,154,108,0.3);
+    }
+    .wf-arrow {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
     }
 
-    @media (prefers-color-scheme: dark) {
-      .wf-center { color: #000; box-shadow: 0 4px 16px rgba(95,163,255,0.2); }
+    /* ─── FAQ ─── */
+    .faq-list { border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%;
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      gap: 1.5rem;
+    }
+    .faq-btn span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      transition: color 0.2s;
+      line-height: 1.4;
+    }
+    .faq-btn:hover span { color: var(--accent); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      color: var(--text-2);
+      transition: transform 0.3s, color 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .faq-answer p {
+      padding-bottom: 1.5rem;
+      color: var(--text-2);
+      font-size: 0.92rem;
+      line-height: 1.8;
     }
 
-    .wf-arrow { color: var(--primary); font-weight: 700; text-align: center; flex-basis: 100%; }
-
-    /* ─── FORMULARIO ─── */
+    /* ─── CONTACTO ─── */
     .form-wrapper { max-width: 560px; margin: 0 auto; }
-
-    .form-section {
-      background: var(--bg);
+    .form-box {
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 3rem;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
-
-    .form-section.visible { opacity: 1; transform: translateY(0); }
-
-    .form-section h3 { font-size: 1.45rem; font-weight: 700; margin-bottom: 0.45rem; }
-
-    .form-desc { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.92rem; line-height: 1.65; }
-
+    .form-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .form-desc { color: var(--text-2); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.65; }
     .form-group { margin-bottom: 1.3rem; }
-
     .form-group label {
       display: block;
+      font-size: 0.83rem;
       font-weight: 600;
       margin-bottom: 0.45rem;
-      font-size: 0.86rem;
       color: var(--text);
     }
-
     .form-group input,
     .form-group textarea {
       width: 100%;
       padding: 0.8rem 1rem;
+      background: var(--bg-2);
       border: 1.5px solid var(--border);
       border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.93rem;
-      resize: vertical;
-      background: var(--bg);
       color: var(--text);
+      font-family: inherit;
+      font-size: 0.92rem;
+      resize: vertical;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--text-3); }
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0,82,204,0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(196,154,108,0.1);
     }
-
-    @media (prefers-color-scheme: dark) {
-      .form-group input:focus,
-      .form-group textarea:focus { box-shadow: 0 0 0 3px rgba(95,163,255,0.1); }
-    }
-
-    .form-button {
+    .btn-form {
       width: 100%;
-      background: var(--primary);
-      color: #fff;
-      padding: 1rem;
+      height: 52px;
+      background: var(--accent);
+      color: var(--bg);
       border: none;
       border-radius: 6px;
-      font-size: 0.97rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 12px rgba(0,82,204,0.15);
+      font-family: inherit;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 4px 16px rgba(196,154,108,0.2);
     }
-
-    .form-button:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(0,82,204,0.25);
-    }
-
-    .form-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    @media (prefers-color-scheme: dark) {
-      .form-button { color: #000; }
-    }
-
-    .form-error {
-      display: none;
-      color: #cc3300;
-      font-size: 0.83rem;
-      margin-top: 0.75rem;
-      text-align: center;
-    }
-
+    .btn-form:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-form:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .form-error { display: none; color: #e05c3a; font-size: 0.82rem; margin-top: 0.75rem; text-align: center; }
     .form-success { display: none; text-align: center; padding: 2rem 1rem; }
-
-    .form-success .checkmark {
-      width: 56px;
-      height: 56px;
-      background: #d4f5e2;
-      color: #1a7a45;
+    .form-success .check {
+      width: 56px; height: 56px;
+      background: rgba(196,154,108,0.1);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 1.2rem;
       font-size: 1.5rem;
-      font-weight: 700;
+      color: var(--accent);
     }
-
-    .form-success h4 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-
-    .form-success p { color: var(--text-secondary); font-size: 0.92rem; }
+    .form-success h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .form-success p { color: var(--text-2); font-size: 0.9rem; }
 
     /* ─── FOOTER ─── */
     footer {
-      background: var(--bg-subtle);
+      border-top: 1px solid var(--border);
       padding: 2.5rem 5%;
       text-align: center;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      font-size: 0.84rem;
+      color: var(--text-2);
+      font-size: 0.82rem;
+      background: var(--bg-2);
     }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      header { flex-direction: column; gap: 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .hero h1 { font-size: 2.4rem; letter-spacing: -0.8px; }
-      .hero-ctas { flex-direction: column; align-items: center; }
+      header .nav-links,
+      header .btn-outline { display: none; }
+      .hero-content h1 { font-size: 2.6rem; }
+      .hero-ctas { flex-direction: column; align-items: flex-start; }
       .trust-bar { gap: 2rem; }
-      .section h2, .section-inner h2 { font-size: 2rem; }
-      .steps { grid-template-columns: 1fr; }
-      .steps::before { display: none; }
-      .solucion-content { grid-template-columns: 1fr; gap: 2.5rem; }
-      .form-section { padding: 2rem; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .solution-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-box { padding: 2rem; }
+      .manifesto-line { font-size: 1.4rem; }
+      .section { padding: 5rem 5%; }
+      .bg-alt-inner { padding: 5rem 5%; }
+      .manifesto-section { padding: 5rem 5%; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="#" class="logo">ismaelnlai</a>
-  <ul class="nav-links">
-    <li><a href="#problema">El problema</a></li>
-    <li><a href="#como-funciona">Cómo funciona</a></li>
-    <li><a href="#contacto">Contacto</a></li>
-  </ul>
+<!-- HEADER -->
+<header id="mainHeader">
+  <nav class="nav">
+    <a href="#" class="logo">ismael<span>nlai</span></a>
+    <ul class="nav-links">
+      <li><a href="#problema">El problema</a></li>
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#contacto" class="btn-outline">Hablemos</a>
+  </nav>
 </header>
 
 <!-- HERO -->
 <div class="hero-wrapper">
-  <section class="hero">
+  <div class="hero-bg"></div>
+
+  <svg class="hero-decoration" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="300" cy="300" r="260" stroke="#C49A6C" stroke-width="1"/>
+    <circle cx="300" cy="300" r="180" stroke="#C49A6C" stroke-width="1"/>
+    <circle cx="300" cy="300" r="100" stroke="#C49A6C" stroke-width="1.5"/>
+    <circle cx="300" cy="300" r="8" fill="#C49A6C"/>
+    <circle cx="300" cy="120" r="6" fill="#C49A6C"/>
+    <circle cx="300" cy="480" r="6" fill="#C49A6C"/>
+    <circle cx="120" cy="300" r="6" fill="#C49A6C"/>
+    <circle cx="480" cy="300" r="6" fill="#C49A6C"/>
+    <circle cx="175" cy="175" r="5" fill="#C49A6C"/>
+    <circle cx="425" cy="175" r="5" fill="#C49A6C"/>
+    <circle cx="175" cy="425" r="5" fill="#C49A6C"/>
+    <circle cx="425" cy="425" r="5" fill="#C49A6C"/>
+    <line x1="300" y1="40" x2="300" y2="120" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="300" y1="480" x2="300" y2="560" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="40" y1="300" x2="120" y2="300" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="480" y1="300" x2="560" y2="300" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="300" y1="120" x2="480" y2="300" stroke="#C49A6C" stroke-width="0.5"/>
+    <line x1="480" y1="300" x2="300" y2="480" stroke="#C49A6C" stroke-width="0.5"/>
+    <line x1="300" y1="480" x2="120" y2="300" stroke="#C49A6C" stroke-width="0.5"/>
+    <line x1="120" y1="300" x2="300" y2="120" stroke="#C49A6C" stroke-width="0.5"/>
+    <line x1="175" y1="175" x2="425" y2="175" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
+    <line x1="175" y1="425" x2="425" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
+    <line x1="175" y1="175" x2="175" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
+    <line x1="425" y1="175" x2="425" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
+  </svg>
+
+  <div class="hero-content">
     <div class="hero-badge">
       <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
       IA · Automatización · N8N
     </div>
-    <h1>Automatiza tu pyme.<br><span>Escala sin contratar.</span></h1>
+    <h1>Automatiza tu pyme.<br><em>Escala sin contratar.</em></h1>
     <p class="hero-subtitle">Procesos manuales convertidos en automáticos. Tu equipo hace menos trabajo repetitivo y más trabajo que importa.</p>
     <div class="hero-ctas">
-      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Solicitar análisis gratuito</button>
-      <a href="#como-funciona" class="btn-secondary">Ver cómo funciona</a>
+      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
+        Solicitar análisis gratuito
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </button>
+      <a href="#como-funciona" class="btn-outline">Ver cómo funciona</a>
     </div>
     <div class="trust-bar">
       <div class="trust-item">
@@ -617,37 +712,43 @@
         <span>No necesitas técnicos</span>
       </div>
     </div>
-  </section>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+  </div>
 </div>
 
 <!-- PROBLEMA -->
 <section class="section" id="problema">
-  <h2>El problema real</h2>
-  <p class="section-subtitle">Tareas que deberían automatizarse están costándote tiempo, dinero y frenan tu crecimiento.</p>
+  <p class="section-label reveal">El problema</p>
+  <h2 class="section-title reveal">Tareas que te frenan cada día.</h2>
+  <p class="section-sub reveal">Procesos que deberían automatizarse están costándote tiempo, dinero y crecimiento.</p>
 
-  <div class="problema-grid">
-    <div class="problema-card">
-      <svg class="problema-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
+  <div class="cards-grid">
+    <div class="card reveal">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
       </svg>
       <h3>Tu equipo pierde horas</h3>
       <p>Copiar datos, generar reportes, sincronizar sistemas. Trabajo repetitivo que agota sin sumar valor al negocio.</p>
     </div>
-    <div class="problema-card">
-      <svg class="problema-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <line x1="18" y1="20" x2="18" y2="10"/>
-        <line x1="12" y1="20" x2="12" y2="4"/>
-        <line x1="6" y1="20" x2="6" y2="14"/>
-        <path d="M2 20h20"/>
+    <div class="card reveal">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/><path d="M2 20h20"/>
       </svg>
       <h3>Los números no cuadran</h3>
-      <p>Datos dispersos entre herramientas. Errores de sincronización. Informes inexactos. Decisiones sobre bases poco fiables.</p>
+      <p>Datos dispersos entre herramientas. Errores de sincronización. Decisiones tomadas sobre información incorrecta.</p>
     </div>
-    <div class="problema-card">
-      <svg class="problema-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2"/>
-        <path d="M8 21h8M12 17v4"/>
+    <div class="card reveal">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
       </svg>
       <h3>Estás atrapado en la operativa</h3>
       <p>No puedes crecer sin contratar. Y contratar significa costes fijos, complejidad y más problemas operativos.</p>
@@ -656,24 +757,24 @@
 </section>
 
 <!-- CÓMO FUNCIONA -->
-<div class="section-alt">
-  <div class="section-inner" id="como-funciona">
-    <h2>Cómo funciona</h2>
-    <p class="section-subtitle">Tres pasos. Sin jerga técnica. Sin fricciones.</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
+<div class="bg-alt">
+  <div class="bg-alt-inner" id="como-funciona">
+    <p class="section-label reveal">El proceso</p>
+    <h2 class="section-title reveal">Tres pasos. Sin jerga técnica.</h2>
+    <p class="section-sub reveal">De tu situación actual a procesos automatizados en menos de dos semanas.</p>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-num">1</div>
         <h3>Diagnóstico</h3>
-        <p>Analizamos qué procesos te consumen más tiempo y cuáles tienen mayor impacto si los automatizamos. Una llamada, sin compromiso.</p>
+        <p>Analizamos qué procesos consumen más tiempo y cuáles tienen mayor impacto si los automatizamos. Una llamada, sin compromiso.</p>
       </div>
-      <div class="step">
-        <div class="step-number">2</div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
         <h3>Automatización</h3>
-        <p>Conectamos tus herramientas y construimos los flujos. Tú no tocas nada técnico. Nosotros nos encargamos de todo.</p>
+        <p>Conectamos tus herramientas y construimos los flujos. Tú no tocas nada técnico. Nos encargamos de todo.</p>
       </div>
-      <div class="step">
-        <div class="step-number">3</div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
         <h3>Resultado</h3>
         <p>Tu equipo trabaja menos en tareas repetitivas y más en lo que genera valor. Lo notas desde la primera semana.</p>
       </div>
@@ -681,110 +782,203 @@
   </div>
 </div>
 
+<!-- MANIFIESTO -->
+<div class="manifesto-section">
+  <div class="manifesto-inner">
+    <p class="manifesto-line muted">No necesitas más reuniones para hablar de digitalización.</p>
+    <p class="manifesto-line accent">Necesitas que tus procesos funcionen solos.</p>
+    <p class="manifesto-line muted">No soy una agencia. No soy un freelance más.</p>
+    <p class="manifesto-line accent">Soy tu especialista en automatización.</p>
+    <p class="manifesto-line muted">Y cada proceso que automatizamos</p>
+    <p class="manifesto-line accent">es tiempo real que recuperas para lo que importa.</p>
+    <div class="manifesto-cta">
+      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
+        Empieza esta semana
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- SOLUCIÓN -->
 <section class="section" id="solucion">
-  <h2>La solución: automatización sin fricción</h2>
-  <p class="section-subtitle">Conectamos tus herramientas y eliminamos la fricción manual. Los procesos funcionan solos.</p>
-
-  <div class="solucion-content">
-    <div class="solucion-text">
-      <ul>
-        <li>
-          <strong>Procesos que funcionan solos</strong>
-          Sin intervención manual. Los datos fluyen automáticamente entre tus sistemas.
-        </li>
-        <li>
-          <strong>Cero errores de sincronización</strong>
-          Sincronización perfecta entre herramientas. Los números siempre coinciden.
-        </li>
-        <li>
-          <strong>Tu equipo liberado</strong>
-          Menos tareas administrativas. Más tiempo para clientes y estrategia.
-        </li>
-        <li>
-          <strong>Creces sin contratar</strong>
-          Gestiona 10 veces el volumen con el mismo equipo. Sin costes adicionales.
-        </li>
-        <li>
-          <strong>ROI en semanas, no meses</strong>
-          Resultados medibles desde el primer día. Lo ves en tu operativa de inmediato.
-        </li>
-      </ul>
-    </div>
-    <div class="solucion-visual">
-      <div class="workflow">
-        <div class="workflow-label">Entradas</div>
-        <div class="workflow-row">
-          <div class="wf-node">📧 Email</div>
-          <div class="wf-node">📋 Formulario</div>
-          <div class="wf-node">📊 CRM</div>
-        </div>
-        <div class="wf-arrow">↓</div>
-        <div class="workflow-row">
-          <div class="wf-center">⚡ Automatización</div>
-        </div>
-        <div class="wf-arrow">↓</div>
-        <div class="workflow-label">Salidas automáticas</div>
-        <div class="workflow-row">
-          <div class="wf-node">🔔 Alerta</div>
-          <div class="wf-node">📄 Informe</div>
-          <div class="wf-node">✅ Acción</div>
-        </div>
-      </div>
+  <p class="section-label reveal">La solución</p>
+  <h2 class="section-title reveal">Automatización sin fricción.</h2>
+  <p class="section-sub reveal">Conectamos tus herramientas y eliminamos la intervención manual. Los procesos fluyen solos.</p>
+  <div class="solution-grid">
+    <ul class="solution-list reveal-left">
+      <li><strong>Procesos que funcionan solos</strong>Sin intervención manual. Los datos fluyen automáticamente entre tus sistemas.</li>
+      <li><strong>Cero errores de sincronización</strong>Sincronización perfecta entre herramientas. Los números siempre coinciden.</li>
+      <li><strong>Tu equipo liberado</strong>Menos tareas administrativas. Más tiempo para clientes y estrategia.</li>
+      <li><strong>Creces sin contratar</strong>Gestiona 10 veces el volumen con el mismo equipo. Sin costes adicionales.</li>
+      <li><strong>ROI en semanas, no meses</strong>Resultados medibles desde el primer día. Lo ves en tu operativa de inmediato.</li>
+    </ul>
+    <div class="workflow-box reveal-right">
+      <div class="wf-label">Entradas</div>
+      <div class="wf-row"><div class="wf-node">📧 Email</div><div class="wf-node">📋 Formulario</div><div class="wf-node">📊 CRM</div></div>
+      <div class="wf-arrow">↓</div>
+      <div class="wf-row"><div class="wf-center">⚡ Automatización</div></div>
+      <div class="wf-arrow">↓</div>
+      <div class="wf-label">Salidas automáticas</div>
+      <div class="wf-row"><div class="wf-node">🔔 Alerta</div><div class="wf-node">📄 Informe</div><div class="wf-node">✅ Acción</div></div>
     </div>
   </div>
 </section>
 
-<!-- CONTACTO -->
-<div class="section-alt">
-  <div class="section-inner" id="contacto">
-    <h2>Empieza esta semana</h2>
-    <p class="section-subtitle">Cuéntame qué proceso quieres automatizar. Analizo tu caso y te doy opciones concretas. Respuesta en 24h.</p>
-
-    <div class="form-wrapper">
-      <div class="form-section">
-        <div id="formContent">
-          <h3>Solicitar análisis gratuito</h3>
-          <p class="form-desc">Sin compromiso. Solo cuéntame tu situación y vemos si puedo ayudarte.</p>
-
-          <form id="contactForm">
-            <div class="form-group">
-              <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
-            </div>
-            <div class="form-group">
-              <label for="empresa">Empresa <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label>
-              <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa">
-            </div>
-            <div class="form-group">
-              <label for="mensaje">¿Qué proceso quieres automatizar?</label>
-              <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej: gestión de pedidos, reportes semanales, sincronización de datos..." required></textarea>
-            </div>
-            <button type="submit" class="form-button" id="submitBtn">Enviar solicitud →</button>
-            <div class="form-error" id="formError">Hubo un error al enviar. Inténtalo de nuevo.</div>
-          </form>
-        </div>
-
-        <div class="form-success" id="formSuccess">
-          <div class="checkmark">✓</div>
-          <h4>Solicitud recibida</h4>
-          <p>Te respondo en menos de 24 horas con un análisis de tu caso.</p>
-        </div>
+<!-- FAQ -->
+<div class="bg-alt">
+  <div class="bg-alt-inner" id="faq">
+    <p class="section-label reveal">FAQ</p>
+    <h2 class="section-title reveal">Preguntas frecuentes.</h2>
+    <p class="section-sub reveal">Todo lo que necesitas saber antes de dar el primer paso.</p>
+    <div class="faq-list" style="max-width:760px">
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Cómo sé si mi proceso se puede automatizar?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>Si el proceso es repetitivo, sigue una lógica fija y consume tiempo de tu equipo, casi seguro se puede automatizar. En el diagnóstico inicial gratuito lo analizamos juntos y te digo si tiene sentido o no. Sin rodeos.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Cuánto tiempo tarda la implementación?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>Automatizaciones simples en 3-5 días. Flujos más complejos en 1-2 semanas. Trabajo en sprints cortos con entregables reales, no proyectos de meses sin resultados visibles.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Necesito conocimientos técnicos?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>No. Te entrego la automatización funcionando y te explico cómo usarla. No necesitas tocar código ni configurar nada. Si algo falla, me avisas y lo resuelvo.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Qué herramientas utilizas?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>Principalmente N8N, compatible con más de 500 herramientas: Gmail, Google Sheets, Notion, HubSpot, WhatsApp, Airtable, Slack y muchas más. Me adapto a las herramientas que ya usas.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Cuánto cuesta?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>El diagnóstico inicial es gratuito. A partir de ahí, presupuesto cerrado por proyecto. Sin sorpresas, sin costes ocultos. Cuéntame tu caso y te doy un número concreto.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span>¿Qué pasa si la automatización deja de funcionar?</span>
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <div class="faq-answer"><p>Incluyo soporte post-entrega. Si algo falla por un cambio en una herramienta o cualquier otro motivo, lo resuelvo. No te dejo solo con una automatización rota.</p></div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- CONTACTO -->
+<section class="section" id="contacto">
+  <p class="section-label reveal" style="text-align:center">Contacto</p>
+  <h2 class="section-title reveal" style="text-align:center">Empieza esta semana.</h2>
+  <p class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">Cuéntame qué proceso quieres automatizar. Analizo tu caso y te doy opciones concretas. Respuesta en 24h.</p>
+  <div class="form-wrapper reveal">
+    <div class="form-box">
+      <div id="formContent">
+        <h3>Solicitar análisis gratuito</h3>
+        <p class="form-desc">Sin compromiso. Solo cuéntame tu situación y vemos si puedo ayudarte.</p>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
+          </div>
+          <div class="form-group">
+            <label for="empresa">Empresa <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
+            <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa">
+          </div>
+          <div class="form-group">
+            <label for="mensaje">¿Qué proceso quieres automatizar?</label>
+            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej: gestión de pedidos, reportes semanales, sincronización de datos..." required></textarea>
+          </div>
+          <button type="submit" class="btn-form" id="submitBtn">Enviar solicitud →</button>
+          <div class="form-error" id="formError">Hubo un error al enviar. Inténtalo de nuevo.</div>
+        </form>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="check">✓</div>
+        <h4>Solicitud recibida</h4>
+        <p>Te respondo en menos de 24 horas con un análisis de tu caso.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para pymes</p>
 </footer>
 
 <script>
-  // FORM — inline feedback, no alert()
+  // Header on scroll
+  const header = document.getElementById('mainHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Scroll reveal
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el, i) => {
+    const siblings = Array.from(el.parentElement.children).filter(c =>
+      c.classList.contains('reveal') || c.classList.contains('reveal-left') || c.classList.contains('reveal-right')
+    );
+    const idx = siblings.indexOf(el);
+    if (idx > 0 && idx < 5) el.style.transitionDelay = `${idx * 0.1}s`;
+    revealObs.observe(el);
+  });
+
+  // Manifesto reveal
+  const mfObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        mfObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.manifesto-line, .manifesto-cta').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.13}s`;
+    mfObs.observe(el);
+  });
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const answer = item.querySelector('.faq-answer');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o => {
+      o.classList.remove('open');
+      o.querySelector('.faq-answer').style.maxHeight = null;
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  }
+
+  // Form
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
@@ -792,7 +986,6 @@
     btn.disabled = true;
     btn.textContent = 'Enviando...';
     err.style.display = 'none';
-
     fetch('https://formspree.io/f/xbdqyjvb', {
       method: 'POST',
       body: JSON.stringify({
@@ -815,23 +1008,6 @@
       btn.textContent = 'Enviar solicitud →';
     });
   });
-
-  // SCROLL ANIMATIONS — single system, no conflict with CSS
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.problema-card, .step, .solucion-text, .solucion-visual, .form-section')
-    .forEach((el, i) => {
-      const isStaggered = el.classList.contains('problema-card') || el.classList.contains('step');
-      if (isStaggered) el.style.transitionDelay = `${(i % 3) * 0.1}s`;
-      observer.observe(el);
-    });
 </script>
 
 </body>
