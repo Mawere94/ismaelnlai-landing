@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,89 +8,221 @@
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <style>
     :root {
-      --accent: #C49A6C; --bg: #08080F; --bg-2: #0D0D18;
-      --text: #ECEAE4; --text-2: #8A8278; --border: #1A1A28;
+      --accent: #C49A6C;
+      --bg: #08080F;
+      --bg-2: #0D0D18;
+      --text: #ECEAE4;
+      --text-2: #8A8278;
+      --border: #1A1A28;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; }
 
-    header { border-bottom:1px solid var(--border); padding:0 5%; }
-    .nav { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:800; color:var(--text); text-decoration:none; }
-    .logo span { color:var(--accent); }
-    .back { font-size:0.85rem; color:var(--text-2); text-decoration:none; transition:color 0.2s; }
-    .back:hover { color:var(--accent); }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    .content { max-width:760px; margin:0 auto; padding:5rem 5% 6rem; }
-    .page-label { font-size:0.72rem; font-weight:700; letter-spacing:0.5em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
-    h1 { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:800; margin-bottom:0.5rem; letter-spacing:-0.5px; }
-    .updated { font-size:0.82rem; color:var(--text-2); margin-bottom:3rem; border-bottom:1px solid var(--border); padding-bottom:1.5rem; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
 
-    h2 { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; margin:2.5rem 0 0.75rem; color:var(--text); }
-    p { color:var(--text-2); font-size:0.95rem; margin-bottom:1rem; }
-    a { color:var(--accent); text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    .highlight { background:rgba(196,154,108,0.08); border:1px solid rgba(196,154,108,0.2); border-radius:8px; padding:1.2rem 1.5rem; margin:1.5rem 0; }
-    .highlight p { margin:0; font-size:0.9rem; }
-    .placeholder { background:rgba(255,80,80,0.08); border:1px solid rgba(255,80,80,0.2); border-radius:6px; padding:0.8rem 1.2rem; margin:1rem 0; font-size:0.85rem; color:#ff9999; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+    }
 
-    footer { border-top:1px solid var(--border); padding:2rem 5%; text-align:center; color:var(--text-2); font-size:0.82rem; background:var(--bg-2); }
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .back {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back:hover {
+      color: var(--accent);
+    }
+
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 5rem 5% 6rem;
+    }
+
+    .page-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .updated {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 2.5rem 0 0.75rem;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--text-2);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .highlight {
+      background: rgba(196, 154, 108, 0.08);
+      border: 1px solid rgba(196, 154, 108, 0.2);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .placeholder {
+      background: rgba(255, 80, 80, 0.08);
+      border: 1px solid rgba(255, 80, 80, 0.2);
+      border-radius: 6px;
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      color: #ff9999;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 5%;
+      text-align: center;
+      color: var(--text-2);
+      font-size: 0.82rem;
+      background: var(--bg-2);
+    }
   </style>
 </head>
+
 <body>
 
-<header>
-  <nav class="nav">
-    <a href="index.html" class="logo">ismael<span>nlai</span></a>
-    <a href="index.html" class="back">← Volver</a>
-  </nav>
-</header>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">ismael<span>nlai</span></a>
+      <a href="index.html" class="back">← Volver</a>
+    </nav>
+  </header>
 
-<div class="content">
-  <p class="page-label">Legal</p>
-  <h1>Aviso Legal</h1>
-  <p class="updated">Última actualización: abril de 2026</p>
+  <div class="content">
+    <p class="page-label">Legal</p>
+    <h1>Aviso Legal</h1>
+    <p class="updated">Última actualización: abril de 2026</p>
 
-  <div class="placeholder">
-    ⚠️ <strong>Antes de publicar:</strong> sustituye <code>[TU DNI]</code> por tu número de DNI. Este dato es obligatorio por la LSSI.
-  </div>
 
   <h2>1. Datos identificativos del titular</h2>
-  <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se facilitan los siguientes datos:</p>
+    <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información
+      y de Comercio Electrónico (LSSI-CE), se facilitan los siguientes datos:</p>
 
-  <div class="highlight">
-    <p><strong>Titular:</strong> Ismael Núñez López</p>
-    <p><strong>NIF:</strong> [TU DNI]</p>
-    <p><strong>Dirección:</strong> Calle Cabo Prior 7, 11205, Algeciras, Cádiz, España</p>
-    <p><strong>Email:</strong> <a href="mailto:ismael24394@outlook.es">ismael24394@outlook.es</a></p>
-    <p><strong>Web:</strong> <a href="https://ismaelnlai.com">ismaelnlai.com</a></p>
+    <div class="highlight">
+      <p><strong>Titular:</strong> Ismael Núñez López</p>
+      <p><strong>NIF:</strong> 75887867B </p>
+      <p><strong>Dirección:</strong> Calle Cabo Prior 7, 11205, Algeciras, Cádiz, España</p>
+      <p><strong>Email:</strong> <a href="mailto:ismael24394@outlook.es">ismael24394@outlook.es</a></p>
+      <p><strong>Web:</strong> <a href="https://ismaelnlai.com">ismaelnlai.com</a></p>
+    </div>
+
+    <h2>2. Objeto y ámbito de aplicación</h2>
+    <p>El presente Aviso Legal regula el acceso y uso del sitio web <strong>ismaelnlai.com</strong>, titularidad de
+      Ismael Núñez López, cuya actividad consiste en la prestación de servicios de automatización e inteligencia
+      artificial para autónomos y pymes.</p>
+    <p>El acceso a este sitio web implica la aceptación plena de las condiciones recogidas en el presente Aviso Legal.
+      Si no estás de acuerdo con alguna de estas condiciones, te rogamos que no accedas a este sitio web.</p>
+
+    <h2>3. Propiedad intelectual e industrial</h2>
+    <p>Todos los contenidos del sitio web (textos, imágenes, diseño, código fuente, logotipos y demás elementos) son
+      propiedad exclusiva de Ismael Núñez López o cuenta con las autorizaciones necesarias para su uso, y están
+      protegidos por la normativa española e internacional de propiedad intelectual e industrial.</p>
+    <p>Queda prohibida cualquier reproducción, distribución, comunicación pública o transformación de dichos contenidos
+      sin la autorización expresa y por escrito del titular.</p>
+
+    <h2>4. Exclusión de garantías y responsabilidad</h2>
+    <p>Ismael Núñez López no se hace responsable, en ningún caso, de los daños y perjuicios que puedan ocasionarse por
+      el uso de este sitio web, incluyendo, sin limitación: errores u omisiones en los contenidos, falta de
+      disponibilidad del portal, transmisión de virus o programas maliciosos mediante los contenidos, o el uso que los
+      usuarios hagan de los mismos.</p>
+    <p>El titular se reserva el derecho de modificar, suspender, cancelar o restringir el contenido del sitio web sin
+      necesidad de previo aviso.</p>
+
+    <h2>5. Política de enlaces</h2>
+    <p>Este sitio web puede contener enlaces a sitios de terceros. Ismael Núñez López no tiene control sobre dichos
+      sitios ni asume responsabilidad alguna sobre sus contenidos o sus políticas de privacidad.</p>
+
+    <h2>6. Ley aplicable y jurisdicción</h2>
+    <p>Las presentes condiciones se rigen por la legislación española. Para la resolución de cualquier conflicto
+      derivado del uso de este sitio web, las partes se someten a los Juzgados y Tribunales de Algeciras, renunciando a
+      cualquier otro fuero que pudiera corresponderles.</p>
   </div>
 
-  <h2>2. Objeto y ámbito de aplicación</h2>
-  <p>El presente Aviso Legal regula el acceso y uso del sitio web <strong>ismaelnlai.com</strong>, titularidad de Ismael Núñez López, cuya actividad consiste en la prestación de servicios de automatización e inteligencia artificial para autónomos y pymes.</p>
-  <p>El acceso a este sitio web implica la aceptación plena de las condiciones recogidas en el presente Aviso Legal. Si no estás de acuerdo con alguna de estas condiciones, te rogamos que no accedas a este sitio web.</p>
-
-  <h2>3. Propiedad intelectual e industrial</h2>
-  <p>Todos los contenidos del sitio web (textos, imágenes, diseño, código fuente, logotipos y demás elementos) son propiedad exclusiva de Ismael Núñez López o cuenta con las autorizaciones necesarias para su uso, y están protegidos por la normativa española e internacional de propiedad intelectual e industrial.</p>
-  <p>Queda prohibida cualquier reproducción, distribución, comunicación pública o transformación de dichos contenidos sin la autorización expresa y por escrito del titular.</p>
-
-  <h2>4. Exclusión de garantías y responsabilidad</h2>
-  <p>Ismael Núñez López no se hace responsable, en ningún caso, de los daños y perjuicios que puedan ocasionarse por el uso de este sitio web, incluyendo, sin limitación: errores u omisiones en los contenidos, falta de disponibilidad del portal, transmisión de virus o programas maliciosos mediante los contenidos, o el uso que los usuarios hagan de los mismos.</p>
-  <p>El titular se reserva el derecho de modificar, suspender, cancelar o restringir el contenido del sitio web sin necesidad de previo aviso.</p>
-
-  <h2>5. Política de enlaces</h2>
-  <p>Este sitio web puede contener enlaces a sitios de terceros. Ismael Núñez López no tiene control sobre dichos sitios ni asume responsabilidad alguna sobre sus contenidos o sus políticas de privacidad.</p>
-
-  <h2>6. Ley aplicable y jurisdicción</h2>
-  <p>Las presentes condiciones se rigen por la legislación española. Para la resolución de cualquier conflicto derivado del uso de este sitio web, las partes se someten a los Juzgados y Tribunales de Algeciras, renunciando a cualquier otro fuero que pudiera corresponderles.</p>
-</div>
-
-<footer>
-  <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></p>
-</footer>
+  <footer>
+    <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> ·
+      <a href="cookies.html">Cookies</a></p>
+  </footer>
 
 </body>
+
 </html>
