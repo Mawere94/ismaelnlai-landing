@@ -39,21 +39,21 @@
     .reveal {
       opacity: 0;
       transform: translateY(24px);
-      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     .reveal-left {
       opacity: 0;
       transform: translateX(-24px);
-      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
     }
     .reveal-left.visible { opacity: 1; transform: translateX(0); }
 
     .reveal-right {
       opacity: 0;
       transform: translateX(24px);
-      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
     }
     .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
@@ -62,7 +62,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      transition: background 0.4s, border-color 0.4s;
+      transition: background 0.3s, border-color 0.3s;
       border-bottom: 1px solid transparent;
     }
     header.scrolled {
@@ -278,6 +278,7 @@
       padding-right: 2rem;
     }
     .marquee-track span b { color: var(--accent); font-weight: 700; }
+    .marquee-section:hover .marquee-track { animation-play-state: paused; }
 
     @keyframes marquee {
       from { transform: translateX(0); }
@@ -523,7 +524,7 @@
       flex-shrink: 0;
       width: 22px; height: 22px;
       color: var(--text-2);
-      transition: transform 0.3s, color 0.2s;
+      transition: transform 0.4s ease-out, color 0.2s;
     }
     .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
@@ -640,7 +641,7 @@
       gap: 1.5rem;
       z-index: 9999;
       box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      animation: slideUp 0.3s ease;
+      animation: slideUp 0.3s ease-out;
     }
     @keyframes slideUp {
       from { opacity: 0; transform: translateX(-50%) translateY(20px); }
@@ -671,6 +672,21 @@
     #cookieAccept:hover { opacity: 0.85; }
     @media (max-width: 540px) {
       #cookieBanner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right,
+      .manifesto-line, .manifesto-cta {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .marquee-track { animation: none; }
+      #cookieBanner { animation: none; }
+      header { transition: none; }
+      .card, .btn-primary, .btn-outline, .btn-form,
+      .faq-answer, .faq-icon { transition: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
