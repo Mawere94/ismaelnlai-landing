@@ -1112,6 +1112,10 @@
             <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
           </div>
           <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000" required>
+          </div>
+          <div class="form-group">
             <label for="empresa">Empresa <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
             <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa">
           </div>
@@ -1238,6 +1242,7 @@
       body: JSON.stringify({
         nombre: this.nombre.value,
         email: this.email.value,
+        telefono: this.telefono.value,
         empresa: this.empresa.value,
         mensaje: this.mensaje.value
       }),

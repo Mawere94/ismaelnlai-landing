@@ -394,6 +394,7 @@
       <div class="email-form" id="lead-form">
         <input type="text" id="lead-nombre" placeholder="Su nombre" required>
         <input type="email" id="lead-email" placeholder="Email del despacho" required>
+        <input type="tel" id="lead-telefono" placeholder="Teléfono de contacto" required>
         <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)">
         <button class="btn-cta" id="lead-btn" onclick="enviarLead()">Recibir análisis gratuito →</button>
         <p class="privacy-note">Sin spam. Puede darse de baja cuando quiera. <a href="privacidad.html">Privacidad</a>.</p>
@@ -472,10 +473,11 @@
   function enviarLead() {
     const nombre = document.getElementById('lead-nombre').value.trim();
     const email = document.getElementById('lead-email').value.trim();
+    const telefono = document.getElementById('lead-telefono').value.trim();
     const despacho = document.getElementById('lead-despacho').value.trim();
 
-    if (!nombre || !email) {
-      alert('Por favor, rellene su nombre y email.');
+    if (!nombre || !email || !telefono) {
+      alert('Por favor, rellene su nombre, email y teléfono.');
       return;
     }
 
@@ -490,7 +492,7 @@
 
     fetch('https://n8n.ismaelnlai.com/webhook/contacto-web', {
       method: 'POST',
-      body: JSON.stringify({ nombre, email, empresa: despacho, mensaje }),
+      body: JSON.stringify({ nombre, email, telefono, empresa: despacho, mensaje }),
       headers: { 'Content-Type': 'application/json' }
     })
     .then(() => {
