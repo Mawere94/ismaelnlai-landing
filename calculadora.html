@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de horas perdidas | ismaelnlai</title>
+  <meta name="description" content="Descubre cuántas horas y euros pierde tu asesoría cada año en gestión manual de cierres trimestrales.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #C49A6C;
+      --accent-dark: #A87E54;
+      --accent-glow: rgba(196,154,108,0.12);
+      --bg: #08080F;
+      --bg-2: #0D0D18;
+      --bg-card: #111120;
+      --text: #ECEAE4;
+      --text-2: #8A8278;
+      --border: #1A1A28;
+      --radius: 10px;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header { border-bottom: 1px solid var(--border); padding: 0 5%; background: var(--bg-2); }
+    .nav { max-width: 1100px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 800; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .back { font-size: 0.85rem; color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 4rem 5% 3rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(196,154,108,0.25);
+      background: rgba(196,154,108,0.06);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      color: var(--text-2);
+      font-size: 1rem;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* CALCULATOR */
+    .calc-wrapper { max-width: 680px; margin: 0 auto; padding: 0 5% 5rem; }
+
+    /* STEPS */
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.25s;
+    }
+    .step.active { border-color: rgba(196,154,108,0.35); }
+    .step-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .step-num {
+      width: 32px; height: 32px;
+      background: rgba(196,154,108,0.12);
+      border: 1px solid rgba(196,154,108,0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--accent);
+      flex-shrink: 0;
+    }
+    .step-header h3 { font-size: 1rem; font-weight: 600; }
+    .step-header p { font-size: 0.83rem; color: var(--text-2); margin-top: 0.2rem; }
+
+    /* SLIDERS */
+    .slider-wrap { position: relative; }
+    .slider-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-2); margin-bottom: 0.5rem; }
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px; height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(196,154,108,0.15);
+    }
+    .slider-value {
+      text-align: center;
+      margin-top: 0.75rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+    .slider-value span { font-size: 0.9rem; font-weight: 400; color: var(--text-2); font-family: 'Inter', sans-serif; }
+
+    /* SELECT */
+    .select-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; }
+    .select-btn {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      color: var(--text-2);
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .select-btn:hover { border-color: rgba(196,154,108,0.3); color: var(--text); }
+    .select-btn.selected { background: rgba(196,154,108,0.1); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    .select-btn .btn-label { font-size: 1rem; font-weight: 700; display: block; }
+    .select-btn .btn-sub { font-size: 0.72rem; color: var(--text-2); display: block; margin-top: 0.2rem; }
+    .select-btn.selected .btn-sub { color: rgba(196,154,108,0.7); }
+
+    /* CTA BUTTON */
+    .btn-calc {
+      width: 100%;
+      height: 54px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 1.5rem;
+    }
+    .btn-calc:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+    /* RESULT */
+    .result-box {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid rgba(196,154,108,0.25);
+      border-radius: 14px;
+      padding: 2.5rem;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .result-box.show { display: block; }
+    .result-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.4em; text-transform: uppercase; color: var(--text-2); margin-bottom: 1rem; }
+    .result-main {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .result-sub { color: var(--text-2); font-size: 0.9rem; margin-bottom: 2rem; }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .result-item {
+      background: var(--bg-2);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .result-item .num { font-size: 1.4rem; font-weight: 700; color: var(--text); font-family: 'Playfair Display', serif; }
+    .result-item .desc { font-size: 0.75rem; color: var(--text-2); margin-top: 0.3rem; }
+    .result-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+    .result-cta-text {
+      font-size: 0.95rem;
+      color: var(--text-2);
+      margin-bottom: 1.5rem;
+    }
+    .result-cta-text strong { color: var(--text); }
+
+    /* EMAIL FORM */
+    .email-form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 420px; margin: 0 auto; }
+    .email-form input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .email-form input:focus { border-color: var(--accent); }
+    .email-form input::placeholder { color: var(--text-2); }
+    .btn-cta {
+      width: 100%;
+      height: 50px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-cta:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .privacy-note { font-size: 0.75rem; color: var(--text-2); text-align: center; }
+    .privacy-note a { color: var(--accent); text-decoration: none; }
+
+    /* SUCCESS */
+    .success-box { display: none; text-align: center; padding: 1.5rem; }
+    .success-box.show { display: block; }
+    .success-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .success-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .success-box p { color: var(--text-2); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .btn-calendly {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-calendly:hover { background: var(--accent-dark); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; color: var(--text-2); font-size: 0.82rem; background: var(--bg-2); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .step { padding: 1.5rem; }
+      .result-grid { grid-template-columns: 1fr; }
+      .calc-wrapper { padding: 0 4% 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo">ismael<span>nlai</span></a>
+    <a href="index.html" class="back">← Volver</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <span class="hero-label">Herramienta gratuita</span>
+  <h1>¿Cuánto le cuesta a su despacho<br><em>la gestión manual?</em></h1>
+  <p>Responda 4 preguntas y calcule exactamente cuántas horas y euros pierde su asesoría cada año en tareas que se pueden automatizar.</p>
+</div>
+
+<div class="calc-wrapper">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="s1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <h3>Clientes activos en su despacho</h3>
+        <p>Número aproximado de clientes que gestionan actualmente</p>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-labels"><span>10</span><span>500</span></div>
+      <input type="range" id="clientes" min="10" max="500" step="5" value="80">
+      <div class="slider-value" id="clientes-val">80 <span>clientes</span></div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="s2">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <h3>Minutos por cliente en cada cierre</h3>
+        <p>Tiempo que dedica a recordar, llamar o escribir a cada cliente por trimestre</p>
+      </div>
+    </div>
+    <div class="select-grid" id="minutos-grid">
+      <button class="select-btn" onclick="selectMinutos(10)"><span class="btn-label">10 min</span><span class="btn-sub">Proceso ágil</span></button>
+      <button class="select-btn selected" onclick="selectMinutos(20)"><span class="btn-label">20 min</span><span class="btn-sub">Habitual</span></button>
+      <button class="select-btn" onclick="selectMinutos(30)"><span class="btn-label">30 min</span><span class="btn-sub">Con seguimiento</span></button>
+      <button class="select-btn" onclick="selectMinutos(45)"><span class="btn-label">45 min</span><span class="btn-sub">Muy manual</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="s3">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <h3>Personas involucradas en el proceso</h3>
+        <p>¿Cuántos miembros del equipo participan en el seguimiento de cierres?</p>
+      </div>
+    </div>
+    <div class="select-grid" id="personas-grid">
+      <button class="select-btn selected" onclick="selectPersonas(1)"><span class="btn-label">1 persona</span><span class="btn-sub">Solo/a</span></button>
+      <button class="select-btn" onclick="selectPersonas(2)"><span class="btn-label">2 personas</span><span class="btn-sub">Con apoyo</span></button>
+      <button class="select-btn" onclick="selectPersonas(3)"><span class="btn-label">3 personas</span><span class="btn-sub">Equipo</span></button>
+      <button class="select-btn" onclick="selectPersonas(4)"><span class="btn-label">4 o más</span><span class="btn-sub">Despacho grande</span></button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="s4">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <h3>Coste hora de su equipo</h3>
+        <p>Aproximado, contando salario y cargas sociales</p>
+      </div>
+    </div>
+    <div class="select-grid" id="coste-grid">
+      <button class="select-btn" onclick="selectCoste(15)"><span class="btn-label">15 €/h</span><span class="btn-sub">Administrativo</span></button>
+      <button class="select-btn selected" onclick="selectCoste(20)"><span class="btn-label">20 €/h</span><span class="btn-sub">Gestor</span></button>
+      <button class="select-btn" onclick="selectCoste(30)"><span class="btn-label">30 €/h</span><span class="btn-sub">Técnico senior</span></button>
+      <button class="select-btn" onclick="selectCoste(40)"><span class="btn-label">40 €/h</span><span class="btn-sub">Socio</span></button>
+    </div>
+  </div>
+
+  <button class="btn-calc" onclick="calcular()">Calcular mis horas perdidas →</button>
+
+  <!-- RESULTADO -->
+  <div class="result-box" id="result">
+    <p class="result-label">Su despacho pierde cada año</p>
+    <div class="result-main" id="res-horas">—</div>
+    <p class="result-sub" id="res-dias">— equivalente a — semanas de trabajo</p>
+
+    <div class="result-grid">
+      <div class="result-item">
+        <div class="num" id="res-coste">—</div>
+        <div class="desc">Coste económico anual</div>
+      </div>
+      <div class="result-item">
+        <div class="num" id="res-cierres">4</div>
+        <div class="desc">Cierres trimestrales al año</div>
+      </div>
+      <div class="result-item">
+        <div class="num" id="res-automatizado">0 h</div>
+        <div class="desc">Con automatización</div>
+      </div>
+    </div>
+
+    <hr class="result-divider">
+
+    <div id="form-section">
+      <p class="result-cta-text">Reciba un <strong>análisis personalizado</strong> de qué procesos automatizar primero en su despacho — sin coste.</p>
+      <div class="email-form" id="lead-form">
+        <input type="text" id="lead-nombre" placeholder="Su nombre" required>
+        <input type="email" id="lead-email" placeholder="Email del despacho" required>
+        <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)">
+        <button class="btn-cta" id="lead-btn" onclick="enviarLead()">Recibir análisis gratuito →</button>
+        <p class="privacy-note">Sin spam. Puede darse de baja cuando quiera. <a href="privacidad.html">Privacidad</a>.</p>
+      </div>
+    </div>
+
+    <div class="success-box" id="success">
+      <div class="success-icon">✓</div>
+      <h3>Perfecto, le contactamos pronto.</h3>
+      <p>Mientras tanto, si quiere acelerar el proceso puede agendar directamente una llamada de 20 minutos — sin compromiso.</p>
+      <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" class="btn-calendly">Agendar diagnóstico gratuito →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></p>
+</footer>
+
+<script>
+  // State
+  let minutos = 20;
+  let personas = 1;
+  let coste = 20;
+
+  // Slider
+  const slider = document.getElementById('clientes');
+  const sliderVal = document.getElementById('clientes-val');
+  slider.addEventListener('input', () => {
+    sliderVal.innerHTML = slider.value + ' <span>clientes</span>';
+    document.getElementById('s1').classList.add('active');
+  });
+
+  // Selectors
+  function selectMinutos(v) {
+    minutos = v;
+    document.querySelectorAll('#minutos-grid .select-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('s2').classList.add('active');
+  }
+  function selectPersonas(v) {
+    personas = v;
+    document.querySelectorAll('#personas-grid .select-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('s3').classList.add('active');
+  }
+  function selectCoste(v) {
+    coste = v;
+    document.querySelectorAll('#coste-grid .select-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('s4').classList.add('active');
+  }
+
+  // Calculate
+  function calcular() {
+    const clientes = parseInt(slider.value);
+    const cierres = 4;
+    const horasAnio = (clientes * minutos * cierres * personas) / 60;
+    const costeAnio = horasAnio * coste;
+    const semanas = (horasAnio / 40).toFixed(1);
+
+    document.getElementById('res-horas').textContent = Math.round(horasAnio) + ' horas al año';
+    document.getElementById('res-dias').textContent =
+      'Equivalente a ' + semanas + ' semanas de trabajo de su equipo';
+    document.getElementById('res-coste').textContent =
+      new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(costeAnio);
+    document.getElementById('res-cierres').textContent = '×' + cierres;
+
+    const result = document.getElementById('result');
+    result.classList.add('show');
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Send lead
+  function enviarLead() {
+    const nombre = document.getElementById('lead-nombre').value.trim();
+    const email = document.getElementById('lead-email').value.trim();
+    const despacho = document.getElementById('lead-despacho').value.trim();
+
+    if (!nombre || !email) {
+      alert('Por favor, rellene su nombre y email.');
+      return;
+    }
+
+    const btn = document.getElementById('lead-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const clientes = parseInt(slider.value);
+    const horasAnio = Math.round((clientes * minutos * 4 * personas) / 60);
+    const costeAnio = Math.round(horasAnio * coste);
+    const mensaje = `Calculadora lead magnet. Clientes: ${clientes}, Minutos/cliente: ${minutos}, Personas: ${personas}, Coste/hora: ${coste}€. Resultado: ${horasAnio}h/año = ${costeAnio}€/año`;
+
+    fetch('https://n8n.ismaelnlai.com/webhook/contacto-web', {
+      method: 'POST',
+      body: JSON.stringify({ nombre, email, empresa: despacho, mensaje }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(() => {
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success').classList.add('show');
+    })
+    .catch(() => {
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success').classList.add('show');
+    });
+  }
+</script>
+
+<!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148587751.js"></script>
+<!-- End of HubSpot Embed Code -->
+</body>
+</html>
