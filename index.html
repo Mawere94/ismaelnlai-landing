@@ -22,6 +22,7 @@
       --text-3:        #3E3A36;
       --border:        #1A1A28;
       --radius:        10px;
+      --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -36,33 +37,123 @@
     }
 
     /* ─── REVEAL ANIMATIONS ─── */
+
+    /* Keyframes for scroll-driven path */
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(24px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    }
+    @keyframes reveal-up-heading {
+      from { opacity: 0; transform: translateY(32px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    }
+    @keyframes reveal-up-sub {
+      from { opacity: 0; transform: translateY(16px); filter: blur(3px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    }
+    @keyframes reveal-left-kf {
+      from { opacity: 0; transform: translateX(-24px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateX(0);     filter: blur(0);   }
+    }
+    @keyframes reveal-right-kf {
+      from { opacity: 0; transform: translateX(24px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateX(0);    filter: blur(0);   }
+    }
+
+    /* Baseline: transition-based (all browsers) */
     .reveal {
       opacity: 0;
       transform: translateY(24px);
-      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      filter: blur(4px);
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
     }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
 
     .reveal-left {
       opacity: 0;
       transform: translateX(-24px);
-      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      filter: blur(4px);
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
     }
-    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
 
     .reveal-right {
       opacity: 0;
       transform: translateX(24px);
-      transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+      filter: blur(4px);
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
     }
-    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
+
+    /* Reveal hierarchy: different offsets by element role */
+    .section-title.reveal  { transform: translateY(32px); }
+    .section-sub.reveal    { transform: translateY(16px); filter: blur(3px); }
+    .section-label.reveal  { transform: translateY(14px); filter: blur(2px); }
+
+    /* CSS stagger for known sibling groups (replaces JS transitionDelay) */
+    .cards-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .cards-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .steps-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .steps-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .faq-list .faq-item:nth-child(2) { transition-delay: 0.05s; }
+    .faq-list .faq-item:nth-child(3) { transition-delay: 0.10s; }
+    .faq-list .faq-item:nth-child(4) { transition-delay: 0.15s; }
+    .faq-list .faq-item:nth-child(5) { transition-delay: 0.20s; }
+    .faq-list .faq-item:nth-child(6) { transition-delay: 0.25s; }
+
+    /* Enhanced: scroll-driven animations (Chrome 115+, Edge 115+, Safari 18+) */
+    @supports (animation-timeline: scroll()) {
+      .reveal {
+        animation: reveal-up 0.55s var(--ease-out) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+        transition: none;
+      }
+      .reveal-left {
+        animation: reveal-left-kf 0.55s var(--ease-out) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+        transition: none;
+      }
+      .reveal-right {
+        animation: reveal-right-kf 0.55s var(--ease-out) both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+        transition: none;
+      }
+      /* Hierarchy overrides in scroll-driven mode */
+      .section-title.reveal {
+        animation-name: reveal-up-heading;
+        transform: translateY(0); /* reset baseline override */
+      }
+      .section-sub.reveal {
+        animation-name: reveal-up-sub;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+      .section-label.reveal {
+        animation-name: reveal-up-sub;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+      /* Stagger via animation-delay in scroll-driven mode */
+      .cards-grid .reveal:nth-child(2),
+      .steps-grid .reveal:nth-child(2),
+      .faq-list .faq-item:nth-child(2) { animation-delay: 0.06s; transition-delay: 0s; }
+      .cards-grid .reveal:nth-child(3),
+      .steps-grid .reveal:nth-child(3),
+      .faq-list .faq-item:nth-child(3) { animation-delay: 0.12s; transition-delay: 0s; }
+      .faq-list .faq-item:nth-child(4) { animation-delay: 0.18s; transition-delay: 0s; }
+      .faq-list .faq-item:nth-child(5) { animation-delay: 0.24s; transition-delay: 0s; }
+      .faq-list .faq-item:nth-child(6) { animation-delay: 0.30s; transition-delay: 0s; }
+    }
 
     /* ─── HEADER ─── */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      transition: background 0.3s, border-color 0.3s;
+      transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
       border-bottom: 1px solid transparent;
     }
     header.scrolled {
@@ -100,7 +191,7 @@
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 500;
-      transition: color 0.2s;
+      transition: color 0.2s var(--ease-out);
       position: relative;
     }
     .nav-links a:hover { color: var(--text); }
@@ -108,11 +199,13 @@
       content: '';
       position: absolute;
       bottom: -4px; left: 0;
-      width: 0; height: 1px;
+      width: 100%; height: 1px;
       background: var(--accent);
-      transition: width 0.25s;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.25s var(--ease-out);
     }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover::after { transform: scaleX(1); }
 
     .btn-outline {
       display: inline-flex;
@@ -129,7 +222,7 @@
       cursor: pointer;
       background: transparent;
       font-family: inherit;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
     }
     .btn-outline:hover {
       background: var(--accent);
@@ -152,7 +245,7 @@
       cursor: pointer;
       border: none;
       font-family: inherit;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
       box-shadow: 0 4px 24px rgba(196,154,108,0.25);
     }
     .btn-primary:hover {
@@ -160,6 +253,7 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 32px rgba(196,154,108,0.35);
     }
+    .btn-primary:active { transform: translateY(-1px) scale(0.97); }
 
     /* ─── HERO ─── */
     .hero-wrapper {
@@ -169,13 +263,28 @@
       align-items: center;
       overflow: hidden;
     }
+    @property --glow-a {
+      syntax: '<number>';
+      initial-value: 0.07;
+      inherits: false;
+    }
+    @property --glow-b {
+      syntax: '<number>';
+      initial-value: 0.04;
+      inherits: false;
+    }
+    @keyframes hero-breathe {
+      from { --glow-a: 0.05; --glow-b: 0.02; }
+      to   { --glow-a: 0.11; --glow-b: 0.07; }
+    }
     .hero-bg {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(196,154,108,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,154,108,0.04) 0%, transparent 50%);
+        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(196,154,108,var(--glow-a)) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,154,108,var(--glow-b)) 0%, transparent 50%);
       pointer-events: none;
+      animation: hero-breathe 7s ease-in-out infinite alternate;
     }
     .hero-decoration {
       position: absolute;
@@ -333,7 +442,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
     }
     .card:hover {
       border-color: var(--accent-border);
@@ -407,18 +516,20 @@
       margin-bottom: 1.4rem;
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      filter: blur(4px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
     }
-    .manifesto-line.visible { opacity: 1; transform: translateY(0); }
+    .manifesto-line.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
     .manifesto-line.accent { color: var(--accent); }
     .manifesto-line.muted  { color: var(--text); }
     .manifesto-cta {
       margin-top: 3.5rem;
       opacity: 0;
       transform: translateY(16px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      filter: blur(3px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
     }
-    .manifesto-cta.visible { opacity: 1; transform: translateY(0); }
+    .manifesto-cta.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
 
     /* ─── SOLUCIÓN ─── */
     .solution-grid {
@@ -516,7 +627,7 @@
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--text);
-      transition: color 0.2s;
+      transition: color 0.2s var(--ease-out);
       line-height: 1.4;
     }
     .faq-btn:hover span { color: var(--accent); }
@@ -524,10 +635,11 @@
       flex-shrink: 0;
       width: 22px; height: 22px;
       color: var(--text-2);
-      transition: transform 0.4s ease-out, color 0.2s;
+      transition: transform 0.4s var(--ease-out), color 0.2s var(--ease-out);
     }
     .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    /* FAQ answer: no CSS transition — JS sets ease-out (open) or ease-in (close) */
+    .faq-answer { max-height: 0; overflow: hidden; }
     .faq-answer p {
       padding-bottom: 1.5rem;
       color: var(--text-2);
@@ -569,7 +681,7 @@
       font-family: inherit;
       font-size: 0.92rem;
       resize: vertical;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
     }
     .form-group input::placeholder,
     .form-group textarea::placeholder { color: var(--text-3); }
@@ -590,13 +702,27 @@
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
-      transition: background 0.2s, transform 0.2s;
+      transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out);
       box-shadow: 0 4px 16px rgba(196,154,108,0.2);
     }
     .btn-form:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-form:active { transform: translateY(-1px) scale(0.97); }
     .btn-form:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .form-error { display: none; color: #e05c3a; font-size: 0.82rem; margin-top: 0.75rem; text-align: center; }
-    .form-success { display: none; text-align: center; padding: 2rem 1rem; }
+    #formContent {
+      transition: opacity 0.25s var(--ease-out);
+    }
+    #formContent.hiding { opacity: 0; }
+    .form-success {
+      display: none; /* managed by JS */
+      text-align: center;
+      padding: 2rem 1rem;
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(4px);
+      transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), filter 0.45s var(--ease-out);
+    }
+    .form-success.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
     .form-success .check {
       width: 56px; height: 56px;
       background: rgba(196,154,108,0.1);
@@ -620,7 +746,7 @@
       font-size: 0.82rem;
       background: var(--bg-2);
     }
-    footer a { color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    footer a { color: var(--text-2); text-decoration: none; transition: color 0.2s var(--ease-out); }
     footer a:hover { color: var(--accent); }
     .footer-sep { margin: 0 0.5rem; opacity: 0.4; }
 
@@ -647,6 +773,12 @@
       from { opacity: 0; transform: translateX(-50%) translateY(20px); }
       to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
+    @keyframes slideDown {
+      to { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    }
+    #cookieBanner.dismissing {
+      animation: slideDown 0.2s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+    }
     #cookieBanner p {
       flex: 1;
       font-size: 0.83rem;
@@ -667,7 +799,7 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s var(--ease-out);
     }
     #cookieAccept:hover { opacity: 0.85; }
     @media (max-width: 540px) {
@@ -676,17 +808,20 @@
 
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
+      /* Universal reset: covers all current and future animated elements */
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      /* Ensure hidden-by-default reveal elements become visible immediately */
       .reveal, .reveal-left, .reveal-right,
       .manifesto-line, .manifesto-cta {
         opacity: 1 !important;
         transform: none !important;
-        transition: none !important;
+        filter: none !important;
       }
-      .marquee-track { animation: none; }
-      #cookieBanner { animation: none; }
-      header { transition: none; }
-      .card, .btn-primary, .btn-outline, .btn-form,
-      .faq-answer, .faq-icon { transition: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
@@ -1011,26 +1146,27 @@
     header.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 
-  // Scroll reveal
-  const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObs.unobserve(entry.target);
-      }
+  // Scroll reveal — skip if scroll-driven CSS animations are supported
+  const useScrollDriven = CSS.supports('animation-timeline', 'scroll()');
+
+  if (!useScrollDriven) {
+    // Fallback: IntersectionObserver (CSS stagger via :nth-child handles delays)
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+      revealObs.observe(el);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }
 
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el, i) => {
-    const siblings = Array.from(el.parentElement.children).filter(c =>
-      c.classList.contains('reveal') || c.classList.contains('reveal-left') || c.classList.contains('reveal-right')
-    );
-    const idx = siblings.indexOf(el);
-    if (idx > 0 && idx < 5) el.style.transitionDelay = `${idx * 0.1}s`;
-    revealObs.observe(el);
-  });
-
-  // Manifesto reveal
+  // Manifesto reveal (always uses IntersectionObserver — scroll-driven for staggered
+  // text blocks with specific threshold needs manual control)
   const mfObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1045,22 +1181,26 @@
     mfObs.observe(el);
   });
 
-  // FAQ accordion
+  // FAQ accordion — ease-out when opening, ease-in when closing
   function toggleFaq(btn) {
     const item = btn.parentElement;
     const answer = item.querySelector('.faq-answer');
     const isOpen = item.classList.contains('open');
+    // Close all open items with ease-in
     document.querySelectorAll('.faq-item.open').forEach(o => {
       o.classList.remove('open');
-      o.querySelector('.faq-answer').style.maxHeight = null;
+      const a = o.querySelector('.faq-answer');
+      a.style.transition = 'max-height 0.35s ease-in';
+      a.style.maxHeight = null;
     });
     if (!isOpen) {
       item.classList.add('open');
+      answer.style.transition = 'max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
       answer.style.maxHeight = answer.scrollHeight + 'px';
     }
   }
 
-  // Cookie banner
+  // Cookie banner — animated exit
   (function() {
     var banner = document.getElementById('cookieBanner');
     if (!localStorage.getItem('cookieAccepted')) {
@@ -1068,11 +1208,14 @@
     }
     document.getElementById('cookieAccept').addEventListener('click', function() {
       localStorage.setItem('cookieAccepted', '1');
-      banner.style.display = 'none';
+      banner.classList.add('dismissing');
+      banner.addEventListener('animationend', function() {
+        banner.style.display = 'none';
+      }, { once: true });
     });
   })();
 
-  // Form
+  // Form — animated success state
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
@@ -1092,8 +1235,17 @@
     })
     .then(res => {
       if (res.ok) {
-        document.getElementById('formContent').style.display = 'none';
-        document.getElementById('formSuccess').style.display = 'block';
+        const fc = document.getElementById('formContent');
+        const fs = document.getElementById('formSuccess');
+        // Fade out form content
+        fc.classList.add('hiding');
+        setTimeout(function() {
+          fc.style.display = 'none';
+          fs.style.display = 'block';
+          // Force reflow, then trigger enter transition
+          fs.getBoundingClientRect();
+          fs.classList.add('visible');
+        }, 280);
       } else { throw new Error(); }
     })
     .catch(() => {
