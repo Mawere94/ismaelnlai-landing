@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre mí — Ismael Núñez López | ismaelnlai</title>
+  <meta name="description" content="Soy Ismael Núñez López, especialista en automatización de procesos con N8N e IA para asesorías y pymes en España. Conóceme, mi metodología y casos de uso reales.">
+  <link rel="canonical" href="https://ismaelnlai.com/sobre-mi.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="profile">
+  <meta property="og:url"         content="https://ismaelnlai.com/sobre-mi.html">
+  <meta property="og:title"       content="Ismael Núñez López — Especialista en automatización para asesorías">
+  <meta property="og:description" content="Automatización con N8N e IA para asesorías y pymes. Sin código, sin promesas vacías. Conoce la persona detrás de ismaelnlai.">
+  <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
+  <meta property="og:locale"      content="es_ES">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "@id": "https://ismaelnlai.com/#person",
+      "name": "Ismael Núñez López",
+      "url": "https://ismaelnlai.com",
+      "image": "https://ismaelnlai.com/assets/og-image.png",
+      "jobTitle": "Especialista en Automatización con IA",
+      "description": "Especialista en automatización de procesos empresariales con N8N e Inteligencia Artificial. Trabaja con asesorías fiscales, gestorías y pymes para eliminar tareas manuales repetitivas e implementar flujos de trabajo autónomos.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Algeciras",
+        "addressRegion": "Cádiz",
+        "addressCountry": "ES"
+      },
+      "email": "ismael24394@outlook.es",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "ismaelnlai",
+        "url": "https://ismaelnlai.com"
+      },
+      "knowsAbout": [
+        "Automatización de procesos empresariales",
+        "N8N workflows",
+        "Inteligencia Artificial aplicada a negocios",
+        "Integración de herramientas (CRM, ERP, email, hojas de cálculo)",
+        "Asesorías fiscales y gestorías",
+        "Gmail automation",
+        "HubSpot CRM",
+        "Google Sheets automation",
+        "WhatsApp Business API"
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Especialista en Automatización de Procesos",
+        "description": "Diseño e implementación de flujos de trabajo automatizados con N8N e IA para eliminar tareas manuales en asesorías, gestorías y pymes.",
+        "occupationLocation": {
+          "@type": "Country",
+          "name": "Spain"
+        }
+      }
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --accent:        #C49A6C;
+      --accent-dark:   #A87E54;
+      --accent-glow:   rgba(196,154,108,0.12);
+      --accent-border: rgba(196,154,108,0.25);
+      --bg:            #08080F;
+      --bg-2:          #0D0D18;
+      --bg-card:       #111120;
+      --text:          #ECEAE4;
+      --text-2:        #8A8278;
+      --text-3:        #3E3A36;
+      --border:        #1A1A28;
+      --radius:        10px;
+      --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(24px); filter: blur(4px);
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); filter:blur(0); }
+    .reveal-left {
+      opacity:0; transform:translateX(-24px); filter:blur(4px);
+      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
+    }
+    .reveal-left.visible { opacity:1; transform:translateX(0); filter:blur(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
+      .reveal, .reveal-left { opacity:1!important; transform:none!important; filter:none!important; }
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: rgba(8,8,15,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav {
+      max-width: 1200px; margin:0 auto; padding:0 5%;
+      height: 72px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif; font-size:1.3rem; font-weight:800;
+      color: var(--text); text-decoration:none; letter-spacing:-0.3px;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a {
+      color: var(--text-2); text-decoration:none; font-size:0.88rem; font-weight:500;
+      transition: color 0.2s var(--ease-out); position:relative;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-4px; left:0; width:100%; height:1px;
+      background: var(--accent); transform:scaleX(0); transform-origin:left center;
+      transition: transform 0.25s var(--ease-out);
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { transform:scaleX(1); }
+    .btn-outline {
+      display:inline-flex; align-items:center; gap:0.5rem; height:40px; padding:0 1.5rem;
+      border:1px solid var(--accent-border); color:var(--accent); border-radius:100px;
+      font-size:0.88rem; font-weight:600; text-decoration:none; cursor:pointer;
+      background:transparent; font-family:inherit;
+      transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+    }
+    .btn-outline:hover { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+
+    /* ─── HERO ─── */
+    .page-hero {
+      padding: 10rem 5% 6rem;
+      max-width: 1200px; margin:0 auto;
+    }
+    .page-label {
+      font-size:0.72rem; font-weight:700; letter-spacing:0.5em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:1rem;
+    }
+    .page-hero h1 {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight:900; line-height:1.1; letter-spacing:-1px;
+      margin-bottom:1.5rem; max-width:700px;
+    }
+    .page-hero h1 em { font-style:normal; color:var(--accent); }
+    .page-hero-sub {
+      font-size:1.1rem; color:var(--text-2); max-width:560px;
+      line-height:1.75; margin-bottom:0;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section { padding:5rem 5%; max-width:1200px; margin:0 auto; }
+    .bg-alt { background:var(--bg-2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .bg-alt-inner { max-width:1200px; margin:0 auto; padding:5rem 5%; }
+
+    .section-label {
+      font-size:0.72rem; font-weight:700; letter-spacing:0.5em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:1rem;
+    }
+    .section-title {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight:800; line-height:1.2; letter-spacing:-0.4px; margin-bottom:1rem;
+    }
+    .section-sub {
+      font-size:1.02rem; color:var(--text-2); max-width:580px;
+      line-height:1.75; margin-bottom:3.5rem;
+    }
+
+    /* ─── BIO GRID ─── */
+    .bio-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start;
+    }
+    .bio-text p {
+      color:var(--text-2); font-size:0.97rem; line-height:1.85; margin-bottom:1.4rem;
+    }
+    .bio-text p:last-child { margin-bottom:0; }
+    .bio-text strong { color:var(--text); font-weight:600; }
+    .bio-stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;
+    }
+    .stat-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+      padding:1.5rem 1.8rem;
+    }
+    .stat-card strong {
+      display:block; font-family:'Playfair Display', serif;
+      font-size:1.8rem; font-weight:800; color:var(--accent);
+      letter-spacing:-0.5px; margin-bottom:0.2rem;
+    }
+    .stat-card span { font-size:0.78rem; color:var(--text-2); line-height:1.4; }
+
+    /* ─── APPROACH ─── */
+    .approach-grid {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;
+    }
+    .approach-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+      padding:2rem;
+      transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+    }
+    .approach-card:hover {
+      border-color:var(--accent-border);
+      box-shadow:0 8px 32px var(--accent-glow);
+    }
+    .approach-icon {
+      width:40px; height:40px; color:var(--accent); margin-bottom:1.2rem;
+    }
+    .approach-card h3 {
+      font-family:'Playfair Display', serif; font-size:1.05rem; font-weight:700;
+      margin-bottom:0.6rem;
+    }
+    .approach-card p { color:var(--text-2); font-size:0.9rem; line-height:1.7; }
+
+    /* ─── TOOLS ─── */
+    .tools-grid {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem;
+    }
+    .tool-chip {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:8px;
+      padding:1rem 1.2rem; display:flex; align-items:center; gap:0.75rem;
+    }
+    .tool-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+    .tool-chip span { font-size:0.88rem; font-weight:500; }
+    .tool-chip small { display:block; font-size:0.73rem; color:var(--text-2); margin-top:0.1rem; }
+
+    /* ─── CASOS ─── */
+    .caso {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+      padding:2.2rem; margin-bottom:1.5rem;
+      transition: border-color 0.25s var(--ease-out);
+    }
+    .caso:hover { border-color:var(--accent-border); }
+    .caso-header {
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:1.5rem; margin-bottom:1.2rem; flex-wrap:wrap;
+    }
+    .caso-tag {
+      font-size:0.68rem; font-weight:700; letter-spacing:0.4em; text-transform:uppercase;
+      color:var(--accent); background:var(--accent-glow);
+      border:1px solid var(--accent-border); border-radius:100px;
+      padding:0.3rem 0.9rem; white-space:nowrap;
+    }
+    .caso h3 {
+      font-family:'Playfair Display', serif; font-size:1.15rem; font-weight:700;
+      margin-bottom:0.7rem;
+    }
+    .caso-body { color:var(--text-2); font-size:0.93rem; line-height:1.8; margin-bottom:1.5rem; }
+    .caso-metrics {
+      display:flex; gap:2rem; flex-wrap:wrap;
+      padding-top:1.2rem; border-top:1px solid var(--border);
+    }
+    .metric strong {
+      display:block; font-family:'Playfair Display', serif;
+      font-size:1.5rem; font-weight:800; color:var(--accent);
+    }
+    .metric span { font-size:0.78rem; color:var(--text-2); }
+
+    /* ─── MANIFIESTO ─── */
+    .manif-block {
+      max-width:760px;
+    }
+    .manif-line {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-weight:800; line-height:1.35; margin-bottom:1.2rem;
+      opacity:0; transform:translateY(16px); filter:blur(3px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
+    }
+    .manif-line.visible { opacity:1; transform:translateY(0); filter:blur(0); }
+    .manif-line.accent { color:var(--accent); }
+
+    /* ─── CTA FINAL ─── */
+    .cta-box {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+      padding:3rem; text-align:center; max-width:600px; margin:0 auto;
+    }
+    .cta-box h2 {
+      font-family:'Playfair Display', serif; font-size:1.7rem; font-weight:800;
+      margin-bottom:0.8rem;
+    }
+    .cta-box p { color:var(--text-2); font-size:0.95rem; line-height:1.7; margin-bottom:2rem; }
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:0.5rem; height:52px; padding:0 2.2rem;
+      background:var(--accent); color:var(--bg); border-radius:100px;
+      font-size:0.95rem; font-weight:700; text-decoration:none; cursor:pointer;
+      border:none; font-family:inherit;
+      transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+      box-shadow:0 4px 24px rgba(196,154,108,0.25);
+    }
+    .btn-primary:hover { background:var(--accent-dark); transform:translateY(-2px); box-shadow:0 8px 32px rgba(196,154,108,0.35); }
+    .btn-primary:active { transform:translateY(-1px) scale(0.97); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top:1px solid var(--border); padding:2.5rem 5%;
+      text-align:center; color:var(--text-2); font-size:0.82rem;
+      background:var(--bg-2);
+    }
+    footer a { color:var(--text-2); text-decoration:none; transition:color 0.2s var(--ease-out); }
+    footer a:hover { color:var(--accent); }
+    .footer-sep { margin:0 0.5rem; opacity:0.4; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      header .nav-links, header .btn-outline { display:none; }
+      .bio-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .bio-stats { grid-template-columns:1fr 1fr; }
+      .caso-header { flex-direction:column; gap:0.75rem; }
+      .page-hero { padding:8rem 5% 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <nav class="nav">
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/#problema">El problema</a></li>
+      <li><a href="sobre-mi.html" class="active">Sobre mí</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contacto" class="btn-outline">Hablemos</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="page-hero">
+  <p class="page-label reveal">Sobre mí</p>
+  <h1 class="reveal">No soy una agencia.<br><em>Soy tu especialista.</em></h1>
+  <p class="page-hero-sub reveal">Soy Ismael Núñez López, de Algeciras. Llevo años automatizando los procesos que más tiempo consumen en asesorías, gestorías y pymes. Sin código del lado del cliente, sin proyectos interminables, sin promesas vacías.</p>
+</div>
+
+<!-- BIO -->
+<section class="section">
+  <div class="bio-grid">
+    <div class="bio-text reveal-left">
+      <p>Empecé a ver el problema de cerca. Despachos con equipos competentes que perdían horas cada semana en tareas que no añaden valor: perseguir documentación, copiar datos de una pantalla a otra, preparar el mismo informe una y otra vez antes de cada cierre trimestral.</p>
+      <p>La tecnología para automatizar todo eso existe y es accesible. El problema es que nadie se lo pone fácil a quien no es técnico. Las agencias cobran proyectos de meses. Los freelances desaparecen. Y el cliente se queda con una automatización rota sin saber qué hacer.</p>
+      <p><strong>Mi respuesta a eso es simple:</strong> entrego la automatización funcionando, te explico cómo usarla en 15 minutos, y si algo falla, lo resuelvo. Sin intermediarios, sin burocracia, sin excusas.</p>
+      <p>Trabajo principalmente con N8N — una herramienta de automatización que conecta más de 500 aplicaciones y que puedo desplegar en el entorno que ya usas. No te obligo a cambiar nada de tu stack actual.</p>
+    </div>
+    <div class="bio-stats reveal">
+      <div class="stat-card">
+        <strong>&lt; 2 sem</strong>
+        <span>Tiempo medio de implementación desde auditoría hasta entrega</span>
+      </div>
+      <div class="stat-card">
+        <strong>500+</strong>
+        <span>Herramientas conectables con N8N: Gmail, Sheets, HubSpot, WhatsApp…</span>
+      </div>
+      <div class="stat-card">
+        <strong>0 €</strong>
+        <span>Auditoría inicial — si no veo ROI claro, te lo digo sin compromiso</span>
+      </div>
+      <div class="stat-card">
+        <strong>1:1</strong>
+        <span>Trabajo directo conmigo. Sin equipo de cuentas, sin project managers</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO TRABAJO -->
+<div class="bg-alt">
+  <div class="bg-alt-inner">
+    <p class="section-label reveal">Mi enfoque</p>
+    <h2 class="section-title reveal">Cómo lo hago diferente.</h2>
+    <p class="section-sub reveal">No me interesa vender automatización por vender. Me interesa que tu equipo trabaje menos en lo que no importa y más en lo que sí.</p>
+    <div class="approach-grid">
+      <div class="approach-card reveal">
+        <svg class="approach-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+        </svg>
+        <h3>Primero la auditoría</h3>
+        <p>Antes de escribir una sola línea de automatización, entiendo cómo trabajáis. Dónde se atasca el equipo, cuánto tiempo vale eso en euros, y si tiene sentido automatizarlo. Si no lo tiene, te lo digo.</p>
+      </div>
+      <div class="approach-card reveal">
+        <svg class="approach-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <h3>Presupuesto cerrado</h3>
+        <p>Nada de tarifas por hora que se disparan. Antes de empezar, acotamos exactamente qué se hace y qué cuesta. Sin sorpresas al final del proyecto, sin "surgió algo imprevisto".</p>
+      </div>
+      <div class="approach-card reveal">
+        <svg class="approach-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        <h3>Entrega y soporte real</h3>
+        <p>No desaparezco después del deploy. Si algo falla — por un cambio en una herramienta, por un caso que no previmos — lo resuelvo. Eso no es marketing, es cómo trabajo.</p>
+      </div>
+      <div class="approach-card reveal">
+        <svg class="approach-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <h3>Sin jerga técnica</h3>
+        <p>Explico lo que hago en términos de tiempo ahorrado, errores eliminados y dinero recuperado. No en siglas ni en nombres de herramientas que no te dicen nada. La IA es un potenciador, no un reemplazo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERRAMIENTAS -->
+<section class="section">
+  <p class="section-label reveal">Stack</p>
+  <h2 class="section-title reveal">Herramientas con las que trabajo.</h2>
+  <p class="section-sub reveal">No uso nada que no haya probado en producción. Todo lo que aparece aquí lo he implementado en casos reales.</p>
+  <div class="tools-grid">
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>N8N</span>
+        <small>Motor principal de automatización</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Gmail API</span>
+        <small>Automatización de email y secuencias</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Google Sheets</span>
+        <small>Base de datos ligera, reportes automáticos</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>HubSpot CRM</span>
+        <small>Gestión de leads y pipeline comercial</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>WhatsApp Business</span>
+        <small>Notificaciones y recordatorios automáticos</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Calendly</span>
+        <small>Reservas y confirmaciones automáticas</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Airtable</span>
+        <small>Bases de datos relacionales sin código</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>OpenAI / Claude API</span>
+        <small>IA dentro de flujos de trabajo</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Slack / Telegram</span>
+        <small>Alertas y notificaciones internas</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Webhooks / APIs REST</span>
+        <small>Integración con cualquier sistema</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Docuseal</span>
+        <small>Firma electrónica de contratos</small>
+      </div>
+    </div>
+    <div class="tool-chip reveal">
+      <div class="tool-dot"></div>
+      <div>
+        <span>Formspree / Typeform</span>
+        <small>Formularios conectados a flujos</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS REALES -->
+<div class="bg-alt">
+  <div class="bg-alt-inner">
+    <p class="section-label reveal">Casos de uso</p>
+    <h2 class="section-title reveal">Lo que hemos automatizado.</h2>
+    <p class="section-sub reveal">Proyectos reales, datos reales. Los nombres de los clientes son confidenciales — los números no.</p>
+
+    <div class="caso reveal">
+      <div class="caso-header">
+        <div class="caso-tag">Asesoría fiscal · Campo de Gibraltar</div>
+      </div>
+      <h3>Recordatorios trimestrales de IVA y documentación</h3>
+      <p class="caso-body">El despacho tenía un proceso completamente manual para el cierre trimestral: el equipo enviaba emails a cada cliente pidiendo facturas, hacía seguimiento uno a uno, y centralizaba la documentación en una carpeta compartida. Con 60+ clientes activos, eso suponía entre 15 y 20 horas de trabajo antes de cada cierre — repetidas cuatro veces al año.<br><br>
+      Implementamos un flujo N8N conectado a su Google Sheets de clientes. Tres semanas antes del cierre, el sistema envía recordatorios automáticos personalizados. Cinco días antes, un segundo recordatorio a los clientes que no han respondido. El día anterior al cierre, resumen de pendientes al gestor por Telegram. Todo sin que nadie tenga que hacer nada.</p>
+      <div class="caso-metrics">
+        <div class="metric"><strong>~18 h</strong><span>Liberadas por trimestre</span></div>
+        <div class="metric"><strong>4 días</strong><span>Implementación completa</span></div>
+        <div class="metric"><strong>0 €</strong><span>Coste mensual de la automatización</span></div>
+      </div>
+    </div>
+
+    <div class="caso reveal">
+      <div class="caso-header">
+        <div class="caso-tag">Gestoría administrativa · Cádiz capital</div>
+      </div>
+      <h3>Onboarding automático de clientes nuevos</h3>
+      <p class="caso-body">Cada vez que un cliente nuevo firmaba contrato, el gestor tenía que crear manualmente el expediente en el software de gestión, enviar el email de bienvenida con la documentación necesaria, crear el acceso al portal de cliente, y anotarlo en el calendario para el seguimiento a 30 días. Un proceso de unos 40 minutos por cliente, que se acumulaba con los picos de captación.<br><br>
+      Conectamos el sistema de firma electrónica con N8N. En el momento en que el contrato se firma digitalmente, se crea automáticamente el expediente, se envía el email de bienvenida con los documentos del cliente, se añade al CRM con el estado correcto, y se programa la tarea de seguimiento en el calendario. El gestor solo interviene en los casos que requieren criterio humano.</p>
+      <div class="caso-metrics">
+        <div class="metric"><strong>40 min</strong><span>Onboarding: de manual a 0 min</span></div>
+        <div class="metric"><strong>1 semana</strong><span>Implementación y pruebas</span></div>
+        <div class="metric"><strong>0 errores</strong><span>De traspaso de datos desde el deploy</span></div>
+      </div>
+    </div>
+
+    <div class="caso reveal">
+      <div class="caso-header">
+        <div class="caso-tag">Pyme sector servicios · Sevilla</div>
+      </div>
+      <h3>Pipeline comercial con seguimiento automático de propuestas</h3>
+      <p class="caso-body">El equipo comercial enviaba propuestas por email y luego dependía de que alguien recordara hacer el seguimiento. No había ningún sistema: algunas propuestas se perdían sin respuesta, otras recibían tres seguimientos en el mismo día. El ratio de cierre era bajo y nadie tenía claro por qué.<br><br>
+      Implementamos un flujo de seguimiento basado en Google Sheets como CRM ligero. Cuando se añade una propuesta, N8N programa automáticamente tres emails de seguimiento en los días correctos, con un gap que respeta el tiempo del prospecto. Si el cliente responde, el sistema lo detecta y cancela el resto de seguimientos. Si pasa a "Cerrado", se dispara el flujo de onboarding.</p>
+      <div class="caso-metrics">
+        <div class="metric"><strong>+30%</strong><span>Mejora en ratio de respuesta a propuestas</span></div>
+        <div class="metric"><strong>5 días</strong><span>Implementación</span></div>
+        <div class="metric"><strong>100%</strong><span>Propuestas con seguimiento garantizado</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MANIFIESTO -->
+<section class="section">
+  <div class="manif-block">
+    <p class="section-label reveal">Lo que creo</p>
+    <p class="manif-line">No persigas el dinero.</p>
+    <p class="manif-line accent">Ayuda a las personas a trabajar mejor.</p>
+    <p class="manif-line">La tecnología no es el objetivo.</p>
+    <p class="manif-line accent">El tiempo de tu equipo, sí.</p>
+    <p class="manif-line">Y si una automatización no genera ROI claro,</p>
+    <p class="manif-line accent">no la hacemos.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="bg-alt">
+  <div class="bg-alt-inner">
+    <div class="cta-box reveal">
+      <h2>¿Hablamos?</h2>
+      <p>Una hora de auditoría gratuita. Sin compromiso. Si veo que puedo ayudarte, te digo cómo y cuánto. Si no lo veo, también te lo digo.</p>
+      <a href="/#contacto" class="btn-primary">
+        Solicitar auditoría gratuita
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 ismaelnlai · Automatización para pymes</p>
+  <p style="margin-top:0.5rem;">
+    <a href="aviso-legal.html">Aviso Legal</a>
+    <span class="footer-sep">·</span>
+    <a href="privacidad.html">Privacidad</a>
+    <span class="footer-sep">·</span>
+    <a href="cookies.html">Cookies</a>
+    <span class="footer-sep">·</span>
+    <a href="/">Inicio</a>
+  </p>
+</footer>
+
+<script>
+  // Header scroll
+  const header = document.getElementById('mainHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Reveal (fallback for non-scroll-driven browsers)
+  const useScrollDriven = CSS.supports('animation-timeline', 'scroll()');
+  if (!useScrollDriven) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
+  }
+
+  // Manifesto stagger
+  const mfObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); mfObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.manif-line').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.12}s`;
+    mfObs.observe(el);
+  });
+</script>
+
+</body>
+</html>
