@@ -665,6 +665,178 @@
       line-height: 1.8;
     }
 
+    /* ─── PRECIOS ─── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.4rem 2rem;
+      position: relative;
+      transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    }
+    .pricing-card:hover {
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 32px var(--accent-glow);
+      transform: translateY(-4px);
+    }
+    .pricing-card.featured {
+      border-color: var(--accent-border);
+      background: linear-gradient(160deg, rgba(196,154,108,0.07) 0%, var(--bg-card) 60%);
+      box-shadow: 0 8px 40px rgba(196,154,108,0.12);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .pricing-plan {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .pricing-price { margin-bottom: 0.4rem; }
+    .pricing-price .setup {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .pricing-price .setup small {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--text-2);
+    }
+    .pricing-monthly {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-monthly strong { color: var(--text); font-weight: 600; }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+    .pricing-features li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      padding: 0.45rem 0;
+      font-size: 0.88rem;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+    .pricing-features li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .pricing-cta {
+      display: block;
+      width: 100%;
+      height: 48px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      line-height: 48px;
+      text-decoration: none;
+      border: none;
+      transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+    }
+    .pricing-cta-primary {
+      background: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 4px 16px rgba(196,154,108,0.25);
+    }
+    .pricing-cta-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(196,154,108,0.35);
+    }
+    .pricing-cta-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+    }
+    .pricing-cta-secondary:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .pricing-note {
+      text-align: center;
+      color: var(--text-2);
+      font-size: 0.85rem;
+      margin-top: 2.5rem;
+      line-height: 1.65;
+    }
+
+    /* ─── DIAGNÓSTICO BOOKING ─── */
+    .booking-box {
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      background: linear-gradient(135deg, rgba(196,154,108,0.08) 0%, rgba(196,154,108,0.03) 100%);
+      border: 1px solid var(--accent-border);
+      border-radius: 14px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .booking-icon {
+      width: 52px; height: 52px;
+      background: rgba(196,154,108,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.4rem;
+    }
+    .booking-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .booking-box p {
+      color: var(--text-2);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.65;
+    }
+    .booking-or {
+      text-align: center;
+      color: var(--text-2);
+      font-size: 0.82rem;
+      margin-bottom: 2rem;
+    }
+
     /* ─── CONTACTO ─── */
     .form-wrapper { max-width: 560px; margin: 0 auto; }
     .form-box {
@@ -852,6 +1024,7 @@
       .steps-grid { grid-template-columns: 1fr; }
       .steps-grid::before { display: none; }
       .solution-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
       .form-box { padding: 2rem; }
       .manifesto-line { font-size: 1.4rem; }
       .section { padding: 5rem 5%; }
@@ -1012,6 +1185,7 @@
     <ul class="nav-links">
       <li><a href="#problema">El problema</a></li>
       <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#precios">Precios</a></li>
       <li><a href="sobre-mi.html">Sobre mí</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -1058,11 +1232,11 @@
     <h1>Automatiza tu pyme.<br><em>Escala sin contratar.</em></h1>
     <p class="hero-subtitle">Tu equipo no debería perder horas persiguiendo facturas, copiando datos o preparando el mismo informe cada mes. Eso no es trabajo de gestor. Y tiene solución.</p>
     <div class="hero-ctas">
-      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-        Solicitar análisis gratuito
+      <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+        Reservar diagnóstico gratuito — 30 min
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
-      <a href="#como-funciona" class="btn-outline">Ver cómo funciona</a>
+      <a href="#precios" class="btn-outline">Ver planes y precios</a>
     </div>
     <div class="trust-bar">
       <div class="trust-item">
@@ -1131,8 +1305,8 @@
     <div class="steps-grid">
       <div class="step reveal">
         <div class="step-num">1</div>
-        <h3>Auditoría</h3>
-        <p>Hablamos una hora. Me cuentas cómo trabajáis, dónde se atasca el equipo y qué consume más tiempo. Yo te digo qué se puede automatizar y qué ROI tiene. Sin compromiso.</p>
+        <h3>Diagnóstico — 30 min</h3>
+        <p>Reservas una llamada gratuita. Me cuentas cómo trabajáis y dónde se atasca el equipo. Te digo qué se puede automatizar, qué plan encaja y qué ROI tiene. Sin rodeos.</p>
       </div>
       <div class="step reveal">
         <div class="step-num">2</div>
@@ -1158,8 +1332,8 @@
     <p class="manifesto-line muted">Y cada proceso que automatizamos</p>
     <p class="manifesto-line accent">es tiempo real que tu equipo recupera para lo que importa.</p>
     <div class="manifesto-cta">
-      <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-        Empieza esta semana
+      <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+        Reservar diagnóstico gratuito
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
     </div>
@@ -1199,6 +1373,71 @@
     <p style="color:var(--text-2);font-size:0.95rem;max-width:480px;margin:0 auto 2rem;">Responda 4 preguntas y calcule el coste real — en horas y en euros — de los procesos que aún hace a mano.</p>
     <a href="calculadora.html" style="display:inline-block;background:var(--accent);color:var(--bg);padding:0.9rem 2.2rem;border-radius:8px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='#A87E54'" onmouseout="this.style.background='var(--accent)'">Calcular ahora — es gratis →</a>
   </div>
+</section>
+
+<!-- PRECIOS -->
+<section class="section" id="precios">
+  <p class="section-label reveal">Planes y precios</p>
+  <h2 class="section-title reveal">Sin sorpresas. Sin letra pequeña.</h2>
+  <p class="section-sub reveal">Elige el plan que encaja con tu despacho. Si tienes dudas, el diagnóstico gratuito de 30 min lo aclara todo.</p>
+
+  <div class="pricing-grid">
+
+    <!-- Plan Básico -->
+    <div class="pricing-card reveal">
+      <p class="pricing-plan">Básico</p>
+      <div class="pricing-price">
+        <span class="setup">1.500 <small>€</small></span>
+      </div>
+      <p class="pricing-monthly">setup único + <strong>500 €/mes</strong> mantenimiento</p>
+      <ul class="pricing-features">
+        <li>1 automatización completa</li>
+        <li>Recordatorios y alertas automáticas</li>
+        <li>Integración con email y Google Sheets</li>
+        <li>Implementación en menos de 2 semanas</li>
+        <li>Soporte por email (48h)</li>
+      </ul>
+      <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
+    </div>
+
+    <!-- Plan Intermedio -->
+    <div class="pricing-card featured reveal">
+      <span class="pricing-badge">Más popular</span>
+      <p class="pricing-plan">Intermedio</p>
+      <div class="pricing-price">
+        <span class="setup">3.000 <small>€</small></span>
+      </div>
+      <p class="pricing-monthly">setup único + <strong>900 €/mes</strong> mantenimiento</p>
+      <ul class="pricing-features">
+        <li>3 automatizaciones completas</li>
+        <li>Sincronización entre herramientas (CRM, Gmail, Drive)</li>
+        <li>Notificaciones y seguimiento automatizado</li>
+        <li>Soporte prioritario + reunión mensual</li>
+        <li>Implementación en menos de 2 semanas</li>
+      </ul>
+      <button class="pricing-cta pricing-cta-primary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
+    </div>
+
+    <!-- Plan Pro -->
+    <div class="pricing-card reveal">
+      <p class="pricing-plan">Pro</p>
+      <div class="pricing-price">
+        <span class="setup">5.000 <small>€</small></span>
+      </div>
+      <p class="pricing-monthly">setup único + <strong>1.500 €/mes</strong> mantenimiento</p>
+      <ul class="pricing-features">
+        <li>Automatizaciones ilimitadas</li>
+        <li>IA integrada en tus procesos</li>
+        <li>Integraciones avanzadas con cualquier herramienta</li>
+        <li>Soporte dedicado + revisiones semanales</li>
+        <li>Implementación en menos de 2 semanas</li>
+      </ul>
+      <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
+    </div>
+
+  </div>
+
+  <p class="pricing-note reveal">Todos los planes incluyen diagnóstico inicial gratuito y soporte post-entrega. Sin permanencia mínima.<br>¿No sabes qué plan necesitas? En el diagnóstico de 30 min te lo digo sin rodeos.</p>
 </section>
 
 <!-- FAQ -->
@@ -1241,7 +1480,7 @@
           <span>¿Cuánto cuesta?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         </button>
-        <div class="faq-answer"><p>La auditoría inicial es gratuita. A partir de ahí, presupuesto cerrado por proyecto. Sin sorpresas ni costes ocultos. Cuéntame tu caso y te doy un número concreto.</p></div>
+        <div class="faq-answer"><p>El diagnóstico inicial es gratuito y dura 30 minutos. A partir de ahí hay tres planes: Básico (1.500 € setup + 500 €/mes), Intermedio (3.000 € + 900 €/mes) y Pro (5.000 € + 1.500 €/mes). Sin permanencia mínima y sin costes ocultos. Si no sabes cuál encaja, en el diagnóstico te lo digo sin rodeos.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-btn" onclick="toggleFaq(this)">
@@ -1256,9 +1495,22 @@
 
 <!-- CONTACTO -->
 <section class="section" id="contacto">
-  <p class="section-label reveal" style="text-align:center">Contacto</p>
-  <h2 class="section-title reveal" style="text-align:center">Empieza esta semana.</h2>
-  <p class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">Cuéntame qué proceso te está consumiendo más tiempo. Analizo tu caso y te digo qué se puede automatizar y qué ROI tiene. Sin rodeos. Respuesta en 24h.</p>
+  <p class="section-label reveal" style="text-align:center">Empieza aquí</p>
+  <h2 class="section-title reveal" style="text-align:center">Reserva tu diagnóstico gratuito.</h2>
+  <p class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">30 minutos. Sin rodeos. Te digo qué automatizaría en tu despacho, qué plan encaja y cuánto te ahorras. Sin compromiso.</p>
+
+  <div class="booking-box reveal">
+    <div class="booking-icon">📅</div>
+    <h3>Diagnóstico gratuito — 30 min</h3>
+    <p>Analizamos juntos tus procesos y te digo exactamente qué se puede automatizar y qué ROI tiene. Sin jerga técnica.</p>
+    <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+      Reservar ahora — es gratis
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </button>
+  </div>
+
+  <p class="booking-or">o si prefieres que te contacte yo por email:</p>
+
   <div class="form-wrapper reveal">
     <div class="form-box">
       <div id="formContent">
@@ -1318,6 +1570,10 @@
 </div>
 
 <script>
+  // ─── CONFIGURACIÓN ───
+  // Sustituye esta URL por tu link de Calendly antes de publicar
+  const CALENDLY_URL = 'https://calendly.com/ismaelnlai/diagnostico';
+
   // Header on scroll
   const header = document.getElementById('mainHeader');
   window.addEventListener('scroll', () => {
