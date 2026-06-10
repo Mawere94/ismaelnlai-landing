@@ -711,7 +711,35 @@
       letter-spacing: 0.5em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0;
+    }
+    .pricing-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.4rem;
+    }
+    .pricing-header-icon {
+      width: 26px; height: 26px;
+      color: var(--accent);
+    }
+    .setup-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+    .pricing-monthly-accent {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 0.3rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
     }
     .pricing-price { margin-bottom: 0.4rem; }
     .pricing-price .setup {
@@ -1383,54 +1411,66 @@
 
   <div class="pricing-grid">
 
-    <!-- Plan Básico -->
+    <!-- Starter -->
     <div class="pricing-card reveal">
-      <p class="pricing-plan">Básico</p>
-      <div class="pricing-price">
-        <span class="setup">1.500 <small>€</small></span>
+      <div class="pricing-header">
+        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+        </svg>
+        <p class="pricing-plan">Starter</p>
       </div>
-      <p class="pricing-monthly">setup único + <strong>500 €/mes</strong> mantenimiento</p>
+      <div class="pricing-price">
+        <span class="setup-label">Setup</span>
+        <span class="setup">1.500 €</span>
+      </div>
+      <p class="pricing-monthly-accent">+ 500 €/mes</p>
       <ul class="pricing-features">
-        <li>1 automatización completa</li>
-        <li>Recordatorios y alertas automáticas</li>
-        <li>Integración con email y Google Sheets</li>
-        <li>Implementación en menos de 2 semanas</li>
-        <li>Soporte por email (48h)</li>
+        <li>Recordatorios automáticos (IVA, nóminas, IRPF)</li>
+        <li>Captación de documentación de clientes</li>
+        <li>Notificaciones automáticas a clientes</li>
       </ul>
       <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
 
-    <!-- Plan Intermedio -->
+    <!-- Growth -->
     <div class="pricing-card featured reveal">
-      <span class="pricing-badge">Más popular</span>
-      <p class="pricing-plan">Intermedio</p>
-      <div class="pricing-price">
-        <span class="setup">3.000 <small>€</small></span>
+      <span class="pricing-badge">Más recomendado</span>
+      <div class="pricing-header">
+        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+        </svg>
+        <p class="pricing-plan">Growth</p>
       </div>
-      <p class="pricing-monthly">setup único + <strong>900 €/mes</strong> mantenimiento</p>
+      <div class="pricing-price">
+        <span class="setup-label">Setup</span>
+        <span class="setup">3.000 €</span>
+      </div>
+      <p class="pricing-monthly-accent">+ 900 €/mes</p>
       <ul class="pricing-features">
-        <li>3 automatizaciones completas</li>
-        <li>Sincronización entre herramientas (CRM, Gmail, Drive)</li>
-        <li>Notificaciones y seguimiento automatizado</li>
-        <li>Soporte prioritario + reunión mensual</li>
-        <li>Implementación en menos de 2 semanas</li>
+        <li>Todo lo de Starter</li>
+        <li>Integración con tu software de gestión</li>
+        <li>Seguimiento automático de propuestas y clientes</li>
       </ul>
       <button class="pricing-cta pricing-cta-primary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
 
-    <!-- Plan Pro -->
+    <!-- Enterprise -->
     <div class="pricing-card reveal">
-      <p class="pricing-plan">Pro</p>
-      <div class="pricing-price">
-        <span class="setup">5.000 <small>€</small></span>
+      <div class="pricing-header">
+        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+        </svg>
+        <p class="pricing-plan">Enterprise</p>
       </div>
-      <p class="pricing-monthly">setup único + <strong>1.500 €/mes</strong> mantenimiento</p>
+      <div class="pricing-price">
+        <span class="setup-label">Setup</span>
+        <span class="setup">5.000 €</span>
+      </div>
+      <p class="pricing-monthly-accent">+ 1.500 €/mes</p>
       <ul class="pricing-features">
-        <li>Automatizaciones ilimitadas</li>
-        <li>IA integrada en tus procesos</li>
-        <li>Integraciones avanzadas con cualquier herramienta</li>
-        <li>Soporte dedicado + revisiones semanales</li>
-        <li>Implementación en menos de 2 semanas</li>
+        <li>Todo lo de Growth</li>
+        <li>Agente IA para atención de consultas</li>
+        <li>Dashboard de métricas en tiempo real</li>
       </ul>
       <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
