@@ -290,8 +290,13 @@
   function openCalendly(calData) {
     var url = 'https://calendly.com/ismaelnlai/diagnostico';
     var params = [];
-    if (calData && calData.name)  params.push('name='  + encodeURIComponent(calData.name));
-    if (calData && calData.email) params.push('email=' + encodeURIComponent(calData.email));
+    if (calData) {
+      if (calData.name)  params.push('name='  + encodeURIComponent(calData.name));
+      if (calData.email) params.push('email=' + encodeURIComponent(calData.email));
+      if (calData.q1)    params.push('a1='    + encodeURIComponent(calData.q1));
+      if (calData.q2)    params.push('a2='    + encodeURIComponent(calData.q2));
+      if (calData.q3)    params.push('a3='    + encodeURIComponent(calData.q3));
+    }
     if (params.length) url += '?' + params.join('&');
 
     loadCalendlyScript(function() {
