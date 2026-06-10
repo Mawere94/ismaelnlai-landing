@@ -88,6 +88,13 @@
       '#isnl-snd:disabled{background:#1E1E26;cursor:not-allowed;}',
       '#isnl-snd svg{width:17px;height:17px;}',
 
+      '.isnl-cal-btn{align-self:flex-start;margin-top:2px;padding:10px 16px;',
+      'background:linear-gradient(135deg,#C49A6C,#a07848);color:#08080F;',
+      'border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;',
+      'display:flex;align-items:center;gap:7px;animation:isnl-in .18s ease;',
+      'box-shadow:0 2px 12px rgba(196,154,108,.3);transition:transform .15s,box-shadow .15s;}',
+      '.isnl-cal-btn:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(196,154,108,.45);}',
+
       '#isnl-pw{font-size:10.5px;color:#2A2820;text-align:center;padding:4px 0 2px;',
       'font-family:Inter,sans-serif;}',
 
@@ -253,6 +260,7 @@
           var text = data.text || data.message || 'Lo siento, no he podido procesar tu mensaje.';
           msgs.push({ role: 'assistant', content: text });
           addBubble('assistant', text);
+          if (data.calendlyData) showCalendlyBtn(data.calendlyData);
         } catch(e) {
           showError();
         }
@@ -267,6 +275,40 @@
     xhr.ontimeout = function() { hideTyping(); showError(); setBusy(false); };
 
     xhr.send(payload);
+  }
+
+  // ── Calendly ──────────────────────────────────────────────────
+  function showCalendlyBtn(calData) {
+    var btn = document.createElement('div');
+    btn.className = 'isnl-cal-btn';
+    btn.innerHTML = '<span>📅</span> Elige tu horario con Ismael';
+    btn.addEventListener('click', function() { openCalendly(calData); });
+    msgArea.appendChild(btn);
+    msgArea.scrollTop = msgArea.scrollHeight;
+  }
+
+  function openCalendly(calData) {
+    var url = 'https://calendly.com/ismaelnlai/diagnostico';
+    var params = [];
+    if (calData && calData.name)  params.push('name='  + encodeURIComponent(calData.name));
+    if (calData && calData.email) params.push('email=' + encodeURIComponent(calData.email));
+    if (params.length) url += '?' + params.join('&');
+
+    loadCalendlyScript(function() {
+      window.Calendly.initPopupWidget({ url: url });
+    });
+  }
+
+  function loadCalendlyScript(cb) {
+    if (window.Calendly) { cb(); return; }
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(l);
+    var s = document.createElement('script');
+    s.src = 'https://assets.calendly.com/assets/external/widget.js';
+    s.onload = cb;
+    document.head.appendChild(s);
   }
 
   function showError() {
