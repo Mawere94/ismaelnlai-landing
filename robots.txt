@@ -26,5 +26,23 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Content signals (IETF draft — declare AI usage preferences)
+Content-Signal: ai-train=yes, search=yes, ai-retrieval=yes
+
 # Sitemap
 Sitemap: https://ismaelnlai.com/sitemap.xml
