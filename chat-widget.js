@@ -317,7 +317,7 @@
   }
 
   function showError() {
-    var t = 'Lo siento, ha habido un error técnico. Puedes escribirme a [mawere2494@gmail.com](mailto:mawere2494@gmail.com) o agendar directamente en [calendly.com/ismaelnlai/diagnostico](https://calendly.com/ismaelnlai/diagnostico).';
+    var t = 'Lo siento, ha habido un error técnico. Puedes escribirme a [ismael@ismaelnlai.com](mailto:ismael@ismaelnlai.com) o agendar directamente en [calendly.com/ismaelnlai/diagnostico](https://calendly.com/ismaelnlai/diagnostico).';
     msgs.push({ role: 'assistant', content: t });
     addBubble('assistant', t);
   }
