@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>og-image source — ismaelnlai</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Fuente de la imagen de Open Graph. 1200x630 exactos.
+     Se captura con:
+     chrome --headless=new --screenshot=assets/og-image.png --window-size=1200,630 assets/og-source.html
+     No tocar el tamano del body: es el encuadre de la captura. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background: #08080F;
+    background-image:
+      linear-gradient(rgba(196,154,108,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,154,108,0.045) 1px, transparent 1px);
+    background-size: 60px 60px;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    color: #ECEAE4;
+  }
+
+  /* Halo dorado, el mismo recurso que usa el hero de la web */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -280px; right: -220px;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(196,154,108,0.16) 0%, rgba(196,154,108,0.05) 40%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .card {
+    position: relative;
+    height: 100%;
+    padding: 72px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .marca {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .marca span { color: #C49A6C; }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 82px;
+    line-height: 1.04;
+    letter-spacing: -2.5px;
+  }
+  h1 .oro { color: #C49A6C; display: block; }
+
+  .sub {
+    margin-top: 26px;
+    font-size: 25px;
+    line-height: 1.5;
+    color: rgba(236,234,228,0.62);
+    max-width: 810px;
+  }
+
+  .pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 30px;
+    border-top: 1px solid rgba(236,234,228,0.10);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 21px;
+    font-weight: 700;
+    color: #C49A6C;
+    background: rgba(196,154,108,0.10);
+    border: 1px solid rgba(196,154,108,0.28);
+    border-radius: 100px;
+    padding: 12px 26px;
+  }
+  .punto {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #C49A6C;
+  }
+
+  .dominio {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(236,234,228,0.45);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+
+    <div class="marca">ismaelnl<span>ai</span></div>
+
+    <div>
+      <h1>Automatiza tu pyme.<span class="oro">Escala sin contratar.</span></h1>
+      <p class="sub">Automatización de procesos con N8N e IA para asesorías, gestorías y pymes. Sin código de tu lado.</p>
+    </div>
+
+    <div class="pie">
+      <div class="chip"><span class="punto"></span>Auditoría gratuita · 30 min</div>
+      <div class="dominio">ismaelnlai.com</div>
+    </div>
+
+  </div>
+</body>
+</html>
