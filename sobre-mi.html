@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="sin-js">
 <head>
+<script>
+  // Misma red de seguridad que en index.html: la pagina nace en opacity:0 y la
+  // revela el IntersectionObserver. Si el JS no corre, sin esto no se ve nada.
+  document.documentElement.classList.remove('sin-js');
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      if (!document.querySelector('.reveal.visible, .reveal-left.visible')) {
+        document.documentElement.classList.add('sin-js');
+      }
+    }, 2500);
+  });
+</script>
+<noscript><style>
+  .reveal, .reveal-left, .manif-line {
+    opacity: 1 !important; transform: none !important; filter: none !important;
+  }
+</style></noscript>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre mí — Ismael Núñez López | ismaelnlai</title>
-  <meta name="description" content="Soy Ismael Núñez López, especialista en automatización de procesos con N8N e IA para asesorías y pymes en España. Conóceme, mi metodología y casos de uso reales.">
+  <meta name="description" content="Soy Ismael Núñez López, especialista en automatización de procesos con N8N e IA para asesorías y pymes en España. Conóceme, mi metodología y las herramientas con las que trabajo.">
   <link rel="canonical" href="https://ismaelnlai.com/sobre-mi.html">
 
   <!-- Open Graph -->
@@ -43,7 +60,7 @@
         "addressRegion": "Cádiz",
         "addressCountry": "ES"
       },
-      "email": "hola@ismaelnlai.com",
+      "email": "ismael@ismaelnlai.com",
       "worksFor": {
         "@type": "Organization",
         "name": "ismaelnlai",
@@ -113,9 +130,15 @@
     }
     .reveal-left.visible { opacity:1; transform:translateX(0); filter:blur(0); }
 
+    html.sin-js .reveal,
+    html.sin-js .reveal-left,
+    html.sin-js .manif-line {
+      opacity: 1 !important; transform: none !important; filter: none !important;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
-      .reveal, .reveal-left { opacity:1!important; transform:none!important; filter:none!important; }
+      .reveal, .reveal-left, .manif-line { opacity:1!important; transform:none!important; filter:none!important; }
     }
 
     /* ─── HEADER ─── */
@@ -258,38 +281,6 @@
     .tool-chip span { font-size:0.88rem; font-weight:500; }
     .tool-chip small { display:block; font-size:0.73rem; color:var(--text-2); margin-top:0.1rem; }
 
-    /* ─── CASOS ─── */
-    .caso {
-      background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
-      padding:2.2rem; margin-bottom:1.5rem;
-      transition: border-color 0.25s var(--ease-out);
-    }
-    .caso:hover { border-color:var(--accent-border); }
-    .caso-header {
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:1.5rem; margin-bottom:1.2rem; flex-wrap:wrap;
-    }
-    .caso-tag {
-      font-size:0.68rem; font-weight:700; letter-spacing:0.4em; text-transform:uppercase;
-      color:var(--accent); background:var(--accent-glow);
-      border:1px solid var(--accent-border); border-radius:100px;
-      padding:0.3rem 0.9rem; white-space:nowrap;
-    }
-    .caso h3 {
-      font-family:'Playfair Display', serif; font-size:1.15rem; font-weight:700;
-      margin-bottom:0.7rem;
-    }
-    .caso-body { color:var(--text-2); font-size:0.93rem; line-height:1.8; margin-bottom:1.5rem; }
-    .caso-metrics {
-      display:flex; gap:2rem; flex-wrap:wrap;
-      padding-top:1.2rem; border-top:1px solid var(--border);
-    }
-    .metric strong {
-      display:block; font-family:'Playfair Display', serif;
-      font-size:1.5rem; font-weight:800; color:var(--accent);
-    }
-    .metric span { font-size:0.78rem; color:var(--text-2); }
-
     /* ─── MANIFIESTO ─── */
     .manif-block {
       max-width:760px;
@@ -340,7 +331,6 @@
       header .nav-links, header .btn-outline { display:none; }
       .bio-grid { grid-template-columns:1fr; gap:2.5rem; }
       .bio-stats { grid-template-columns:1fr 1fr; }
-      .caso-header { flex-direction:column; gap:0.75rem; }
       .page-hero { padding:8rem 5% 4rem; }
     }
   </style>
@@ -365,7 +355,7 @@
 <div class="page-hero">
   <p class="page-label reveal">Sobre mí</p>
   <h1 class="reveal">No soy una agencia.<br><em>Soy tu especialista.</em></h1>
-  <p class="page-hero-sub reveal">Soy Ismael Núñez López, de Algeciras. Llevo años automatizando los procesos que más tiempo consumen en asesorías, gestorías y pymes. Sin código del lado del cliente, sin proyectos interminables, sin promesas vacías.</p>
+  <p class="page-hero-sub reveal">Soy Ismael Núñez López, de Algeciras. Llevo años construyendo automatizaciones con N8N e IA — empezando por las que uso cada día en mi propio trabajo — y conozco por dentro los procesos administrativos que se comen las horas en un despacho. Sin código del lado del cliente, sin proyectos interminables, sin promesas vacías.</p>
 </div>
 
 <!-- BIO -->
@@ -380,7 +370,7 @@
     <div class="bio-stats reveal">
       <div class="stat-card">
         <strong>&lt; 2 sem</strong>
-        <span>Tiempo medio de implementación desde auditoría hasta entrega</span>
+        <span>Desde la auditoría hasta el primer proceso funcionando</span>
       </div>
       <div class="stat-card">
         <strong>500+</strong>
@@ -441,7 +431,7 @@
 <section class="section">
   <p class="section-label reveal">Stack</p>
   <h2 class="section-title reveal">Herramientas con las que trabajo.</h2>
-  <p class="section-sub reveal">No uso nada que no haya probado en producción. Todo lo que aparece aquí lo he implementado en casos reales.</p>
+  <p class="section-sub reveal">No uso nada que no haya probado en producción. Todo lo que aparece aquí lo tengo montado y funcionando.</p>
   <div class="tools-grid">
     <div class="tool-chip reveal">
       <div class="tool-dot"></div>
@@ -529,58 +519,6 @@
     </div>
   </div>
 </section>
-
-<!-- CASOS REALES -->
-<div class="bg-alt">
-  <div class="bg-alt-inner">
-    <p class="section-label reveal">Casos de uso</p>
-    <h2 class="section-title reveal">Lo que hemos automatizado.</h2>
-    <p class="section-sub reveal">Proyectos reales, datos reales. Los nombres de los clientes son confidenciales — los números no.</p>
-
-    <div class="caso reveal">
-      <div class="caso-header">
-        <div class="caso-tag">Asesoría fiscal · Campo de Gibraltar</div>
-      </div>
-      <h3>Recordatorios trimestrales de IVA y documentación</h3>
-      <p class="caso-body">El despacho tenía un proceso completamente manual para el cierre trimestral: el equipo enviaba emails a cada cliente pidiendo facturas, hacía seguimiento uno a uno, y centralizaba la documentación en una carpeta compartida. Con 60+ clientes activos, eso suponía entre 15 y 20 horas de trabajo antes de cada cierre — repetidas cuatro veces al año.<br><br>
-      Implementamos un flujo N8N conectado a su Google Sheets de clientes. Tres semanas antes del cierre, el sistema envía recordatorios automáticos personalizados. Cinco días antes, un segundo recordatorio a los clientes que no han respondido. El día anterior al cierre, resumen de pendientes al gestor por Telegram. Todo sin que nadie tenga que hacer nada.</p>
-      <div class="caso-metrics">
-        <div class="metric"><strong>~18 h</strong><span>Liberadas por trimestre</span></div>
-        <div class="metric"><strong>4 días</strong><span>Implementación completa</span></div>
-        <div class="metric"><strong>0 €</strong><span>Coste mensual de la automatización</span></div>
-      </div>
-    </div>
-
-    <div class="caso reveal">
-      <div class="caso-header">
-        <div class="caso-tag">Gestoría administrativa · Cádiz capital</div>
-      </div>
-      <h3>Onboarding automático de clientes nuevos</h3>
-      <p class="caso-body">Cada vez que un cliente nuevo firmaba contrato, el gestor tenía que crear manualmente el expediente en el software de gestión, enviar el email de bienvenida con la documentación necesaria, crear el acceso al portal de cliente, y anotarlo en el calendario para el seguimiento a 30 días. Un proceso de unos 40 minutos por cliente, que se acumulaba con los picos de captación.<br><br>
-      Conectamos el sistema de firma electrónica con N8N. En el momento en que el contrato se firma digitalmente, se crea automáticamente el expediente, se envía el email de bienvenida con los documentos del cliente, se añade al CRM con el estado correcto, y se programa la tarea de seguimiento en el calendario. El gestor solo interviene en los casos que requieren criterio humano.</p>
-      <div class="caso-metrics">
-        <div class="metric"><strong>40 min</strong><span>Onboarding: de manual a 0 min</span></div>
-        <div class="metric"><strong>1 semana</strong><span>Implementación y pruebas</span></div>
-        <div class="metric"><strong>0 errores</strong><span>De traspaso de datos desde el deploy</span></div>
-      </div>
-    </div>
-
-    <div class="caso reveal">
-      <div class="caso-header">
-        <div class="caso-tag">Pyme sector servicios · Sevilla</div>
-      </div>
-      <h3>Pipeline comercial con seguimiento automático de propuestas</h3>
-      <p class="caso-body">El equipo comercial enviaba propuestas por email y luego dependía de que alguien recordara hacer el seguimiento. No había ningún sistema: algunas propuestas se perdían sin respuesta, otras recibían tres seguimientos en el mismo día. El ratio de cierre era bajo y nadie tenía claro por qué.<br><br>
-      Implementamos un flujo de seguimiento basado en Google Sheets como CRM ligero. Cuando se añade una propuesta, N8N programa automáticamente tres emails de seguimiento en los días correctos, con un gap que respeta el tiempo del prospecto. Si el cliente responde, el sistema lo detecta y cancela el resto de seguimientos. Si pasa a "Cerrado", se dispara el flujo de onboarding.</p>
-      <div class="caso-metrics">
-        <div class="metric"><strong>+30%</strong><span>Mejora en ratio de respuesta a propuestas</span></div>
-        <div class="metric"><strong>5 días</strong><span>Implementación</span></div>
-        <div class="metric"><strong>100%</strong><span>Propuestas con seguimiento garantizado</span></div>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- MANIFIESTO -->
 <section class="section">

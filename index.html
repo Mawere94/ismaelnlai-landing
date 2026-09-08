@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="sin-js">
 <head>
+<script>
+  // La pagina entera nace en opacity:0 y la revela el IntersectionObserver.
+  // Si el JS no corre, o peta antes de llegar ahi, sin esto no se ve nada.
+  document.documentElement.classList.remove('sin-js');
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      if (!document.querySelector('.reveal.visible, .reveal-left.visible, .reveal-right.visible')) {
+        document.documentElement.classList.add('sin-js');
+      }
+    }, 2500);
+  });
+</script>
+<noscript><style>
+  .reveal, .reveal-left, .reveal-right, .manifesto-line, .manifesto-cta {
+    opacity: 1 !important; transform: none !important; filter: none !important;
+  }
+</style></noscript>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automatización inteligente para pymes | ismaelnlai</title>
-  <meta name="description" content="Especialista en automatización con N8N e IA para asesorías y gestorías. Elimina tareas manuales repetitivas en menos de 2 semanas. Auditoría gratuita sin compromiso.">
+  <meta name="description" content="Especialista en automatización con N8N e IA para asesorías y gestorías. Primer proceso funcionando en menos de 2 semanas; el sistema completo, por fases. Auditoría gratuita sin compromiso.">
   <link rel="canonical" href="https://ismaelnlai.com/">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
@@ -12,7 +29,7 @@
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://ismaelnlai.com/">
   <meta property="og:title"       content="Automatización inteligente para asesorías y pymes | ismaelnlai">
-  <meta property="og:description" content="Elimina el trabajo manual repetitivo en tu despacho. Automatización con N8N e IA, implementación en menos de 2 semanas, auditoría gratuita.">
+  <meta property="og:description" content="Elimina el trabajo manual repetitivo en tu despacho. Automatización con N8N e IA, primer proceso en marcha en menos de 2 semanas, auditoría gratuita.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
   <meta property="og:locale"      content="es_ES">
   <meta property="og:site_name"   content="ismaelnlai">
@@ -20,7 +37,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="Automatización para asesorías y pymes | ismaelnlai">
-  <meta name="twitter:description" content="Elimina el trabajo manual repetitivo. N8N + IA. Implementación en menos de 2 semanas.">
+  <meta name="twitter:description" content="Elimina el trabajo manual repetitivo. N8N + IA. Primer proceso en marcha en menos de 2 semanas.">
   <meta name="twitter:image"       content="https://ismaelnlai.com/assets/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -670,9 +687,11 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
-      align-items: start;
+      align-items: stretch;
     }
     .pricing-card {
+      display: flex;
+      flex-direction: column;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -708,7 +727,7 @@
     .pricing-plan {
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.5em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 0;
@@ -766,7 +785,7 @@
     .pricing-monthly strong { color: var(--text); font-weight: 600; }
     .pricing-features {
       list-style: none;
-      margin-bottom: 2rem;
+      margin-bottom: 0;
     }
     .pricing-features li {
       display: flex;
@@ -783,6 +802,15 @@
       font-weight: 700;
       flex-shrink: 0;
       margin-top: 1px;
+    }
+    .pricing-final-cta {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+    .pricing-final-cta .pricing-cta { width: auto; min-width: 320px; padding: 1rem 2.4rem; font-size: 0.95rem; }
+    @media (max-width: 768px) {
+      .pricing-final-cta .pricing-cta { width: 100%; min-width: 0; }
     }
     .pricing-cta {
       display: flex;
@@ -905,7 +933,7 @@
       transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
     }
     .form-group input::placeholder,
-    .form-group textarea::placeholder { color: var(--text-3); }
+    .form-group textarea::placeholder { color: var(--text-2); }
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
@@ -1045,10 +1073,24 @@
       }
     }
 
+    /* Si el JS no corre (bloqueado, error, crawler que pinta CSS pero no ejecuta),
+       .reveal deja la pagina entera en opacity:0. Este bloque la devuelve visible. */
+    html.sin-js .reveal,
+    html.sin-js .reveal-left,
+    html.sin-js .reveal-right,
+    html.sin-js .manifesto-line,
+    html.sin-js .manifesto-cta {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      header .nav-links,
-      header .btn-outline { display: none; }
+      /* El menu se va, pero el boton de reservar se queda: en movil era la unica
+         pagina sin ninguna llamada a la accion fija. */
+      header .nav-links { display: none; }
+      header .btn-outline { padding: 0.55rem 1.1rem; font-size: 0.8rem; }
       .hero-content h1 { font-size: 2.6rem; }
       .hero-ctas { flex-direction: column; align-items: flex-start; }
       .trust-bar { gap: 2rem; }
@@ -1085,7 +1127,7 @@
         },
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "hola@ismaelnlai.com",
+          "email": "ismael@ismaelnlai.com",
           "contactType": "customer service",
           "availableLanguage": "Spanish"
         },
@@ -1142,7 +1184,7 @@
         "@id": "https://ismaelnlai.com/#webpage",
         "url": "https://ismaelnlai.com",
         "name": "Automatización inteligente para pymes | ismaelnlai",
-        "description": "Especialista en automatización con N8N e IA para asesorías y gestorías. Elimina tareas manuales repetitivas en menos de 2 semanas. Auditoría gratuita sin compromiso.",
+        "description": "Especialista en automatización con N8N e IA para asesorías y gestorías. Primer proceso funcionando en menos de 2 semanas; el sistema completo, por fases. Auditoría gratuita sin compromiso.",
         "inLanguage": "es-ES",
         "datePublished": "2026-05-29",
         "dateModified": "2026-06-11",
@@ -1160,7 +1202,7 @@
         "serviceType": "Automatización de procesos empresariales",
         "url": "https://ismaelnlai.com/#precios",
         "name": "Automatización de procesos para asesorías y pymes",
-        "description": "Automatización de procesos repetitivos con N8N e Inteligencia Artificial. Implementación en menos de 2 semanas sin necesidad de conocimientos técnicos. Conectamos más de 500 herramientas: Gmail, Google Sheets, HubSpot, WhatsApp, Airtable, Slack y más.",
+        "description": "Automatización de procesos repetitivos con N8N e Inteligencia Artificial. Primer proceso funcionando en menos de 2 semanas y el sistema completo por fases, sin necesidad de conocimientos técnicos. Conectamos más de 500 herramientas: Gmail, Google Sheets, HubSpot, WhatsApp, Airtable, Slack y más.",
         "provider": {
           "@id": "https://ismaelnlai.com/#person"
         },
@@ -1177,7 +1219,7 @@
               "name": "Auditoría inicial gratuita",
               "price": "0",
               "priceCurrency": "EUR",
-              "description": "Diagnóstico de procesos automatizables. Sin compromiso."
+              "description": "Auditoría de procesos automatizables. Sin compromiso."
             },
             {
               "@type": "Offer",
@@ -1203,7 +1245,7 @@
             "name": "¿Cuánto tiempo tarda la implementación de una automatización?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Automatizaciones simples en 3-5 días hábiles. Flujos más complejos en 1-2 semanas. No hago proyectos de meses sin resultados visibles. Entregables reales desde el principio."
+              "text": "Una automatización suelta, 3-5 días hábiles. Un flujo más complejo, 1-2 semanas. Reordenar el sistema entero de una empresa lleva más —de 8 a 10 semanas es lo normal— pero va por fases y cada fase acaba con algo funcionando. Nunca meses sin ver resultados."
             }
           },
           {
@@ -1250,8 +1292,8 @@
     "@id": "https://ismaelnlai.com/#localbusiness",
     "name": "ismaelnlai — Automatización con IA",
     "url": "https://ismaelnlai.com",
-    "description": "Servicio de automatización de procesos con N8N e IA para asesorías fiscales, gestorías y pymes españolas. Diagnóstico gratuito. Implementación en menos de 2 semanas.",
-    "email": "hola@ismaelnlai.com",
+    "description": "Servicio de automatización de procesos con N8N e IA para asesorías fiscales, gestorías y pymes españolas. Auditoría gratuita. Primer proceso en marcha en menos de 2 semanas.",
+    "email": "ismael@ismaelnlai.com",
     "image": "https://ismaelnlai.com/assets/og-image.png",
     "address": {
       "@type": "PostalAddress",
@@ -1296,7 +1338,7 @@
     <ul class="nav-links">
       <li><a href="#problema">El problema</a></li>
       <li><a href="#como-funciona">Cómo funciona</a></li>
-      <li><a href="#precios">Precios</a></li>
+      <li><a href="#precios">Cómo se cobra</a></li>
       <li><a href="sobre-mi.html">Sobre mí</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -1344,19 +1386,19 @@
     <p class="hero-subtitle">Tu equipo no debería perder horas persiguiendo facturas, copiando datos o preparando el mismo informe cada mes. Eso no es trabajo de gestor. Y tiene solución.</p>
     <div class="hero-ctas">
       <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
-        Reservar diagnóstico gratuito — 30 min
+        Reservar auditoría gratuita — 30 min
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
-      <a href="#precios" class="btn-outline">Ver planes y precios</a>
+      <a href="#precios" class="btn-outline">Cómo se cobra</a>
     </div>
     <div class="trust-bar">
       <div class="trust-item">
         <strong>&lt; 2 sem</strong>
-        <span>Implementación</span>
+        <span>Primer proceso en marcha</span>
       </div>
       <div class="trust-item">
         <strong>0 €</strong>
-        <span>Diagnóstico inicial</span>
+        <span>Auditoría inicial</span>
       </div>
       <div class="trust-item">
         <strong>Sin código</strong>
@@ -1412,11 +1454,11 @@
   <div class="bg-alt-inner" id="como-funciona">
     <p class="section-label reveal">El proceso</p>
     <h2 class="section-title reveal">Tres pasos. Sin jerga técnica.</h2>
-    <p class="section-sub reveal">De tu situación actual a procesos funcionando solos en menos de dos semanas.</p>
+    <p class="section-sub reveal">Del primer proceso funcionando solo en menos de dos semanas al sistema entero ordenado, fase a fase.</p>
     <div class="steps-grid">
       <div class="step reveal">
         <div class="step-num">1</div>
-        <h3>Diagnóstico — 30 min</h3>
+        <h3>Auditoría — 30 min</h3>
         <p>Reservas una llamada gratuita. Me cuentas cómo trabajáis y dónde se atasca el equipo. Te digo qué se puede automatizar, qué plan encaja y qué ROI tiene. Sin rodeos.</p>
       </div>
       <div class="step reveal">
@@ -1444,7 +1486,7 @@
     <p class="manifesto-line accent">es tiempo real que tu equipo recupera para lo que importa.</p>
     <div class="manifesto-cta">
       <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
-        Reservar diagnóstico gratuito
+        Reservar auditoría gratuita
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
     </div>
@@ -1488,79 +1530,80 @@
 
 <!-- PRECIOS -->
 <section class="section" id="precios">
-  <p class="section-label reveal">Planes y precios</p>
-  <h2 class="section-title reveal">Sin sorpresas. Sin letra pequeña.</h2>
-  <p class="section-sub reveal">Elige el plan que encaja con tu despacho. Si tienes dudas, el diagnóstico gratuito de 30 min lo aclara todo.</p>
+  <p class="section-label reveal">Cómo se cobra</p>
+  <h2 class="section-title reveal">Solo pagas cuando algo queda funcionando.</h2>
+  <p class="section-sub reveal">La auditoría inicial no se cobra: nos sentamos sobre tus procesos reales y sales sabiendo dónde se te va el tiempo, trabajemos juntos o no. Lo único que se factura es montar el sistema y dejarlo funcionando.</p>
 
   <div class="pricing-grid">
 
-    <!-- Starter -->
+    <!-- Auditoría -->
     <div class="pricing-card reveal">
       <div class="pricing-header">
         <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
         </svg>
-        <p class="pricing-plan">Starter</p>
+        <p class="pricing-plan">Auditoría</p>
       </div>
       <div class="pricing-price">
-        <span class="setup-label">Setup</span>
-        <span class="setup">1.500 €</span>
+        <span class="setup-label">Coste</span>
+        <span class="setup">Gratis</span>
       </div>
-      <p class="pricing-monthly-accent">+ 500 €/mes</p>
+      <p class="pricing-monthly-accent">Sin compromiso</p>
       <ul class="pricing-features">
-        <li>Recordatorios automáticos (IVA, nóminas, IRPF)</li>
-        <li>Captación de documentación de clientes</li>
-        <li>Notificaciones automáticas a clientes</li>
+        <li>Sesión sobre tus procesos reales, no sobre una plantilla</li>
+        <li>Salimos con el mapa de dónde se pierde el tiempo</li>
+        <li>Si no hay nada que automatizar, te lo digo y ya está</li>
       </ul>
-      <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
 
-    <!-- Growth -->
+    <!-- Montaje -->
     <div class="pricing-card featured reveal">
-      <span class="pricing-badge">Más recomendado</span>
+      <span class="pricing-badge">Lo único que se factura</span>
       <div class="pricing-header">
         <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
         </svg>
-        <p class="pricing-plan">Growth</p>
+        <p class="pricing-plan">Montaje</p>
       </div>
       <div class="pricing-price">
-        <span class="setup-label">Setup</span>
-        <span class="setup">3.000 €</span>
+        <span class="setup-label">Presupuesto</span>
+        <span class="setup">A medida</span>
       </div>
-      <p class="pricing-monthly-accent">+ 900 €/mes</p>
+      <p class="pricing-monthly-accent">Cerrado por escrito</p>
       <ul class="pricing-features">
-        <li>Todo lo de Starter</li>
-        <li>Integración con tu software de gestión</li>
-        <li>Seguimiento automático de propuestas y clientes</li>
+        <li>Por fases: cada una acaba con algo funcionando</li>
+        <li>Precio cerrado por escrito, nunca una factura mayor</li>
+        <li>Se paga por fase entregada, no por adelantado entero</li>
       </ul>
-      <button class="pricing-cta pricing-cta-primary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
 
-    <!-- Enterprise -->
+    <!-- Mantenimiento -->
     <div class="pricing-card reveal">
       <div class="pricing-header">
         <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
         </svg>
-        <p class="pricing-plan">Enterprise</p>
+        <p class="pricing-plan">Mantenimiento</p>
       </div>
       <div class="pricing-price">
-        <span class="setup-label">Setup</span>
-        <span class="setup">5.000 €</span>
+        <span class="setup-label">Mensual</span>
+        <span class="setup">Opcional</span>
       </div>
-      <p class="pricing-monthly-accent">+ 1.500 €/mes</p>
+      <p class="pricing-monthly-accent">Sin permanencia</p>
       <ul class="pricing-features">
-        <li>Todo lo de Growth</li>
-        <li>Agente IA para atención de consultas</li>
-        <li>Dashboard de métricas en tiempo real</li>
+        <li>Vigilancia de que todo sigue funcionando</li>
+        <li>Arreglo lo que se rompa cuando cambie una herramienta</li>
+        <li>Se puede cortar cuando quieras, el sistema es tuyo</li>
       </ul>
-      <button class="pricing-cta pricing-cta-secondary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar diagnóstico gratuito</button>
     </div>
 
   </div>
 
-  <p class="pricing-note reveal">Todos los planes incluyen diagnóstico inicial gratuito y soporte post-entrega. Sin permanencia mínima.<br>¿No sabes qué plan necesitas? En el diagnóstico de 30 min te lo digo sin rodeos.</p>
+  <div class="pricing-final-cta reveal">
+    <button class="pricing-cta pricing-cta-primary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar auditoría gratuita — 30 min</button>
+  </div>
+
+  <p class="pricing-note reveal">No publico tarifas porque no vendo paquetes: el precio depende de cuántos procesos hay que corregir y de lo que ya tengas montado.<br>De la auditoría sale un presupuesto cerrado por escrito, con el alcance detallado fase a fase. Sin sorpresas ni costes ocultos.</p>
 </section>
 
 <!-- FAQ -->
@@ -1582,7 +1625,7 @@
           <span>¿Cuánto tiempo tarda la implementación?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         </button>
-        <div class="faq-answer"><p>Automatizaciones simples en 3-5 días. Flujos más complejos en 1-2 semanas. No hago proyectos de meses sin resultados visibles. Entregables reales desde el principio.</p></div>
+        <div class="faq-answer"><p>Una automatización suelta, 3-5 días. Un flujo más complejo, 1-2 semanas. Reordenar el sistema entero de una empresa lleva más —de 8 a 10 semanas es lo normal— pero va por fases y cada fase acaba con algo funcionando. Nunca meses sin ver resultados.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-btn" onclick="toggleFaq(this)">
@@ -1603,7 +1646,7 @@
           <span>¿Cuánto cuesta?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         </button>
-        <div class="faq-answer"><p>El diagnóstico inicial es gratuito y dura 30 minutos. A partir de ahí hay tres planes: Starter (1.500 € setup + 500 €/mes), Growth (3.000 € + 900 €/mes) y Enterprise (5.000 € + 1.500 €/mes). Sin permanencia mínima y sin costes ocultos. Si no sabes cuál encaja, en el diagnóstico te lo digo sin rodeos.</p></div>
+        <div class="faq-answer"><p>La auditoría inicial es gratuita y dura 30 minutos. De ahí sale un presupuesto cerrado por escrito, con el alcance detallado y un mantenimiento mensual opcional. No publico una tarifa fija porque el precio depende de cuántos procesos se automatizan y de lo que hay montado ya: un proyecto acotado no cuesta lo mismo que reordenar el flujo entero del despacho. Sin permanencia mínima y sin costes ocultos.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-btn" onclick="toggleFaq(this)">
@@ -1619,12 +1662,12 @@
 <!-- CONTACTO -->
 <section class="section" id="contacto">
   <p class="section-label reveal" style="text-align:center">Empieza aquí</p>
-  <h2 class="section-title reveal" style="text-align:center">Reserva tu diagnóstico gratuito.</h2>
+  <h2 class="section-title reveal" style="text-align:center">Reserva tu auditoría gratuita.</h2>
   <p class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">30 minutos. Sin rodeos. Te digo qué automatizaría en tu despacho, qué plan encaja y cuánto te ahorras. Sin compromiso.</p>
 
   <div class="booking-box reveal">
     <div class="booking-icon">📅</div>
-    <h3>Diagnóstico gratuito — 30 min</h3>
+    <h3>Auditoría gratuita — 30 min</h3>
     <p>Analizamos juntos tus procesos y te digo exactamente qué se puede automatizar y qué ROI tiene. Sin jerga técnica.</p>
     <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
       Reservar ahora — es gratis
@@ -1758,13 +1801,24 @@
   }
 
   // Cookie banner — animated exit
+  // localStorage LANZA (no devuelve null) si el navegador tiene bloqueado el
+  // almacenamiento del sitio. Sin el try/catch, esa excepcion mataba todo el
+  // script de aqui hacia abajo y, con .reveal en opacity:0, la web se quedaba
+  // en negro para ese visitante.
   (function() {
     var banner = document.getElementById('cookieBanner');
-    if (!localStorage.getItem('cookieAccepted')) {
+    if (!banner) return;
+
+    function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function escribir(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+    if (!leer('cookieAccepted')) {
       banner.style.display = 'flex';
     }
-    document.getElementById('cookieAccept').addEventListener('click', function() {
-      localStorage.setItem('cookieAccepted', '1');
+    var aceptar = document.getElementById('cookieAccept');
+    if (!aceptar) return;
+    aceptar.addEventListener('click', function() {
+      escribir('cookieAccepted', '1');
       banner.classList.add('dismissing');
       banner.addEventListener('animationend', function() {
         banner.style.display = 'none';

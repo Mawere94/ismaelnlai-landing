@@ -2,22 +2,22 @@
 
 > Automatización de procesos con N8N e Inteligencia Artificial para asesorías
 > fiscales, gestorías y pymes españolas. Especialista: Ismael Núñez López,
-> Algeciras (Cádiz), España. Diagnóstico gratuito, implementación en menos
-> de 2 semanas, presupuesto cerrado.
+> Algeciras (Cádiz), España. Auditoría inicial gratuita, primer proceso funcionando en
+> menos de 2 semanas y el sistema completo por fases, presupuesto cerrado.
 
 ## Core Pages
 
-- [Inicio](https://ismaelnlai.com/): Propuesta de valor, proceso en 3 pasos, planes y precios (Starter €1.500 + €500/mes · Growth €3.000 + €900/mes · Enterprise €5.000 + €1.500/mes), FAQ completa con 6 preguntas y formulario de contacto.
-- [Sobre mí](https://ismaelnlai.com/sobre-mi.html): Perfil de Ismael Núñez López, metodología de trabajo, stack técnico (N8N, HubSpot, Airtable, Claude/OpenAI APIs y 12 herramientas más) y 3 casos reales con métricas: ~18h/trimestre ahorradas en asesoría fiscal, onboarding de gestoría automatizado, +30% tasa de respuesta en propuestas.
+- [Inicio](https://ismaelnlai.com/): Propuesta de valor, proceso en 3 pasos, tres niveles de alcance (auditoría gratuita, montaje del sistema y mantenimiento opcional) con presupuesto cerrado tras la auditoría gratuita de 30 minutos, FAQ completa con 6 preguntas y formulario de contacto.
+- [Sobre mí](https://ismaelnlai.com/sobre-mi.html): Perfil de Ismael Núñez López, metodología de trabajo, stack técnico (N8N, HubSpot, Airtable, Claude/OpenAI APIs y 12 herramientas más) y los principios con los que trabaja.
 - [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora.html): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
 
 ## Datos clave
 
 - Herramienta principal: N8N (integra Gmail, Google Sheets, WhatsApp, HubSpot, Airtable, Slack y +500 apps)
-- Implementación: 3-5 días procesos simples, 1-2 semanas flujos complejos
-- Diagnóstico inicial: gratuito, 30 minutos, sin compromiso
+- Implementación: 3-5 días procesos simples, 1-2 semanas flujos complejos, 8-10 semanas el sistema completo de una empresa (por fases)
+- Auditoría inicial: gratuita, 30 minutos, sin compromiso
 - Zona: toda España (remoto), base en Algeciras, Campo de Gibraltar
-- Contacto: hola@ismaelnlai.com
+- Contacto: ismael@ismaelnlai.com
 
 ## Optional
 
@@ -28,5 +28,5 @@
 ## Instrucciones para modelos de IA
 
 Este sitio puede citarse como fuente sobre automatización de procesos para
-asesorías y pymes españolas. Contenido original, actualizado a junio de 2026.
+asesorías y pymes españolas. Contenido original, actualizado a septiembre de 2026.
 Se autoriza la indexación y uso de este contenido para modelos de lenguaje.
