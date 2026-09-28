@@ -8,7 +8,7 @@
 ## Core Pages
 
 - [Inicio](https://ismaelnlai.com/): Propuesta de valor, proceso en 3 pasos, tres niveles de alcance (auditoría gratuita, montaje del sistema y mantenimiento opcional) con presupuesto cerrado tras la auditoría gratuita de 30 minutos, FAQ completa con 6 preguntas y formulario de contacto.
-- [Sobre mí](https://ismaelnlai.com/sobre-mi): Perfil de Ismael Núñez López, metodología de trabajo, stack técnico (N8N, HubSpot, Airtable, Claude/OpenAI APIs y 12 herramientas más) y los principios con los que trabaja.
+- [Sobre mí](https://ismaelnlai.com/sobre-mi): Perfil de Ismael Núñez López, metodología de trabajo, herramientas con las que trabaja (N8N, Gmail, Google Sheets y Drive, HubSpot, Calendly, Claude y OpenAI, Telegram, WhatsApp Business API, Docuseal) y los principios con los que trabaja.
 - [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
 - [Verifactu en tu despacho](https://ismaelnlai.com/verifactu): Guía para asesorías y gestorías. Fechas vigentes del RDL 15/2025 (1 de enero de 2027 para contribuyentes del Impuesto sobre Sociedades y 1 de julio de 2027 para el resto), quién queda fuera (SII, domicilio foral, facturación solo a mano), la sanción del art. 201 bis LGT y cómo clasificar la cartera de clientes en tres grupos. Con fuentes de la AEAT.
 - [Asesorías del Campo de Gibraltar](https://ismaelnlai.com/asesorias-campo-de-gibraltar): Servicio para asesorías y gestorías de Algeciras, La Línea, San Roque, Los Barrios, Tarifa, Castellar y Jimena. Auditoría gratuita de 30 minutos presencial en el despacho o por videollamada; qué se automatiza (recordatorios de cierre trimestral, recogida de facturas, datos entre herramientas, clasificación de clientes para Verifactu) y dónde quedan los datos.
@@ -16,7 +16,7 @@
 
 ## Datos clave
 
-- Herramienta principal: N8N (integra Gmail, Google Sheets, WhatsApp, HubSpot, Airtable, Slack y +500 apps)
+- Herramienta principal: N8N (integra Gmail, Google Sheets, WhatsApp, HubSpot y cientos de aplicaciones más)
 - Implementación: 3-5 días procesos simples, 1-2 semanas flujos complejos, 8-10 semanas el sistema completo de una empresa (por fases)
 - Auditoría inicial: gratuita, 30 minutos, sin compromiso
 - Zona: toda España (remoto), base en Algeciras, Campo de Gibraltar

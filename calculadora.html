@@ -353,7 +353,7 @@
       <div class="step-num">2</div>
       <div>
         <h3>Minutos por cliente en cada cierre</h3>
-        <p>Tiempo que dedicáis a recordar, llamar o escribir a cada cliente por trimestre</p>
+        <p>Tiempo total que se dedica a recordar, llamar o escribir a cada cliente en cada cierre, sumando a todo el equipo</p>
       </div>
     </div>
     <div class="select-grid" id="minutos-grid">
@@ -369,8 +369,8 @@
     <div class="step-header">
       <div class="step-num">3</div>
       <div>
-        <h3>Personas involucradas en el proceso</h3>
-        <p>¿Cuántos miembros del equipo participan en el seguimiento de cierres?</p>
+        <h3>Personas que se reparten ese trabajo</h3>
+        <p>Sirve para ver cuánto le toca a cada una</p>
       </div>
     </div>
     <div class="select-grid" id="personas-grid">
@@ -416,8 +416,8 @@
         <div class="desc">Cierres trimestrales al año</div>
       </div>
       <div class="result-item">
-        <div class="num" id="res-automatizado">0 h</div>
-        <div class="desc">Con automatización</div>
+        <div class="num" id="res-automatizado">—</div>
+        <div class="desc">Por persona y año</div>
       </div>
     </div>
 
@@ -439,7 +439,7 @@
       <div class="success-icon">✓</div>
       <h3>Hecho. Te escribo pronto.</h3>
       <p>Si prefieres ir más rápido, reserva directamente una llamada de 30 minutos. Sin compromiso.</p>
-      <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" class="btn-calendly">Agendar diagnóstico gratuito →</a>
+      <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" class="btn-calendly">Reservar auditoría gratuita →</a>
     </div>
   </div>
 
@@ -487,9 +487,11 @@
   function calcular() {
     const clientes = parseInt(slider.value);
     const cierres = 4;
-    const horasAnio = (clientes * minutos * cierres * personas) / 60;
+    // Los minutos por cliente ya son el total del equipo: las personas no multiplican,
+    // solo reparten. Antes se multiplicaba y con 2 personas salía el doble de horas.
+    const horasAnio = (clientes * minutos * cierres) / 60;
     const costeAnio = horasAnio * coste;
-    const semanas = (horasAnio / 40).toFixed(1);
+    const semanas = (horasAnio / 40).toLocaleString('es-ES', { maximumFractionDigits: 1 });
 
     document.getElementById('res-horas').textContent = Math.round(horasAnio) + ' horas al año';
     document.getElementById('res-dias').textContent =
@@ -497,6 +499,7 @@
     document.getElementById('res-coste').textContent =
       new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(costeAnio);
     document.getElementById('res-cierres').textContent = '×' + cierres;
+    document.getElementById('res-automatizado').textContent = Math.round(horasAnio / personas) + ' h';
 
     const result = document.getElementById('result');
     result.classList.add('show');
@@ -520,7 +523,7 @@
     btn.textContent = 'Enviando...';
 
     const clientes = parseInt(slider.value);
-    const horasAnio = Math.round((clientes * minutos * 4 * personas) / 60);
+    const horasAnio = Math.round((clientes * minutos * 4) / 60);
     const costeAnio = Math.round(horasAnio * coste);
     const mensaje = `Calculadora lead magnet. Clientes: ${clientes}, Minutos/cliente: ${minutos}, Personas: ${personas}, Coste/hora: ${coste}€. Resultado: ${horasAnio}h/año = ${costeAnio}€/año`;
 
