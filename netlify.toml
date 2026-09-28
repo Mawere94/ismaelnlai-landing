@@ -13,3 +13,42 @@
   for = "/llms.txt"
   [headers.values]
     Content-Type = "text/plain; charset=utf-8"
+
+# Las tipografías no cambian: caché larga
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Una sola URL por página. Netlify sirve /sobre-mi y /sobre-mi.html con 200,
+# y eso son dos URLs con el mismo contenido para Google. La buena es la limpia.
+# force = true hace falta porque el .html existe como archivo y, sin él, gana el archivo.
+[[redirects]]
+  from = "/sobre-mi.html"
+  to = "/sobre-mi"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/calculadora.html"
+  to = "/calculadora"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/aviso-legal.html"
+  to = "/aviso-legal"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacidad.html"
+  to = "/privacidad"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cookies.html"
+  to = "/cookies"
+  status = 301
+  force = true

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Política de Cookies | ismaelnlai</title>
   <meta name="robots" content="noindex, follow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
   <style>
     :root {
       --accent: #C49A6C; --bg: #08080F; --bg-2: #0D0D18;
@@ -44,8 +44,8 @@
 
 <header>
   <nav class="nav">
-    <a href="index.html" class="logo">ismael<span>nlai</span></a>
-    <a href="index.html" class="back">← Volver</a>
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <a href="/" class="back">← Volver</a>
   </nav>
 </header>
 
@@ -68,12 +68,6 @@
       <th>Transferencia</th>
     </tr>
     <tr>
-      <td>Google Fonts</td>
-      <td>Cargar las fuentes tipográficas de la web. Tu navegador realiza una solicitud a los servidores de Google, lo que implica la transmisión de tu dirección IP. Google Fonts no establece cookies en tu dispositivo.</td>
-      <td><span class="badge">Técnica</span></td>
-      <td>Google LLC (EE.UU.) — SCCs</td>
-    </tr>
-    <tr>
       <td>Formspree</td>
       <td>Procesamiento del formulario de contacto cuando lo envías voluntariamente. Solo actúa si envías el formulario.</td>
       <td><span class="badge">Técnica</span></td>
@@ -81,8 +75,8 @@
     </tr>
     <tr>
       <td>HubSpot</td>
-      <td>Seguimiento de la navegación para asociar tu visita con la solicitud que nos envíes y poder dar continuidad a la conversación comercial. Instala cookies en tu dispositivo (<code>__hstc</code>, <code>hubspotutk</code>, <code>__hssc</code>, <code>__hssrc</code>), con una duración de hasta 6 meses.</td>
-      <td><span class="badge">Analítica / seguimiento</span></td>
+      <td>Seguimiento de la navegación para asociar tu visita con la solicitud que nos envíes y poder dar continuidad a la conversación comercial. Instala cookies en tu dispositivo (<code>__hstc</code>, <code>hubspotutk</code>, <code>__hssc</code>, <code>__hssrc</code>), con una duración de hasta 6 meses. <strong>Solo se cargan si pulsas «Aceptar» en el aviso de cookies</strong>; si rechazas, el script de HubSpot no llega a descargarse.</td>
+      <td><span class="badge">Analítica / seguimiento — requiere consentimiento</span></td>
       <td>HubSpot, Inc. (instancia europea) — SCCs</td>
     </tr>
     <tr>
@@ -93,7 +87,7 @@
     </tr>
     <tr>
       <td>localStorage</td>
-      <td>Almacena localmente en tu navegador si has aceptado el aviso de cookies, para no mostrarlo de nuevo en visitas posteriores. No se transmite a ningún servidor.</td>
+      <td>Guarda en tu navegador si aceptaste o rechazaste las cookies de seguimiento (<code>cookieConsent</code>), para no volver a preguntarte en cada visita. No se transmite a ningún servidor.</td>
       <td><span class="badge">Técnica</span></td>
       <td>Solo en tu dispositivo</td>
     </tr>
@@ -104,7 +98,9 @@
   <p>Puedes bloquear o eliminar cualquiera de estas cookies desde la configuración de tu navegador, siguiendo las instrucciones del apartado siguiente. Hacerlo no impide navegar por la web ni contactar con nosotros.</p>
 
   <h2>3. Cómo gestionar las cookies</h2>
-  <p>Dado que no instalamos cookies de seguimiento ni publicitarias, no es necesario un sistema de consentimiento granular. No obstante, puedes controlar y eliminar las cookies desde la configuración de tu navegador:</p>
+  <p>La primera vez que entras en la web te preguntamos si aceptas las cookies de seguimiento de HubSpot. «Rechazar» está al mismo nivel que «Aceptar», y la web funciona igual elijas lo que elijas. Puedes cambiar de opinión cuando quieras desde el enlace <a href="/cookies" data-cookie-settings>Configurar cookies</a>, que está en el pie de todas las páginas: si retiras el consentimiento, borramos las cookies de HubSpot de tu navegador.</p>
+  <p>Las tipografías de la web se sirven desde nuestro propio servidor, así que cargar la página no envía tu IP a Google.</p>
+  <p>Además, puedes controlar y eliminar las cookies desde la configuración de tu navegador:</p>
   <p>
     <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a> ·
     <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener">Mozilla Firefox</a> ·
@@ -119,11 +115,9 @@
 </div>
 
 <footer>
-  <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></p>
+  <p>&copy; 2026 ismaelnlai · <a href="/aviso-legal">Aviso Legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a></p>
 </footer>
 
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148587751.js"></script>
-<!-- End of HubSpot Embed Code -->
+<script src="/consent.js" defer></script>
 </body>
 </html>

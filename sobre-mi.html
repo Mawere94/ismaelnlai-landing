@@ -22,31 +22,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sobre mí — Ismael Núñez López | ismaelnlai</title>
   <meta name="description" content="Soy Ismael Núñez López, especialista en automatización de procesos con N8N e IA para asesorías y pymes en España. Conóceme, mi metodología y las herramientas con las que trabajo.">
-  <link rel="canonical" href="https://ismaelnlai.com/sobre-mi.html">
+  <link rel="canonical" href="https://ismaelnlai.com/sobre-mi">
 
   <!-- Open Graph -->
   <meta property="og:type"        content="profile">
-  <meta property="og:url"         content="https://ismaelnlai.com/sobre-mi.html">
+  <meta property="og:url"         content="https://ismaelnlai.com/sobre-mi">
   <meta property="og:title"       content="Ismael Núñez López — Especialista en automatización para asesorías">
   <meta property="og:description" content="Automatización con N8N e IA para asesorías y pymes. Sin código, sin promesas vacías. Conoce la persona detrás de ismaelnlai.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
   <meta property="og:locale"      content="es_ES">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    "dateModified": "2026-06-11",
+    "dateModified": "2026-09-28",
     "mainEntity": {
       "@type": "Person",
       "@id": "https://ismaelnlai.com/#person",
       "name": "Ismael Núñez López",
-      "url": "https://ismaelnlai.com/sobre-mi.html",
+      "url": "https://ismaelnlai.com/sobre-mi",
       "image": "https://ismaelnlai.com/assets/og-image.png",
       "sameAs": [
         "https://www.linkedin.com/in/ismael-n%C3%BA%C3%B1ez-l%C3%B3pez/",
@@ -344,7 +344,7 @@
     <ul class="nav-links">
       <li><a href="/">Inicio</a></li>
       <li><a href="/#problema">El problema</a></li>
-      <li><a href="sobre-mi.html" class="active">Sobre mí</a></li>
+      <li><a href="/sobre-mi" class="active">Sobre mí</a></li>
       <li><a href="/#faq">FAQ</a></li>
     </ul>
     <a href="/#contacto" class="btn-outline">Hablemos</a>
@@ -553,11 +553,13 @@
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para pymes</p>
   <p style="margin-top:0.5rem;">
-    <a href="aviso-legal.html">Aviso Legal</a>
+    <a href="/aviso-legal">Aviso Legal</a>
     <span class="footer-sep">·</span>
-    <a href="privacidad.html">Privacidad</a>
+    <a href="/privacidad">Privacidad</a>
     <span class="footer-sep">·</span>
-    <a href="cookies.html">Cookies</a>
+    <a href="/cookies">Cookies</a>
+    <span class="footer-sep">·</span>
+    <a href="/cookies" data-cookie-settings>Configurar cookies</a>
     <span class="footer-sep">·</span>
     <a href="/">Inicio</a>
   </p>
@@ -591,5 +593,6 @@
 </script>
 
 <script src="chat-widget.js"></script>
+<script src="/consent.js" defer></script>
 </body>
 </html>

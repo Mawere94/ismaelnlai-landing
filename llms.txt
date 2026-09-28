@@ -8,8 +8,8 @@
 ## Core Pages
 
 - [Inicio](https://ismaelnlai.com/): Propuesta de valor, proceso en 3 pasos, tres niveles de alcance (auditoría gratuita, montaje del sistema y mantenimiento opcional) con presupuesto cerrado tras la auditoría gratuita de 30 minutos, FAQ completa con 6 preguntas y formulario de contacto.
-- [Sobre mí](https://ismaelnlai.com/sobre-mi.html): Perfil de Ismael Núñez López, metodología de trabajo, stack técnico (N8N, HubSpot, Airtable, Claude/OpenAI APIs y 12 herramientas más) y los principios con los que trabaja.
-- [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora.html): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
+- [Sobre mí](https://ismaelnlai.com/sobre-mi): Perfil de Ismael Núñez López, metodología de trabajo, stack técnico (N8N, HubSpot, Airtable, Claude/OpenAI APIs y 12 herramientas más) y los principios con los que trabaja.
+- [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
 
 ## Datos clave
 
@@ -21,9 +21,9 @@
 
 ## Optional
 
-- [Aviso legal](https://ismaelnlai.com/aviso-legal.html): Datos legales verificables del titular
-- [Privacidad](https://ismaelnlai.com/privacidad.html)
-- [Cookies](https://ismaelnlai.com/cookies.html)
+- [Aviso legal](https://ismaelnlai.com/aviso-legal): Datos legales verificables del titular
+- [Privacidad](https://ismaelnlai.com/privacidad)
+- [Cookies](https://ismaelnlai.com/cookies)
 
 ## Instrucciones para modelos de IA
 

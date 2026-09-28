@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página no encontrada | ismaelnlai</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
+  <style>
+    :root {
+      --accent: #C49A6C;
+      --accent-dark: #A87E54;
+      --accent-border: rgba(196,154,108,0.25);
+      --bg: #08080F;
+      --bg-2: #0D0D18;
+      --text: #ECEAE4;
+      --text-2: #8A8278;
+      --border: #1A1A28;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header { border-bottom: 1px solid var(--border); padding: 0 5%; }
+    .nav { max-width: 1200px; margin: 0 auto; height: 64px; display: flex; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 800; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    main { flex: 1; display: flex; align-items: center; padding: 4rem 5%; }
+    .box { max-width: 620px; margin: 0 auto; }
+    .code { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 1rem; }
+    p { color: var(--text-2); font-size: 1.02rem; margin-bottom: 2rem; }
+    ul { list-style: none; border-top: 1px solid var(--border); }
+    li { border-bottom: 1px solid var(--border); }
+    li a { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; color: var(--text); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+    li a span { color: var(--text-2); font-weight: 400; font-size: 0.9rem; }
+    li a:hover { color: var(--accent); }
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; text-align: center; color: var(--text-2); font-size: 0.82rem; background: var(--bg-2); }
+    footer a { color: var(--text-2); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="nav"><a href="/" class="logo">ismael<span>nlai</span></a></nav>
+</header>
+<main>
+  <div class="box">
+    <p class="code">Error 404</p>
+    <h1>Esta página no existe.</h1>
+    <p>Puede que el enlace esté mal escrito o que la página ya no esté. Esto es lo que sí hay:</p>
+    <ul>
+      <li><a href="/">Inicio <span>Qué automatizo y cómo trabajo →</span></a></li>
+      <li><a href="/calculadora">Calculadora <span>Cuántas horas pierdes en gestión manual →</span></a></li>
+      <li><a href="/sobre-mi">Sobre mí <span>Quién está detrás →</span></a></li>
+      <li><a href="/#contacto">Auditoría gratuita <span>30 minutos, sin compromiso →</span></a></li>
+    </ul>
+  </div>
+</main>
+<footer>
+  <p>&copy; 2026 ismaelnlai · <a href="/aviso-legal">Aviso Legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a></p>
+</footer>
+</body>
+</html>

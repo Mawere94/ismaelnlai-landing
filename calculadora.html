@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de horas perdidas | ismaelnlai</title>
   <meta name="description" content="Calcula cuántas horas y euros pierde tu despacho o pyme cada año en gestión manual. Herramienta gratuita — resultado en 30 segundos.">
-  <link rel="canonical" href="https://ismaelnlai.com/calculadora.html">
+  <link rel="canonical" href="https://ismaelnlai.com/calculadora">
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://ismaelnlai.com/calculadora.html">
+  <meta property="og:url"         content="https://ismaelnlai.com/calculadora">
   <meta property="og:title"       content="Calculadora de horas perdidas — ismaelnlai">
   <meta property="og:description" content="Calcula cuántas horas y euros pierde tu despacho en gestión manual. Gratis, resultado en 30 segundos.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
@@ -19,9 +19,9 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "@id": "https://ismaelnlai.com/calculadora.html#app",
+    "@id": "https://ismaelnlai.com/calculadora#app",
     "name": "Calculadora de horas perdidas",
-    "url": "https://ismaelnlai.com/calculadora.html",
+    "url": "https://ismaelnlai.com/calculadora",
     "description": "Herramienta gratuita para calcular cuántas horas y euros pierde un despacho o pyme al año en gestión manual de procesos repetitivos.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
@@ -36,13 +36,13 @@
       "@id": "https://ismaelnlai.com/#organization"
     },
     "datePublished": "2026-05-29",
-    "dateModified": "2026-06-11"
+    "dateModified": "2026-09-28"
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
   <style>
     :root {
       --accent: #C49A6C;
@@ -318,8 +318,8 @@
 
 <header>
   <nav class="nav">
-    <a href="index.html" class="logo">ismael<span>nlai</span></a>
-    <a href="index.html" class="back">← Volver</a>
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <a href="/" class="back">← Volver</a>
   </nav>
 </header>
 
@@ -431,7 +431,7 @@
         <input type="tel" id="lead-telefono" placeholder="Teléfono de contacto" required>
         <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)">
         <button class="btn-cta" id="lead-btn" onclick="enviarLead()">Recibir análisis gratuito →</button>
-        <p class="privacy-note">Sin spam. Puede darse de baja cuando quiera. <a href="privacidad.html">Privacidad</a>.</p>
+        <p class="privacy-note">Sin spam. Puede darse de baja cuando quiera. <a href="/privacidad">Privacidad</a>.</p>
       </div>
     </div>
 
@@ -446,7 +446,7 @@
 </div>
 
 <footer>
-  <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></p>
+  <p>&copy; 2026 ismaelnlai · <a href="/aviso-legal">Aviso Legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a></p>
 </footer>
 
 <script>
@@ -540,8 +540,6 @@
   }
 </script>
 
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148587751.js"></script>
-<!-- End of HubSpot Embed Code -->
+<script src="/consent.js" defer></script>
 </body>
 </html>

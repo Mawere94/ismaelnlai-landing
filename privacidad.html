@@ -6,10 +6,10 @@
   <title>Política de Privacidad | ismaelnlai</title>
   <meta name="description" content="Política de privacidad de ismaelnlai. Información sobre tratamiento de datos, derechos RGPD y uso de servicios de terceros.">
   <meta name="robots" content="noindex, follow">
-  <link rel="canonical" href="https://ismaelnlai.com/privacidad.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://ismaelnlai.com/privacidad">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
   <style>
     :root {
       --accent: #C49A6C; --bg: #08080F; --bg-2: #0D0D18;
@@ -51,8 +51,8 @@
 
 <header>
   <nav class="nav">
-    <a href="index.html" class="logo">ismael<span>nlai</span></a>
-    <a href="index.html" class="back">← Volver</a>
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <a href="/" class="back">← Volver</a>
   </nav>
 </header>
 
@@ -145,7 +145,7 @@
   <p>Las citas se gestionan con <strong>Calendly, LLC</strong> (Estados Unidos). Al reservar, Calendly trata tu nombre, tu email, tus respuestas a las preguntas de la reserva y, si lo facilitas, tu teléfono. Más información en <a href="https://calendly.com/legal/privacy-notice" target="_blank" rel="noopener">calendly.com/legal/privacy-notice</a>.</p>
 
   <h3>HubSpot (CRM y seguimiento de la web)</h3>
-  <p>Utilizamos el CRM de <strong>HubSpot, Inc.</strong> (instancia europea) para registrar y dar seguimiento a las solicitudes recibidas. La web carga además su script de seguimiento. Más información en <a href="https://legal.hubspot.com/es/privacy-policy" target="_blank" rel="noopener">legal.hubspot.com/es/privacy-policy</a> y en nuestra <a href="cookies.html">política de cookies</a>.</p>
+  <p>Utilizamos el CRM de <strong>HubSpot, Inc.</strong> (instancia europea) para registrar y dar seguimiento a las solicitudes recibidas. La web carga además su script de seguimiento, pero solo si aceptas las cookies en el aviso que aparece al entrar; si las rechazas, no se carga. Más información en <a href="https://legal.hubspot.com/es/privacy-policy" target="_blank" rel="noopener">legal.hubspot.com/es/privacy-policy</a> y en nuestra <a href="/cookies">política de cookies</a>.</p>
 
   <h3>Telegram (avisos internos)</h3>
   <p>Cuando recibimos una consulta, se genera un aviso interno a través de <strong>Telegram FZ-LLC</strong> que puede incluir tu nombre, tu email y el motivo de tu consulta, para poder atenderte con rapidez. Más información en <a href="https://telegram.org/privacy" target="_blank" rel="noopener">telegram.org/privacy</a>.</p>
@@ -155,9 +155,6 @@
 
   <h3>Google Sheets (almacenamiento de consultas)</h3>
   <p>Las consultas recibidas se almacenan en <strong>Google LLC</strong> (Estados Unidos) mediante Google Sheets. Google actúa como encargado del tratamiento y cumple con el RGPD mediante Cláusulas Contractuales Estándar (SCCs). Más información en <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
-
-  <h3>Google Fonts (tipografía web)</h3>
-  <p>Esta web carga fuentes tipográficas desde los servidores de <strong>Google LLC</strong>. Cuando accedes a la web, tu navegador realiza una solicitud a los servidores de Google, lo que implica la transmisión de tu dirección IP. Google no utiliza estos datos para identificarte ni para mostrarte publicidad. Más información en <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener">developers.google.com/fonts/faq/privacy</a>.</p>
 
   <h2>5. Transferencias internacionales de datos</h2>
   <p>Formspree, Google, Anthropic, Meta, Calendly y HubSpot tienen su sede o matriz en Estados Unidos, y Telegram fuera del Espacio Económico Europeo. Las transferencias de datos a estos proveedores se realizan al amparo de <strong>Cláusulas Contractuales Estándar</strong> aprobadas por la Comisión Europea, conforme al artículo 46.2.c del RGPD, y de los mecanismos de adecuación que resulten aplicables en cada caso.</p>
@@ -186,11 +183,9 @@
 </div>
 
 <footer>
-  <p>&copy; 2026 ismaelnlai · <a href="aviso-legal.html">Aviso Legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a></p>
+  <p>&copy; 2026 ismaelnlai · <a href="/aviso-legal">Aviso Legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a></p>
 </footer>
 
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148587751.js"></script>
-<!-- End of HubSpot Embed Code -->
+<script src="/consent.js" defer></script>
 </body>
 </html>

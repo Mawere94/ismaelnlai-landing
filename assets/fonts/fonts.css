@@ -1,0 +1,16 @@
+/* Tipografías servidas desde el propio dominio: sin peticiones a Google.
+   Subset latin (cubre español completo). Fuentes variables: un archivo por familia. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/assets/fonts/inter-latin.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+  src: url(/assets/fonts/playfair-display-latin.woff2) format('woff2');
+}
