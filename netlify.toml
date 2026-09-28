@@ -70,3 +70,9 @@
   to = "/asesorias-campo-de-gibraltar"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/perseguir-facturas-cierre-trimestral.html"
+  to = "/perseguir-facturas-cierre-trimestral"
+  status = 301
+  force = true

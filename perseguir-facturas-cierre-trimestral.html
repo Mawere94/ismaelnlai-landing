@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cómo dejar de perseguir facturas antes del cierre trimestral | ismaelnlai</title>
+  <meta name="description" content="La fecha que cierra el trimestre de un despacho es el 15, no el 20. Cómo montar avisos a 15, 7 y 3 días, qué hacer con el cliente que nunca contesta y cuándo conviene implantarlo.">
+  <link rel="canonical" href="https://ismaelnlai.com/perseguir-facturas-cierre-trimestral">
+
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         content="https://ismaelnlai.com/perseguir-facturas-cierre-trimestral">
+  <meta property="og:title"       content="Cómo dejar de perseguir facturas antes del 15">
+  <meta property="og:description" content="El cierre de un despacho no es el 20, es el 15. Avisos escalonados, un registro de quién ha entregado y una llamada solo para quien de verdad hace falta.">
+  <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
+  <meta property="og:locale"      content="es_ES">
+  <meta property="og:site_name"   content="ismaelnlai">
+
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://ismaelnlai.com/perseguir-facturas-cierre-trimestral#article",
+        "headline": "Cómo dejar de perseguir facturas antes del 15",
+        "description": "La fecha que cierra el trimestre de un despacho es el 15, no el 20. Cómo montar avisos a 15, 7 y 3 días, qué hacer con el cliente que nunca contesta y cuándo conviene implantarlo.",
+        "datePublished": "2026-09-28",
+        "dateModified": "2026-09-28",
+        "inLanguage": "es-ES",
+        "mainEntityOfPage": "https://ismaelnlai.com/perseguir-facturas-cierre-trimestral",
+        "image": "https://ismaelnlai.com/assets/og-image.png",
+        "author": { "@id": "https://ismaelnlai.com/#person", "@type": "Person", "name": "Ismael Núñez López", "url": "https://ismaelnlai.com/sobre-mi" },
+        "publisher": { "@id": "https://ismaelnlai.com/#organization", "@type": "Organization", "name": "ismaelnlai", "url": "https://ismaelnlai.com" },
+        "about": ["Cierre trimestral de IVA", "Asesorías fiscales", "Automatización de recordatorios"]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://ismaelnlai.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Cómo dejar de perseguir facturas antes del 15", "item": "https://ismaelnlai.com/perseguir-facturas-cierre-trimestral" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --accent:        #C49A6C;
+      --accent-dark:   #A87E54;
+      --accent-glow:   rgba(196,154,108,0.12);
+      --accent-border: rgba(196,154,108,0.25);
+      --bg:            #08080F;
+      --bg-2:          #0D0D18;
+      --bg-card:       #111120;
+      --text:          #ECEAE4;
+      --text-2:        #A29A90;
+      --border:        #1F1F30;
+      --red:           #E06C6C;
+      --radius:        10px;
+      --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter', system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.7; }
+    a { color:var(--accent); }
+
+    header { border-bottom:1px solid var(--border); }
+    .nav { max-width:1100px; margin:0 auto; padding:0 16px; height:68px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-family:'Playfair Display', serif; font-size:1.25rem; font-weight:800; color:var(--text); text-decoration:none; }
+    .logo span { color:var(--accent); }
+    .btn-outline { display:inline-flex; align-items:center; height:38px; padding:0 1.2rem; border:1px solid var(--accent-border); color:var(--accent); border-radius:100px; font-size:.86rem; font-weight:600; text-decoration:none; background:transparent; font-family:inherit; cursor:pointer; }
+    .btn-outline:hover { background:var(--accent); color:var(--bg); }
+
+    main { max-width:720px; margin:0 auto; padding:64px 16px 40px; }
+    .crumbs { font-size:.8rem; color:var(--text-2); margin-bottom:1.6rem; }
+    .crumbs a { color:var(--text-2); text-decoration:none; }
+    .crumbs a:hover { color:var(--accent); }
+    .label { font-size:.72rem; font-weight:700; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+    h1 { font-family:'Playfair Display', serif; font-size:clamp(2rem, 5vw, 3rem); font-weight:900; line-height:1.12; letter-spacing:-.5px; margin-bottom:1.2rem; text-wrap:balance; }
+    .lead { font-size:1.12rem; color:var(--text-2); margin-bottom:1.8rem; }
+    h2 { font-family:'Playfair Display', serif; font-size:1.55rem; font-weight:800; margin:3.2rem 0 1rem; line-height:1.25; }
+    p + p { margin-top:1.1rem; }
+    strong { color:var(--text); }
+
+    .byline { display:flex; align-items:center; gap:.8rem; padding:1rem 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin-bottom:2.4rem; }
+    .byline img { width:44px; height:44px; border-radius:50%; object-fit:cover; border:1px solid var(--accent-border); }
+    .byline p { font-size:.84rem; color:var(--text-2); line-height:1.45; }
+    .byline strong { display:block; font-weight:600; }
+
+    .callout { background:var(--accent-glow); border:1px solid var(--accent-border); border-radius:var(--radius); padding:18px 20px; margin:1.6rem 0; }
+    .callout p { font-size:.96rem; }
+
+    .math { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; margin:1.4rem 0; }
+    .math div { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; }
+    .math .n { font-family:'Playfair Display', serif; font-size:1.5rem; font-weight:800; color:var(--accent); line-height:1.2; }
+    .math .t { font-size:.82rem; color:var(--text-2); }
+
+    .timeline { list-style:none; margin:1.4rem 0; border-left:2px solid var(--border); padding-left:0; }
+    .timeline li { position:relative; padding:0 0 1.4rem 1.6rem; }
+    .timeline li::before { content:''; position:absolute; left:-7px; top:.45rem; width:12px; height:12px; border-radius:50%; background:var(--accent); }
+    .timeline li.stop::before { background:var(--red); }
+    .timeline .when { font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+    .timeline li.stop .when { color:var(--red); }
+    .timeline h3 { font-size:1.02rem; margin:.15rem 0 .3rem; }
+    .timeline p { font-size:.94rem; color:var(--text-2); }
+
+    ul.clean { list-style:none; margin:1rem 0; }
+    ul.clean li { padding:10px 0 10px 28px; border-bottom:1px solid var(--border); position:relative; color:var(--text-2); }
+    ul.clean li strong { color:var(--text); }
+    ul.clean li::before { content:'—'; position:absolute; left:0; color:var(--accent); }
+
+    .final { background:var(--bg-card); border:1px solid var(--accent-border); border-radius:14px; padding:28px 24px; margin:3.2rem 0 1rem; }
+    .final h2 { margin-top:0; }
+    .final p { color:var(--text-2); }
+    .ctas { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:1.4rem; }
+    .btn-primary { display:inline-flex; align-items:center; gap:.5rem; height:52px; padding:0 2rem; background:var(--accent); color:var(--bg); border:none; border-radius:100px; font:inherit; font-size:.95rem; font-weight:700; cursor:pointer; text-decoration:none; box-shadow:0 4px 24px rgba(196,154,108,.25); transition:background .2s var(--ease-out), transform .2s var(--ease-out); }
+    .btn-primary:hover { background:var(--accent-dark); transform:translateY(-2px); }
+    .ctas .btn-outline { height:52px; padding:0 1.6rem; font-size:.92rem; }
+
+    .sources { font-size:.85rem; color:var(--text-2); }
+    .sources li { margin:6px 0 6px 1.2rem; }
+
+    footer { border-top:1px solid var(--border); margin-top:3rem; padding:28px 16px; text-align:center; font-size:.8rem; color:var(--text-2); background:var(--bg-2); }
+    footer a { color:var(--text-2); text-decoration:none; }
+    footer a:hover { color:var(--accent); }
+
+    @media (max-width:600px) {
+      .ctas { flex-direction:column; }
+      .ctas .btn-primary, .ctas .btn-outline { justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <button type="button" class="btn-outline" onclick="abrirCalendly()">Reservar auditoría</button>
+  </nav>
+</header>
+
+<main>
+  <p class="crumbs"><a href="/">Inicio</a> › Perseguir facturas</p>
+  <p class="label">Cierre trimestral · para despachos</p>
+  <h1>Cómo dejar de perseguir facturas antes del 15</h1>
+  <p class="lead">El 20 de octubre no es tu fecha. Es el 15. Y casi todo el trabajo de esas dos semanas no es fiscal: es ir detrás de clientes para que manden lo que tenían que haber mandado.</p>
+
+  <div class="byline">
+    <img src="/assets/ismael-avatar.jpg" alt="Ismael Núñez López" width="44" height="44">
+    <p><strong>Ismael Núñez López</strong>Automatización para asesorías y gestorías · 28 de septiembre de 2026</p>
+  </div>
+
+  <h2>Tu cierre es el 15, no el 20</h2>
+  <p>El IVA del tercer trimestre (modelo 303), las retenciones y los pagos fraccionados de los autónomos se presentan hasta el <strong>martes 20 de octubre</strong>. Pero si el cliente paga domiciliando, y en la mayoría de despachos casi todos lo hacen, el plazo para domiciliar termina cinco días antes: el <strong>jueves 15 de octubre</strong>.</p>
+  <p>¿Qué quiero decir con esto? Que cualquier recordatorio que cuente hacia el 20 llega tarde. Si a un cliente le avisas «quedan 7 días» pensando en el 20, en realidad le quedan 2 para que tú puedas domiciliar. Todo lo que viene a continuación cuenta hacia el 15.</p>
+
+  <h2>Cuánto cuesta perseguir a mano</h2>
+  <p>Hagamos la cuenta con un despacho pequeño. Son los valores por defecto de la <a href="/calculadora">calculadora de horas perdidas</a>, no los de ningún cliente concreto:</p>
+  <div class="math">
+    <div><div class="n">80</div><div class="t">clientes activos</div></div>
+    <div><div class="n">20 min</div><div class="t">por cliente y cierre, entre correos, WhatsApps y llamadas</div></div>
+    <div><div class="n">4</div><div class="t">cierres al año</div></div>
+    <div><div class="n">≈ 107 h</div><div class="t">al año, con una sola persona persiguiendo</div></div>
+  </div>
+  <p>Ciento siete horas son casi tres semanas de jornada completa. Y se concentran en los peores días del trimestre, justo cuando el equipo debería estar revisando declaraciones, no preguntando por tercera vez si alguien ha encontrado el tique de la gasolinera.</p>
+  <p>Lo peor no son las horas, es cómo se reparten. Perseguir a mano depende de que alguien se acuerde, y nadie apunta a quién ha escrito ni cuándo. Así que el día 13 descubres que a tres clientes no les escribió nadie, porque cada uno pensaba que lo había hecho otro.</p>
+
+  <h2>El sistema: tres avisos y una llamada</h2>
+  <p>No hace falta ningún programa nuevo. Hace falta una lista y un calendario que se cumpla solo. Con el cierre de octubre de 2026, quedaría así:</p>
+  <ol class="timeline">
+    <li>
+      <span class="when">Miércoles 30 de septiembre · a 15 días</span>
+      <h3>Primer aviso, en tono tranquilo</h3>
+      <p>A todos los clientes que en la lista aún figuran como pendientes: qué documentación falta y hasta cuándo. Sin urgencias, porque todavía no la hay.</p>
+    </li>
+    <li>
+      <span class="when">Jueves 8 de octubre · a 7 días</span>
+      <h3>Segundo aviso, solo a quien no ha enviado nada</h3>
+      <p>Más directo, con la fecha en el asunto. Quien ya ha entregado no recibe nada. Esto es lo que evita que un recordatorio parezca spam.</p>
+    </li>
+    <li>
+      <span class="when">Viernes 9 de octubre · a 3 días (adelantado)</span>
+      <h3>Tercer aviso, el último por escrito</h3>
+      <p>Tres días antes del 15 es el lunes 12 de octubre, que es festivo nacional. Un aviso que llega en festivo no lo lee nadie, así que el sistema lo adelanta al último día hábil: el viernes 9.</p>
+    </li>
+    <li class="stop">
+      <span class="when">Martes 13 de octubre · la lista de llamadas</span>
+      <h3>Aquí entra una persona</h3>
+      <p>A primera hora, el equipo recibe la lista de quienes siguen sin mandar nada después de tres avisos. Normalmente son pocos, y siempre los mismos. A esos se les llama. Al resto no hace falta.</p>
+    </li>
+  </ol>
+  <p>Cada aviso que sale queda apuntado en la misma hoja: a quién se ha escrito, qué día y si ha contestado. Cuando un cliente manda su documentación, se marca como entregado y deja de recibir avisos. ¿Me explico? El equipo deja de acordarse de las cosas y pasa a mirar una lista.</p>
+
+  <div class="callout">
+    <p>La automatización no llama por ti ni convence a nadie. El cliente que nunca manda nada seguirá sin mandarlo. Lo que cambia es que <strong>lo sabes el día 13 en lugar de descubrirlo el 14 por la tarde</strong>, y que las llamadas se las dedicas solo a quien de verdad las necesita.</p>
+  </div>
+
+  <h2>Qué hace falta para montarlo</h2>
+  <ul class="clean">
+    <li><strong>Una hoja con los clientes.</strong> Nombre, correo y una columna de estado: pendiente o entregado. Si ya la tienes en Excel, sirve.</li>
+    <li><strong>El correo del despacho.</strong> Los avisos salen desde vuestra cuenta, firmados por vosotros, no desde una plataforma de mailing.</li>
+    <li><strong>Las fechas de cada trimestre bien puestas.</strong> Contando hacia la domiciliación, saltando fines de semana y festivos. El cuarto trimestre es distinto: en 2027 el IVA se presenta el lunes 1 de febrero, porque el 30 de enero cae en sábado, y la domiciliación termina el lunes 25 de enero. Las retenciones, en cambio, vencen el miércoles 20.</li>
+    <li><strong>Tres textos.</strong> Uno por aviso, cada vez más directos. Los escribe el despacho, con su tono, no una plantilla genérica.</li>
+  </ul>
+  <p>En la <a href="/#pruebas">página principal</a> tienes una demo funcionando con esta misma lógica, con el correo tal como le llega al cliente.</p>
+
+  <h2>Cuándo montarlo: ahora no</h2>
+  <p>Si estás leyendo esto a primeros de octubre, no toques nada. Del 1 al 15 no hay cabeza para cambiar procesos, y está bien que así sea.</p>
+  <p>El momento bueno es <strong>del 21 de octubre al 30 de noviembre</strong>. Acabas de pasar otro trimestre igual, lo tienes fresco, y quedan seis semanas limpias antes de diciembre. Montado en noviembre, el sistema llega a su primera prueba de verdad en el cierre de enero, que es el peor del año: retenciones el 20, IVA y pagos fraccionados hasta el 1 de febrero, y los resúmenes anuales encima.</p>
+
+  <section class="final">
+    <h2>¿Lo vemos con tu cartera?</h2>
+    <p>En 30 minutos miramos cuántos clientes persigues cada trimestre, cómo lo hacéis ahora y qué parte tiene sentido automatizar. Si no merece la pena, te lo digo. Si tu despacho está en el Campo de Gibraltar, la auditoría puede ser en tu oficina.</p>
+    <div class="ctas">
+      <button type="button" class="btn-primary" onclick="abrirCalendly()">Reservar auditoría gratuita — 30 min</button>
+      <a href="/calculadora" class="btn-outline">Calcular mis horas perdidas</a>
+    </div>
+  </section>
+
+  <h2>Fuentes</h2>
+  <ul class="sources">
+    <li><a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente/calendario-contribuyente-2026.html" rel="noopener">AEAT · Calendario del contribuyente 2026</a>: plazos de presentación de los modelos trimestrales. La domiciliación termina el día 15 de abril, julio y octubre, y el 25 de enero (Orden EHA/3786/2008).</li>
+    <li>Las fechas de 2027 siguen la regla general de plazos, con el desplazamiento por fin de semana ya aplicado. La AEAT publica el calendario definitivo a finales de año: compruébalas antes de usarlas con un cliente.</li>
+  </ul>
+</main>
+
+<footer>
+  <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías · Algeciras</p>
+  <p style="margin-top:.5rem;"><a href="/">Inicio</a> · <a href="/sobre-mi">Sobre mí</a> · <a href="/verifactu">Guía Verifactu</a> · <a href="/asesorias-campo-de-gibraltar">Asesorías del Campo de Gibraltar</a> · <a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a></p>
+</footer>
+
+<script>
+  var CALENDLY_URL = 'https://calendly.com/ismaelnlai/diagnostico?utm_source=web&utm_campaign=articulo-facturas';
+
+  // Calendly en ventana emergente; sus scripts solo se cargan al pulsar.
+  // Si no cargan, pestaña nueva.
+  function abrirCalendly() {
+    if (window.Calendly) { Calendly.initPopupWidget({ url: CALENDLY_URL }); return; }
+    var hecho = false;
+    function respaldo() { if (!hecho) { hecho = true; window.open(CALENDLY_URL, '_blank'); } }
+    var reloj = setTimeout(respaldo, 4000);
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(l);
+    var sc = document.createElement('script');
+    sc.src = 'https://assets.calendly.com/assets/external/widget.js';
+    sc.onload = function () {
+      if (hecho) return;
+      hecho = true; clearTimeout(reloj);
+      Calendly.initPopupWidget({ url: CALENDLY_URL });
+    };
+    sc.onerror = function () { clearTimeout(reloj); respaldo(); };
+    document.head.appendChild(sc);
+  }
+</script>
+<script src="/chat-widget.js"></script>
+<script src="/consent.js" defer></script>
+</body>
+</html>

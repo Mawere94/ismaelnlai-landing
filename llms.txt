@@ -12,6 +12,7 @@
 - [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
 - [Verifactu en tu despacho](https://ismaelnlai.com/verifactu): Guía para asesorías y gestorías. Fechas vigentes del RDL 15/2025 (1 de enero de 2027 para contribuyentes del Impuesto sobre Sociedades y 1 de julio de 2027 para el resto), quién queda fuera (SII, domicilio foral, facturación solo a mano), la sanción del art. 201 bis LGT y cómo clasificar la cartera de clientes en tres grupos. Con fuentes de la AEAT.
 - [Asesorías del Campo de Gibraltar](https://ismaelnlai.com/asesorias-campo-de-gibraltar): Servicio para asesorías y gestorías de Algeciras, La Línea, San Roque, Los Barrios, Tarifa, Castellar y Jimena. Auditoría gratuita de 30 minutos presencial en el despacho o por videollamada; qué se automatiza (recordatorios de cierre trimestral, recogida de facturas, datos entre herramientas, clasificación de clientes para Verifactu) y dónde quedan los datos.
+- [Cómo dejar de perseguir facturas antes del 15](https://ismaelnlai.com/perseguir-facturas-cierre-trimestral): Artículo para despachos. Por qué el cierre trimestral real es el día 15 (domiciliación) y no el 20 (presentación), cuánto cuesta perseguir documentación a mano (80 clientes x 20 min x 4 cierres = unas 107 h al año), un sistema de avisos a 15, 7 y 3 días con ajuste por festivos y lista de llamadas, y cuándo implantarlo (21 de octubre a 30 de noviembre).
 
 ## Datos clave
 
