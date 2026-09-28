@@ -20,15 +20,15 @@
 </style></noscript>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Automatización inteligente para pymes | ismaelnlai</title>
-  <meta name="description" content="Especialista en automatización con N8N e IA para asesorías y gestorías. Primer proceso funcionando en menos de 2 semanas; el sistema completo, por fases. Auditoría gratuita sin compromiso.">
+  <title>Automatización para asesorías y gestorías con IA | ismaelnlai</title>
+  <meta name="description" content="Automatizo el trabajo repetitivo de asesorías y gestorías con N8N e IA: recordatorios de IVA, recogida de facturas y datos que pasan solos entre herramientas. Auditoría gratuita de 30 min.">
   <link rel="canonical" href="https://ismaelnlai.com/">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://ismaelnlai.com/">
-  <meta property="og:title"       content="Automatización inteligente para asesorías y pymes | ismaelnlai">
+  <meta property="og:title"       content="Tu asesoría, sin perseguir facturas cada trimestre | ismaelnlai">
   <meta property="og:description" content="Elimina el trabajo manual repetitivo en tu despacho. Automatización con N8N e IA, primer proceso en marcha en menos de 2 semanas, auditoría gratuita.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
   <meta property="og:locale"      content="es_ES">
@@ -36,7 +36,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="Automatización para asesorías y pymes | ismaelnlai">
+  <meta name="twitter:title"       content="Tu asesoría, sin perseguir facturas cada trimestre | ismaelnlai">
   <meta name="twitter:description" content="Elimina el trabajo manual repetitivo. N8N + IA. Primer proceso en marcha en menos de 2 semanas.">
   <meta name="twitter:image"       content="https://ismaelnlai.com/assets/og-image.png">
 
@@ -355,12 +355,13 @@
     }
     .hero-content h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-size: clamp(2.4rem, 4.6vw, 4.2rem);
       font-weight: 900;
       line-height: 1.08;
       letter-spacing: -1.5px;
       margin-bottom: 1.8rem;
-      max-width: 720px;
+      max-width: 960px;
+      text-wrap: balance;
     }
     .hero-content h1 em {
       font-style: normal;
@@ -999,6 +1000,116 @@
     footer a:hover { color: var(--accent); }
     .footer-sep { margin: 0 0.5rem; opacity: 0.4; }
 
+    /* ─── AUTOR EN EL HERO ─── */
+    .hero-author {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin: -1.4rem 0 2.6rem;
+    }
+    .hero-author .avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      object-fit: cover;
+      border: 1px solid var(--accent-border);
+      background: var(--bg-card);
+      color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .hero-author p { font-size: 0.85rem; color: var(--text-2); line-height: 1.45; }
+    .hero-author p strong { color: var(--text); font-weight: 600; display: block; }
+
+    /* ─── PRUEBAS ─── */
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .proof-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .proof-tag {
+      align-self: flex-start;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      border-radius: 100px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+    .proof-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .proof-card > p { color: var(--text-2); font-size: 0.92rem; line-height: 1.75; }
+    .proof-flow {
+      margin-top: auto;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.9;
+    }
+    .proof-card > p + .proof-flow { margin-top: 1.3rem; }
+    .proof-flow b { color: var(--accent); font-weight: 700; margin: 0 0.3rem; }
+    .proof-mail {
+      margin-top: 1.3rem;
+      background: #F4F2EE;
+      color: #222;
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+    .proof-mail .mail-subject { font-weight: 700; margin-bottom: 0.45rem; }
+    .proof-mail .mail-meta { font-size: 0.7rem; color: #666; margin-bottom: 0.45rem; }
+    .proof-try {
+      margin-top: 1.3rem;
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      border-radius: 100px;
+      padding: 0.55rem 1.2rem;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+    }
+    .proof-try:hover { background: var(--accent); color: var(--bg); }
+
+    /* ─── CTA FIJO EN MÓVIL ─── */
+    .cta-fija {
+      display: none;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 90;
+      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+      background: rgba(8,8,15,0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      transform: translateY(110%);
+      transition: transform 0.3s var(--ease-out);
+    }
+    .cta-fija button { width: 100%; justify-content: center; height: 48px; }
+    body.cta-visible .cta-fija { transform: translateY(0); }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       /* Universal reset: covers all current and future animated elements */
@@ -1035,7 +1146,7 @@
          pagina sin ninguna llamada a la accion fija. */
       header .nav-links { display: none; }
       header .btn-outline { padding: 0.55rem 1.1rem; font-size: 0.8rem; }
-      .hero-content h1 { font-size: 2.6rem; }
+      .hero-content h1 { font-size: 2.3rem; }
       .hero-ctas { flex-direction: column; align-items: flex-start; }
       .trust-bar { gap: 2rem; }
       .steps-grid { grid-template-columns: 1fr; }
@@ -1047,6 +1158,12 @@
       .section { padding: 5rem 5%; }
       .bg-alt-inner { padding: 5rem 5%; }
       .manifesto-section { padding: 5rem 5%; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .cta-fija { display: block; }
+      /* Mientras el aviso de cookies está abierto, la barra se quita de en medio */
+      body.ck-pendiente .cta-fija { display: none; }
+      body.cta-visible #isnl-btn { bottom: 88px !important; }
+      body.cta-visible footer { padding-bottom: 6rem; }
     }
   </style>
 
@@ -1127,8 +1244,8 @@
         "@type": "WebPage",
         "@id": "https://ismaelnlai.com/#webpage",
         "url": "https://ismaelnlai.com",
-        "name": "Automatización inteligente para pymes | ismaelnlai",
-        "description": "Especialista en automatización con N8N e IA para asesorías y gestorías. Primer proceso funcionando en menos de 2 semanas; el sistema completo, por fases. Auditoría gratuita sin compromiso.",
+        "name": "Automatización para asesorías y gestorías con IA | ismaelnlai",
+        "description": "Automatizo el trabajo repetitivo de asesorías y gestorías con N8N e IA: recordatorios de IVA, recogida de facturas y datos que pasan solos entre herramientas. Auditoría gratuita de 30 min.",
         "inLanguage": "es-ES",
         "datePublished": "2026-05-29",
         "dateModified": "2026-09-28",
@@ -1324,12 +1441,17 @@
   <div class="hero-content">
     <div class="hero-badge">
       <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
-      IA · Automatización · N8N
+      Para asesorías y gestorías
     </div>
-    <h1>Automatiza tu pyme.<br><em>Escala sin contratar.</em></h1>
-    <p class="hero-subtitle">Tu equipo no debería perder horas persiguiendo facturas, copiando datos o preparando el mismo informe cada mes. Eso no es trabajo de gestor. Y tiene solución.</p>
+    <h1>Tu asesoría, sin perseguir<br><em>facturas cada trimestre.</em></h1>
+    <p class="hero-subtitle">Automatizo con N8N e IA el trabajo repetitivo del despacho: recordatorios a clientes, recogida de documentación y datos que pasan solos de una herramienta a otra. Tu equipo deja de hacer de recadero.</p>
+    <div class="hero-author">
+      <!-- Cuando llegue la foto: sustituir el span por <img class="avatar" src="/assets/ismael.jpg" alt="Ismael Núñez López" width="48" height="48"> -->
+      <span class="avatar" aria-hidden="true">IN</span>
+      <p><strong>Ismael Núñez López</strong>Algeciras · trabajas directamente conmigo</p>
+    </div>
     <div class="hero-ctas">
-      <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+      <button class="btn-primary" id="heroCta" onclick="abrirCalendly()">
         Reservar auditoría gratuita — 30 min
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
@@ -1355,9 +1477,9 @@
 <!-- MARQUEE -->
 <div class="marquee-section">
   <div class="marquee-track">
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> ROI medible <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
+    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
   </div>
 </div>
 
@@ -1424,12 +1546,12 @@
   <div class="manifesto-inner">
     <p class="manifesto-line muted">No necesitas más software que nadie acaba usando.</p>
     <p class="manifesto-line accent">Necesitas que los procesos que ya tienes funcionen solos.</p>
-    <p class="manifesto-line muted">No soy una agencia. No soy un freelance más.</p>
-    <p class="manifesto-line accent">Soy tu partner tecnológico en automatización.</p>
+    <p class="manifesto-line muted">Trabajas conmigo, de la auditoría al último arreglo.</p>
+    <p class="manifesto-line accent">Sin equipo de cuentas ni intermediarios.</p>
     <p class="manifesto-line muted">Y cada proceso que automatizamos</p>
     <p class="manifesto-line accent">es tiempo real que tu equipo recupera para lo que importa.</p>
     <div class="manifesto-cta">
-      <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+      <button class="btn-primary" onclick="abrirCalendly()">
         Reservar auditoría gratuita
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </button>
@@ -1462,12 +1584,51 @@
   </div>
 </section>
 
+<!-- PRUEBAS -->
+<div class="bg-alt">
+  <div class="bg-alt-inner" id="pruebas">
+    <p class="section-label reveal">Hecho y funcionando</p>
+    <h2 class="section-title reveal">Sistemas que ya trabajan solos.</h2>
+    <p class="section-sub reveal">Todavía no puedo enseñarte logos de clientes. Lo que sí puedo enseñarte son automatizaciones mías, en marcha, que funcionan cada día sin que yo las toque.</p>
+    <div class="proof-grid">
+      <div class="proof-card reveal">
+        <span class="proof-tag">Demo para asesorías</span>
+        <h3>Recordatorios del cierre de IVA</h3>
+        <p>Cada mañana mira cuánto falta para el próximo cierre trimestral. A 15, 7 y 3 días escribe a los clientes que aún no han mandado las facturas, con un tono cada vez más directo, y apunta en la hoja a quién ha avisado.</p>
+        <div class="proof-mail" aria-label="Ejemplo del correo que recibe el cliente">
+          <div class="mail-meta">Así le llega al cliente a 7 días del cierre</div>
+          <div class="mail-subject">Faltan 7 días: facturas del IVA pendientes</div>
+          Hola Antonio, faltan solo 7 días para el cierre del IVA (20 de octubre) y aún no hemos recibido sus facturas. Por favor, envíenos la documentación esta semana.
+        </div>
+      </div>
+      <div class="proof-card reveal">
+        <span class="proof-tag">El chat de esta web</span>
+        <h3>Un asistente que responde y agenda</h3>
+        <p>Contesta las dudas sobre cómo trabajo y, si tiene sentido hablar, abre el calendario para reservar sin salir de la página. Si algo falla, me llega un aviso.</p>
+        <button type="button" class="proof-try" onclick="abrirChat()">Pruébalo ahora →</button>
+      </div>
+      <div class="proof-card reveal">
+        <span class="proof-tag">Mi propio contenido</span>
+        <h3>Publicación diaria en LinkedIn e Instagram</h3>
+        <p>Cada mañana prepara la publicación del día, la sube a las dos redes y después comprueba que de verdad se ha publicado. Si una red falla, lo reintenta y me avisa por Telegram.</p>
+        <div class="proof-flow">Redacta<b>→</b>Publica<b>→</b>Comprueba<b>→</b>Avisa si falla</div>
+      </div>
+      <div class="proof-card reveal">
+        <span class="proof-tag">Un evento real</span>
+        <h3>Confirmaciones de asistencia de una boda</h3>
+        <p>Los invitados confirman desde la web. La respuesta cae sola en una hoja de cálculo, el recuento se actualiza y a mí me llega el aviso al momento. Sin copiar nada a mano.</p>
+        <div class="proof-flow">Formulario<b>→</b>Hoja de cálculo<b>→</b>Recuento<b>→</b>Aviso</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- LEAD MAGNET CALCULADORA -->
 <section class="section" style="padding-top:3rem;padding-bottom:3rem;">
   <div style="max-width:760px;margin:0 auto;background:linear-gradient(135deg,rgba(196,154,108,0.08) 0%,rgba(196,154,108,0.04) 100%);border:1px solid rgba(196,154,108,0.2);border-radius:16px;padding:3rem;text-align:center;" class="reveal">
     <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.5em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Herramienta gratuita</p>
-    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:0.75rem;letter-spacing:-0.3px;">¿Cuántas horas pierde su despacho<br>en gestión manual cada año?</h2>
-    <p style="color:var(--text-2);font-size:0.95rem;max-width:480px;margin:0 auto 2rem;">Responda 4 preguntas y calcule el coste real — en horas y en euros — de los procesos que aún hace a mano.</p>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:0.75rem;letter-spacing:-0.3px;">¿Cuántas horas pierde tu despacho<br>en gestión manual cada año?</h2>
+    <p style="color:var(--text-2);font-size:0.95rem;max-width:480px;margin:0 auto 2rem;">Responde 4 preguntas y calcula el coste real, en horas y en euros, de lo que tu equipo aún hace a mano.</p>
     <a href="/calculadora" style="display:inline-block;background:var(--accent);color:var(--bg);padding:0.9rem 2.2rem;border-radius:8px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='#A87E54'" onmouseout="this.style.background='var(--accent)'">Calcular ahora — es gratis →</a>
   </div>
 </section>
@@ -1544,7 +1705,7 @@
   </div>
 
   <div class="pricing-final-cta reveal">
-    <button class="pricing-cta pricing-cta-primary" onclick="window.open(CALENDLY_URL,'_blank')">Reservar auditoría gratuita — 30 min</button>
+    <button class="pricing-cta pricing-cta-primary" onclick="abrirCalendly()">Reservar auditoría gratuita — 30 min</button>
   </div>
 
   <p class="pricing-note reveal">No publico tarifas porque no vendo paquetes: el precio depende de cuántos procesos hay que corregir y de lo que ya tengas montado.<br>De la auditoría sale un presupuesto cerrado por escrito, con el alcance detallado fase a fase. Sin sorpresas ni costes ocultos.</p>
@@ -1613,7 +1774,7 @@
     <div class="booking-icon">📅</div>
     <h3>Auditoría gratuita — 30 min</h3>
     <p>Analizamos juntos tus procesos y te digo exactamente qué se puede automatizar y qué ROI tiene. Sin jerga técnica.</p>
-    <button class="btn-primary" onclick="window.open(CALENDLY_URL,'_blank')">
+    <button class="btn-primary" onclick="abrirCalendly()">
       Reservar ahora — es gratis
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
     </button>
@@ -1636,8 +1797,8 @@
             <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
           </div>
           <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000" required>
+            <label for="telefono">Teléfono <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000">
           </div>
           <div class="form-group">
             <label for="empresa">Empresa <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
@@ -1645,7 +1806,7 @@
           </div>
           <div class="form-group">
             <label for="mensaje">¿Qué proceso quieres automatizar?</label>
-            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej: gestión de pedidos, reportes semanales, sincronización de datos..." required></textarea>
+            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej.: perseguir facturas antes del cierre, pasar datos del correo al programa de contabilidad..." required></textarea>
           </div>
           <button type="submit" class="btn-form" id="submitBtn">Enviar solicitud →</button>
           <div class="form-error" id="formError">Hubo un error al enviar. Inténtalo de nuevo.</div>
@@ -1659,6 +1820,10 @@
     </div>
   </div>
 </section>
+
+<div class="cta-fija" aria-hidden="true">
+  <button class="btn-primary" onclick="abrirCalendly()" tabindex="-1">Reservar auditoría gratuita — 30 min</button>
+</div>
 
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para pymes</p>
@@ -1677,8 +1842,47 @@
 
 <script>
   // ─── CONFIGURACIÓN ───
-  // Sustituye esta URL por tu link de Calendly antes de publicar
   const CALENDLY_URL = 'https://calendly.com/ismaelnlai/diagnostico';
+
+  // Calendly en ventana emergente, sin sacar al visitante de la web. Sus scripts
+  // (y sus cookies) solo se cargan al pulsar. Si no cargan, pestaña nueva como antes.
+  function abrirCalendly() {
+    if (window.Calendly) { Calendly.initPopupWidget({ url: CALENDLY_URL }); return; }
+    var hecho = false;
+    function respaldo() { if (!hecho) { hecho = true; window.open(CALENDLY_URL, '_blank'); } }
+    var reloj = setTimeout(respaldo, 4000);
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(l);
+    var sc = document.createElement('script');
+    sc.src = 'https://assets.calendly.com/assets/external/widget.js';
+    sc.onload = function () {
+      if (hecho) return;
+      hecho = true; clearTimeout(reloj);
+      Calendly.initPopupWidget({ url: CALENDLY_URL });
+    };
+    sc.onerror = function () { clearTimeout(reloj); respaldo(); };
+    document.head.appendChild(sc);
+  }
+
+  // Abre el chat de la web (el widget pinta su propio botón #isnl-btn)
+  function abrirChat() {
+    var b = document.getElementById('isnl-btn');
+    if (b) b.click();
+  }
+
+  // CTA fijo en móvil: aparece cuando el botón del hero sale de pantalla
+  // y se esconde al llegar a la sección de contacto, que ya tiene el suyo.
+  (function () {
+    var heroCta = document.getElementById('heroCta');
+    var contacto = document.getElementById('contacto');
+    if (!heroCta || !contacto || !('IntersectionObserver' in window)) return;
+    var heroFuera = false, enContacto = false;
+    function pintar() { document.body.classList.toggle('cta-visible', heroFuera && !enContacto); }
+    new IntersectionObserver(function (e) { heroFuera = !e[0].isIntersecting; pintar(); }).observe(heroCta);
+    new IntersectionObserver(function (e) { enContacto = e[0].isIntersecting; pintar(); }, { rootMargin: '0px 0px -30% 0px' }).observe(contacto);
+  })();
 
   // Header on scroll
   const header = document.getElementById('mainHeader');

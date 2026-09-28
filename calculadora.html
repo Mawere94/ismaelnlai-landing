@@ -325,8 +325,8 @@
 
 <div class="hero">
   <span class="hero-label">Herramienta gratuita</span>
-  <h1>¿Cuánto le cuesta a su despacho<br><em>la gestión manual?</em></h1>
-  <p>Responda 4 preguntas y calcule exactamente cuántas horas y euros pierde su asesoría cada año en tareas que se pueden automatizar.</p>
+  <h1>¿Cuánto le cuesta a tu despacho<br><em>la gestión manual?</em></h1>
+  <p>Responde 4 preguntas y calcula cuántas horas y euros pierde tu asesoría cada año en tareas que se pueden automatizar.</p>
 </div>
 
 <div class="calc-wrapper">
@@ -336,8 +336,8 @@
     <div class="step-header">
       <div class="step-num">1</div>
       <div>
-        <h3>Clientes activos en su despacho</h3>
-        <p>Número aproximado de clientes que gestionan actualmente</p>
+        <h3>Clientes activos en tu despacho</h3>
+        <p>Número aproximado de clientes que gestionáis ahora mismo</p>
       </div>
     </div>
     <div class="slider-wrap">
@@ -353,7 +353,7 @@
       <div class="step-num">2</div>
       <div>
         <h3>Minutos por cliente en cada cierre</h3>
-        <p>Tiempo que dedica a recordar, llamar o escribir a cada cliente por trimestre</p>
+        <p>Tiempo que dedicáis a recordar, llamar o escribir a cada cliente por trimestre</p>
       </div>
     </div>
     <div class="select-grid" id="minutos-grid">
@@ -386,7 +386,7 @@
     <div class="step-header">
       <div class="step-num">4</div>
       <div>
-        <h3>Coste hora de su equipo</h3>
+        <h3>Coste hora de tu equipo</h3>
         <p>Aproximado, contando salario y cargas sociales</p>
       </div>
     </div>
@@ -402,7 +402,7 @@
 
   <!-- RESULTADO -->
   <div class="result-box" id="result">
-    <p class="result-label">Su despacho pierde cada año</p>
+    <p class="result-label">Tu despacho pierde cada año</p>
     <div class="result-main" id="res-horas">—</div>
     <p class="result-sub" id="res-dias">— equivalente a — semanas de trabajo</p>
 
@@ -424,21 +424,21 @@
     <hr class="result-divider">
 
     <div id="form-section">
-      <p class="result-cta-text">Reciba un <strong>análisis personalizado</strong> de qué procesos automatizar primero en su despacho — sin coste.</p>
+      <p class="result-cta-text">Te mando un <strong>análisis personalizado</strong> de qué procesos automatizar primero en tu despacho. Sin coste.</p>
       <div class="email-form" id="lead-form">
-        <input type="text" id="lead-nombre" placeholder="Su nombre" required>
+        <input type="text" id="lead-nombre" placeholder="Tu nombre" required>
         <input type="email" id="lead-email" placeholder="Email del despacho" required>
-        <input type="tel" id="lead-telefono" placeholder="Teléfono de contacto" required>
+        <input type="tel" id="lead-telefono" placeholder="Teléfono (opcional)">
         <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)">
         <button class="btn-cta" id="lead-btn" onclick="enviarLead()">Recibir análisis gratuito →</button>
-        <p class="privacy-note">Sin spam. Puede darse de baja cuando quiera. <a href="/privacidad">Privacidad</a>.</p>
+        <p class="privacy-note">Sin spam: solo te escribo sobre este análisis. <a href="/privacidad">Privacidad</a>.</p>
       </div>
     </div>
 
     <div class="success-box" id="success">
       <div class="success-icon">✓</div>
-      <h3>Perfecto, le contactamos pronto.</h3>
-      <p>Mientras tanto, si quiere acelerar el proceso puede agendar directamente una llamada de 30 minutos — sin compromiso.</p>
+      <h3>Hecho. Te escribo pronto.</h3>
+      <p>Si prefieres ir más rápido, reserva directamente una llamada de 30 minutos. Sin compromiso.</p>
       <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" class="btn-calendly">Agendar diagnóstico gratuito →</a>
     </div>
   </div>
@@ -493,7 +493,7 @@
 
     document.getElementById('res-horas').textContent = Math.round(horasAnio) + ' horas al año';
     document.getElementById('res-dias').textContent =
-      'Equivalente a ' + semanas + ' semanas de trabajo de su equipo';
+      'Equivalente a ' + semanas + ' semanas de trabajo de tu equipo';
     document.getElementById('res-coste').textContent =
       new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(costeAnio);
     document.getElementById('res-cierres').textContent = '×' + cierres;
@@ -510,8 +510,8 @@
     const telefono = document.getElementById('lead-telefono').value.trim();
     const despacho = document.getElementById('lead-despacho').value.trim();
 
-    if (!nombre || !email || !telefono) {
-      alert('Por favor, rellene su nombre, email y teléfono.');
+    if (!nombre || !email) {
+      alert('Rellena tu nombre y tu email, por favor.');
       return;
     }
 
@@ -529,13 +529,16 @@
       body: JSON.stringify({ nombre, email, telefono, empresa: despacho, mensaje }),
       headers: { 'Content-Type': 'application/json' }
     })
-    .then(() => {
+    .then(res => {
+      if (!res.ok) throw new Error();
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('success').classList.add('show');
     })
     .catch(() => {
-      document.getElementById('form-section').style.display = 'none';
-      document.getElementById('success').classList.add('show');
+      // Antes el fallo tambien mostraba "Perfecto, te contactamos": el lead se perdia sin aviso.
+      btn.disabled = false;
+      btn.textContent = 'Recibir análisis gratuito →';
+      alert('No se ha podido enviar. Prueba otra vez o escríbeme a ismael@ismaelnlai.com.');
     });
   }
 </script>
