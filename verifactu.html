@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifactu en tu despacho: fechas, a quién afecta y cómo repartir el trabajo | ismaelnlai</title>
+  <meta name="description" content="Verifactu es obligatorio el 1 de enero de 2027 para sociedades y el 1 de julio de 2027 para el resto. Qué cambia, a quién no le aplica y cómo clasificar a los clientes de un despacho antes de diciembre.">
+  <link rel="canonical" href="https://ismaelnlai.com/verifactu.html">
+
+  <meta property="og:type"        content="article">
+  <meta property="og:url"         content="https://ismaelnlai.com/verifactu.html">
+  <meta property="og:title"       content="Verifactu en tu despacho: lo que cambia el 1 de enero de 2027">
+  <meta property="og:description" content="Fechas del RDL 15/2025, quién queda fuera y cómo clasificar a tus clientes antes de que empiecen las llamadas de diciembre.">
+  <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
+  <meta property="og:locale"      content="es_ES">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Verifactu en tu despacho: fechas, a quién afecta y cómo repartir el trabajo",
+    "datePublished": "2026-09-28",
+    "dateModified": "2026-09-28",
+    "inLanguage": "es-ES",
+    "author": { "@id": "https://ismaelnlai.com/#person", "@type": "Person", "name": "Ismael Núñez López" },
+    "publisher": { "@type": "Organization", "name": "ismaelnlai", "url": "https://ismaelnlai.com" },
+    "citation": [
+      "https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/nota-informativa-ampliacion-plazo-adaptacion-facturacion.html",
+      "https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/cuestiones-generales-ambitos-aplicacion.html"
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --accent:        #C49A6C;
+      --accent-glow:   rgba(196,154,108,0.12);
+      --accent-border: rgba(196,154,108,0.25);
+      --bg:            #08080F;
+      --bg-card:       #111120;
+      --text:          #ECEAE4;
+      --text-2:        #A29A90;
+      --border:        #1F1F30;
+      --red:           #E06C6C;
+      --radius:        10px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Inter', system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+    a { color:var(--accent); }
+
+    header { border-bottom:1px solid var(--border); }
+    .nav { max-width:1100px; margin:0 auto; padding:0 16px; height:68px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-family:'Playfair Display', serif; font-size:1.25rem; font-weight:800; color:var(--text); text-decoration:none; }
+    .logo span { color:var(--accent); }
+    .btn-outline { display:inline-flex; align-items:center; height:38px; padding:0 1.2rem; border:1px solid var(--accent-border); color:var(--accent); border-radius:100px; font-size:.86rem; font-weight:600; text-decoration:none; }
+    .btn-outline:hover { background:var(--accent); color:var(--bg); }
+
+    main { max-width:760px; margin:0 auto; padding:64px 16px 40px; }
+    .label { font-size:.72rem; font-weight:700; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+    h1 { font-family:'Playfair Display', serif; font-size:clamp(2rem, 5vw, 3rem); font-weight:900; line-height:1.12; letter-spacing:-.5px; margin-bottom:1.2rem; }
+    .lead { font-size:1.08rem; color:var(--text-2); margin-bottom:2rem; }
+    h2 { font-family:'Playfair Display', serif; font-size:1.55rem; font-weight:800; margin:3rem 0 1rem; line-height:1.25; }
+    p + p { margin-top:1rem; }
+    .meta { font-size:.82rem; color:var(--text-2); border-left:2px solid var(--accent); padding-left:12px; margin-bottom:2.5rem; }
+
+    .dates { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin:1.2rem 0; }
+    .date-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+    .date-card .d { font-family:'Playfair Display', serif; font-size:1.7rem; font-weight:800; color:var(--accent); }
+    .date-card .w { font-size:.9rem; color:var(--text-2); margin-top:4px; }
+
+    ul.clean { list-style:none; margin:1rem 0; }
+    ul.clean li { padding:10px 0 10px 28px; border-bottom:1px solid var(--border); position:relative; }
+    ul.clean li::before { content:'—'; position:absolute; left:0; color:var(--accent); }
+
+    .groups { display:grid; gap:12px; margin:1.2rem 0; }
+    .group { background:var(--bg-card); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:var(--radius); padding:18px 20px; }
+    .group.warn { border-left-color:var(--red); }
+    .group h3 { font-size:1rem; margin-bottom:6px; }
+    .group p { color:var(--text-2); font-size:.94rem; }
+
+    .note { background:var(--accent-glow); border:1px solid var(--accent-border); border-radius:var(--radius); padding:16px 20px; font-size:.92rem; margin:1.5rem 0; }
+
+    .kit { background:var(--bg-card); border:1px solid var(--accent-border); border-radius:14px; padding:28px 24px; margin:3rem 0 1rem; }
+    .kit h2 { margin-top:0; }
+    .kit ul { margin:1rem 0 1.4rem 1.2rem; color:var(--text-2); }
+    .kit li { margin-bottom:6px; }
+    form { display:grid; gap:12px; }
+    label { font-size:.84rem; font-weight:600; display:block; margin-bottom:4px; }
+    input[type=text], input[type=email] { width:100%; height:46px; padding:0 14px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; font:inherit; }
+    input:focus { outline:2px solid var(--accent-border); border-color:var(--accent); }
+    .check { display:flex; gap:10px; align-items:flex-start; font-size:.82rem; color:var(--text-2); }
+    .check input { margin-top:4px; }
+    .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+    button { height:50px; border:0; border-radius:100px; background:var(--accent); color:var(--bg); font:inherit; font-weight:700; font-size:1rem; cursor:pointer; }
+    button:disabled { opacity:.6; cursor:default; }
+    .msg { display:none; font-size:.92rem; padding:14px 16px; border-radius:8px; }
+    .msg.ok { background:rgba(108,191,138,.12); color:#8FD3A8; }
+    .msg.err { background:rgba(224,108,108,.12); color:#F0A0A0; }
+    .small { font-size:.8rem; color:var(--text-2); }
+
+    .sources { font-size:.85rem; color:var(--text-2); }
+    .sources li { margin:6px 0 6px 1.2rem; }
+
+    footer { border-top:1px solid var(--border); margin-top:3rem; padding:28px 16px; text-align:center; font-size:.8rem; color:var(--text-2); }
+    footer a { color:var(--text-2); }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="/" class="logo">ismael<span>nlai</span></a>
+    <a href="#kit" class="btn-outline">El kit para tu despacho</a>
+  </nav>
+</header>
+
+<main>
+  <p class="label">Verifactu · guía para despachos</p>
+  <h1>Verifactu en tu despacho: lo que cambia el 1 de enero de 2027</h1>
+  <p class="lead">La ley ya la conoces. Lo que te interesa es qué clientes van a llamarte en diciembre, y cómo saberlo ahora que todavía hay tiempo.</p>
+  <p class="meta">Actualizado el 28/09/2026 con la nota de la AEAT sobre el Real Decreto-ley 15/2025. Esto es información general, no asesoramiento: el criterio para cada cliente es tuyo.</p>
+
+  <h2>Las dos fechas que valen hoy</h2>
+  <p>El Real Decreto-ley 15/2025, de 2 de diciembre, volvió a retrasar la adaptación de los sistemas informáticos de facturación. Las fechas vigentes son estas:</p>
+  <div class="dates">
+    <div class="date-card"><div class="d">1 ene 2027</div><div class="w">Contribuyentes del Impuesto sobre Sociedades</div></div>
+    <div class="date-card"><div class="d">1 jul 2027</div><div class="w">El resto de obligados, sobre todo autónomos</div></div>
+  </div>
+  <p>No es la primera vez que se mueven: la fecha original era julio de 2025, y después pasó a enero y julio de 2026. Hasta que llegue la fecha, se pueden enviar registros de prueba con un sistema Verifactu mientras se sigue usando el de siempre. Ese margen es justo el que hace falta para llegar sin prisas.</p>
+
+  <h2>A quién le aplica, y a quién no</h2>
+  <p>Aplica a los empresarios y profesionales establecidos en España que emiten facturas con un sistema informático. Según las preguntas frecuentes de la AEAT, quedan fuera:</p>
+  <ul class="clean">
+    <li>Quien está acogido al <strong>SII</strong> (Suministro Inmediato de Información), sea de forma obligatoria o voluntaria.</li>
+    <li>Quien tiene el domicilio fiscal en el <strong>País Vasco</strong> o en <strong>Navarra</strong>, que tienen su propia normativa foral (TicketBAI en los territorios vascos).</li>
+    <li>Quien factura exclusivamente a mano, sin ningún sistema informático.</li>
+  </ul>
+  <p>El caso de Excel y Word es el que más dudas va a darte, y la AEAT lo resuelve según cómo se usen:</p>
+  <ul class="clean">
+    <li><strong>No son sistema de facturación</strong> si solo sirven para introducir los datos, expedir e imprimir la factura y guardarla. Un listado de facturas con sumas tampoco lo es.</li>
+    <li><strong>Sí lo son</strong> si procesan esa información para generar directamente los libros registro de IVA o de IRPF, la contabilidad u otro resultado para cumplir con Hacienda. El ejemplo de la propia AEAT es una macro de Excel que genera el libro de facturas expedidas.</li>
+  </ul>
+  <p>La mayoría de tus clientes no sabrá decirte en cuál de los dos casos está. Por eso hay que preguntárselo bien.</p>
+
+  <h2>Por qué no es un trámite menor</h2>
+  <p>El artículo 201 bis de la Ley General Tributaria, que entró con la Ley 11/2021, sanciona con <strong>50.000 euros por ejercicio</strong> la mera tenencia de un sistema de facturación que no cumpla los requisitos o que haya sido alterado. Es una sanción por tenerlo: no hace falta que nadie haya defraudado nada.</p>
+
+  <h2>El problema real del despacho: son tus clientes</h2>
+  <p>Tú no vas a tener problemas con Verifactu. Van a tenerlos tus clientes, y te van a llamar a ti. La forma de adelantarse es clasificar la cartera ahora en tres grupos:</p>
+  <div class="groups">
+    <div class="group">
+      <h3>1 · Fuera del ámbito</h3>
+      <p>Clientes en el SII, con domicilio fiscal foral, que facturan a mano o que usan Word o Excel solo para escribir, imprimir y guardar la factura. Se apuntan y se aparcan.</p>
+    </div>
+    <div class="group">
+      <h3>2 · Software comercial</h3>
+      <p>Clientes que facturan con un programa del mercado. La pregunta para ellos es una sola: si su proveedor ya ha adaptado el programa y lo acredita. Es un correo, no una reunión.</p>
+    </div>
+    <div class="group warn">
+      <h3>3 · Sistemas caseros</h3>
+      <p>Clientes con hojas de cálculo que numeran solas, sacan el libro registro o pasan datos a la contabilidad, o con un desarrollo a medida sin adaptar. Son los que te llamarán la última semana de diciembre, y a los que conviene llamar tú en octubre.</p>
+    </div>
+  </div>
+  <p>Con cien clientes, hacer esta clasificación a mano lleva días. Lo que la acelera es tener las preguntas bien hechas y un correo que tus clientes contesten sin tener que llamarte.</p>
+
+  <section class="kit" id="kit">
+    <h2>El kit para repartir el trabajo</h2>
+    <p>Te lo mando por correo. Son dos piezas:</p>
+    <ul>
+      <li><strong>La hoja de clasificación</strong>, con las cinco preguntas que colocan a cada cliente en su grupo. Se descarga en CSV y se abre en Excel.</li>
+      <li><strong>El correo para tus clientes</strong>, escrito para que te contesten esas cinco preguntas en dos minutos. Lo copias, lo firmas y lo mandas.</li>
+    </ul>
+    <form id="kitForm" novalidate>
+      <div>
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre" name="nombre" autocomplete="name" required maxlength="120">
+      </div>
+      <div>
+        <label for="email">Correo del despacho</label>
+        <input type="email" id="email" name="email" autocomplete="email" required maxlength="150">
+      </div>
+      <div>
+        <label for="despacho">Nombre del despacho (opcional)</label>
+        <input type="text" id="despacho" name="despacho" autocomplete="organization" maxlength="150">
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for="web">No rellenes este campo</label>
+        <input type="text" id="web" name="web" tabindex="-1" autocomplete="off">
+      </div>
+      <label class="check">
+        <input type="checkbox" id="acepto" name="acepto" required>
+        <span>Acepto que ismaelnlai use mi correo para enviarme el kit y escribirme sobre él. Nada de boletines. Detalles en la <a href="privacidad.html">política de privacidad</a>.</span>
+      </label>
+      <button type="submit" id="kitBtn">Mándame el kit</button>
+      <div class="msg ok" id="kitOk">Hecho. En unos minutos lo tienes en tu correo, y si no aparece, mira en promociones. Lo manda <strong>ismael@ismaelnlai.com</strong>.</div>
+      <div class="msg err" id="kitErr">No ha salido. Prueba otra vez, o escríbeme directamente a <a href="mailto:ismael@ismaelnlai.com?subject=Kit%20Verifactu">ismael@ismaelnlai.com</a> y te lo mando yo.</div>
+    </form>
+  </section>
+  <p class="small">¿Prefieres que lo veamos juntos con tu cartera real? <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=web&amp;utm_campaign=verifactu">Auditoría gratuita de media hora</a>.</p>
+
+  <h2>Fuentes</h2>
+  <ul class="sources">
+    <li><a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/nota-informativa-ampliacion-plazo-adaptacion-facturacion.html" rel="noopener">AEAT · Nota informativa sobre la ampliación del plazo de adaptación (RDL 15/2025)</a></li>
+    <li><a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/cuestiones-generales-ambitos-aplicacion.html" rel="noopener">AEAT · Preguntas frecuentes: ámbitos de aplicación</a></li>
+    <li><a href="https://sede.agenciatributaria.gob.es/Sede/todas-noticias/2021/octubre/5/aviso-sobre-entrada-vigor-articulos-reglamentario.html" rel="noopener">AEAT · Entrada en vigor de los artículos 29.2.j) y 201 bis de la LGT</a></li>
+  </ul>
+</main>
+
+<footer>
+  <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías</p>
+  <p style="margin-top:.5rem;"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="/">Inicio</a></p>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('kitForm');
+    var btn = document.getElementById('kitBtn');
+    var ok = document.getElementById('kitOk');
+    var err = document.getElementById('kitErr');
+
+    // Origen del lead: el post de LinkedIn o Instagram lleva utm_source en el enlace.
+    var params = new URLSearchParams(window.location.search);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.style.display = 'none';
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      fetch('https://n8n.ismaelnlai.com/webhook/kit-verifactu', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: form.nombre.value,
+          email: form.email.value,
+          despacho: form.despacho.value,
+          web: form.web.value,
+          origen: params.get('utm_source') || 'directo',
+          contenido: params.get('utm_content') || ''
+        })
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error();
+        form.querySelectorAll('div, label.check, button').forEach(function (el) {
+          if (!el.classList.contains('msg')) el.style.display = 'none';
+        });
+        ok.style.display = 'block';
+      })
+      .catch(function () {
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Mándame el kit';
+      });
+    });
+  })();
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

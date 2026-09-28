@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Kit Verifactu para despachos | ismaelnlai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent:#C49A6C; --accent-glow:rgba(196,154,108,0.12); --accent-border:rgba(196,154,108,0.25);
+      --bg:#08080F; --bg-card:#111120; --text:#ECEAE4; --text-2:#A29A90; --border:#1F1F30; --red:#E06C6C;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter', system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+    a { color:var(--accent); }
+    main { max-width:820px; margin:0 auto; padding:48px 16px; }
+    .logo { font-family:'Playfair Display', serif; font-size:1.2rem; font-weight:800; color:var(--text); text-decoration:none; }
+    .logo span { color:var(--accent); }
+    h1 { font-family:'Playfair Display', serif; font-size:clamp(1.9rem, 5vw, 2.6rem); font-weight:900; line-height:1.15; margin:2rem 0 1rem; }
+    h2 { font-family:'Playfair Display', serif; font-size:1.45rem; font-weight:800; margin:3rem 0 1rem; }
+    .lead { color:var(--text-2); font-size:1.05rem; }
+    p + p { margin-top:.9rem; }
+    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:22px; margin:1rem 0; }
+    ol.q { margin:0 0 0 1.3rem; }
+    ol.q li { padding:8px 0; border-bottom:1px solid var(--border); }
+    ol.q li span { display:block; font-size:.86rem; color:var(--text-2); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; margin:1rem 0; }
+    th { text-align:left; color:var(--accent); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; padding:10px; border-bottom:1px solid var(--border); }
+    td { padding:10px; border-bottom:1px solid var(--border); color:var(--text-2); vertical-align:top; }
+    td:first-child { color:var(--text); font-weight:600; white-space:nowrap; }
+    .btn { display:inline-flex; align-items:center; height:46px; padding:0 1.4rem; border-radius:100px; border:0; background:var(--accent); color:var(--bg); font:inherit; font-weight:700; cursor:pointer; text-decoration:none; }
+    .btn.ghost { background:transparent; color:var(--accent); border:1px solid var(--accent-border); }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:1rem; }
+    pre { white-space:pre-wrap; font-family:inherit; font-size:.95rem; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:18px; color:var(--text); }
+    .note { background:var(--accent-glow); border:1px solid var(--accent-border); border-radius:10px; padding:14px 18px; font-size:.9rem; margin:1rem 0; }
+    .copied { font-size:.85rem; color:#8FD3A8; align-self:center; display:none; }
+    footer { border-top:1px solid var(--border); margin-top:3rem; padding:24px 16px; text-align:center; font-size:.8rem; color:var(--text-2); }
+    @media print {
+      body { background:#fff; color:#111; }
+      .actions, footer { display:none; }
+      .card, pre { background:#fff; border-color:#ccc; color:#111; }
+      td, .lead, ol.q li span { color:#333; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <a href="/" class="logo">ismael<span>nlai</span></a>
+  <h1>Kit Verifactu para despachos</h1>
+  <p class="lead">Dos piezas para clasificar tu cartera antes de diciembre: la hoja con las preguntas que colocan a cada cliente en su grupo y el correo para que tus clientes te las contesten.</p>
+  <div class="note">Criterio sobre Word y Excel sacado de las <a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/cuestiones-generales-ambitos-aplicacion.html" rel="noopener">preguntas frecuentes de la AEAT</a>. Fechas vigentes a 28/09/2026 (RDL 15/2025): <strong>1 de enero de 2027</strong> para contribuyentes del Impuesto sobre Sociedades y <strong>1 de julio de 2027</strong> para el resto. Compruébalas en la <a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html" rel="noopener">sede de la AEAT</a> antes de mandar nada, porque ya se han movido más de una vez.</div>
+
+  <h2>1 · Las cinco preguntas</h2>
+  <p>Las dos primeras las sabes tú sin preguntar. Las otras tres son las que van en el correo.</p>
+  <div class="card">
+    <ol class="q">
+      <li>¿Está acogido al SII? <span>Si la respuesta es sí, queda fuera de Verifactu: grupo 1.</span></li>
+      <li>¿Tiene el domicilio fiscal en el País Vasco o en Navarra? <span>Si es así, se rige por la normativa foral: grupo 1.</span></li>
+      <li>¿Emite facturas con algún programa, hoja de cálculo o aplicación? <span>Si factura exclusivamente a mano, grupo 1.</span></li>
+      <li>¿Con cuál, y para qué lo usa? <span>Word o Excel solo para escribir, imprimir y guardar la factura: grupo 1. Una hoja que numera sola, saca el libro registro o pasa datos a la contabilidad, o un desarrollo a medida: grupo 3. Un programa comercial: sigue a la pregunta 5.</span></li>
+      <li>¿Le ha confirmado su proveedor que el programa cumple Verifactu? <span>Sí, y lo acredita: grupo 2 resuelto. No, o no lo sabe: grupo 2 pendiente, y se le pregunta al proveedor.</span></li>
+    </ol>
+  </div>
+
+  <h2>2 · La hoja de clasificación</h2>
+  <p>Una fila por cliente. La columna de fecha límite depende de si tributa por Sociedades.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Grupo</th><th>Quién entra</th><th>Qué hacer</th></tr>
+      <tr><td>1 · Fuera</td><td>SII, domicilio foral, facturación a mano, o Word/Excel solo para escribir, imprimir y guardar</td><td>Anotarlo y cerrar. Revisar si cambia su situación.</td></tr>
+      <tr><td>2 · Comercial</td><td>Factura con un programa del mercado</td><td>Confirmar con el proveedor que está adaptado. Si no lo está, pedir fecha.</td></tr>
+      <tr><td>3 · Casero</td><td>Hoja de cálculo con macros o que genera el libro registro o la contabilidad, o desarrollo propio sin adaptar</td><td>Llamarle antes de noviembre: tiene que cambiar de herramienta.</td></tr>
+    </table>
+  </div>
+  <div class="actions">
+    <button class="btn" id="csvBtn" type="button">Descargar la hoja (CSV)</button>
+    <button class="btn ghost" type="button" onclick="window.print()">Imprimir esta página</button>
+  </div>
+
+  <h2>3 · El correo para tus clientes</h2>
+  <p>Está escrito para contestarse en dos minutos desde el móvil. Cambia lo que va entre corchetes.</p>
+  <pre id="mailText">Asunto: Tres preguntas rápidas sobre cómo haces tus facturas
+
+Hola, [nombre]:
+
+A partir del [1 de enero / 1 de julio] de 2027, los programas con los que se emiten facturas tienen que cumplir los requisitos de Verifactu, el sistema de la Agencia Tributaria. Queremos comprobar cuanto antes si te afecta, para que no te pille con prisas.
+
+Solo necesitamos que nos contestes a esto:
+
+1. ¿Haces tus facturas con algún programa, con una hoja de cálculo (Excel, por ejemplo) o con alguna aplicación? ¿O las haces a mano?
+2. Si usas algo, ¿cómo se llama? Si es Excel o Word: ¿solo escribes, imprimes y guardas la factura, o la hoja hace algo más, como numerar sola, sacar el listado de facturas para Hacienda o pasar datos a la contabilidad?
+3. Si es un programa comercial, ¿te ha dicho tu proveedor si ya está adaptado a Verifactu?
+
+Si no sabes alguna respuesta, no pasa nada: dínoslo y lo miramos contigo.
+
+Un saludo,
+[firma del despacho]</pre>
+  <div class="actions">
+    <button class="btn" id="copyBtn" type="button">Copiar el correo</button>
+    <span class="copied" id="copied">Copiado</span>
+  </div>
+
+  <h2>Y si son muchos clientes</h2>
+  <p>Con una cartera grande, lo que se come el tiempo no es preguntar: es perseguir a quien no contesta y anotar cada respuesta. Eso se puede dejar montado para que el correo salga solo, las respuestas caigan en la hoja y te llegue un aviso cuando alguien del grupo 3 aparece.</p>
+  <p>Si quieres que lo veamos con tu caso, tienes media hora sin compromiso <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=kit&amp;utm_campaign=verifactu">aquí</a>. O contesta al correo con el que te llegó este kit, que lo leo yo.</p>
+  <p style="margin-top:2rem;color:var(--text-2);font-size:.9rem;">Ismael Núñez López · ismaelnlai · <a href="mailto:ismael@ismaelnlai.com">ismael@ismaelnlai.com</a></p>
+</main>
+
+<footer>Información general, no asesoramiento jurídico ni fiscal. &copy; 2026 ismaelnlai · <a href="privacidad.html">Privacidad</a></footer>
+
+<script>
+  (function () {
+    // Punto y coma: es el separador que Excel en español abre sin preguntar.
+    var cabecera = ['Cliente', 'Tributa por Sociedades (S/N)', 'Fecha limite',
+      'En SII (S/N)', 'Domicilio foral (S/N)', 'Factura con programa (S/N)',
+      'Programa que usa', 'Proveedor confirma Verifactu (S/N/No sabe)',
+      'Grupo (1/2/3)', 'Proximo paso', 'Fecha de contacto', 'Notas'];
+    var ejemplo = ['Ejemplo: Cliente SL', 'S', '01/01/2027', 'N', 'N', 'S',
+      'Excel con macro que saca el libro registro', 'No aplica', '3', 'Llamar', '', 'Borra esta fila'];
+
+    function linea(celdas) {
+      return celdas.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(';');
+    }
+
+    document.getElementById('csvBtn').addEventListener('click', function () {
+      // BOM delante para que Excel lea bien los acentos del contenido que se escriba.
+      var csv = '﻿' + linea(cabecera) + '\r\n' + linea(ejemplo) + '\r\n';
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'verifactu-clasificacion-clientes.csv';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      var texto = document.getElementById('mailText').innerText;
+      var aviso = document.getElementById('copied');
+      function hecho() { aviso.style.display = 'inline'; setTimeout(function () { aviso.style.display = 'none'; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(hecho, function () { window.getSelection().selectAllChildren(document.getElementById('mailText')); });
+      } else {
+        window.getSelection().selectAllChildren(document.getElementById('mailText'));
+      }
+    });
+  })();
+</script>
+</body>
+</html>
