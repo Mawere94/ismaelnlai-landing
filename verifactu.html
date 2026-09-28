@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verifactu en tu despacho: fechas, a quién afecta y cómo repartir el trabajo | ismaelnlai</title>
   <meta name="description" content="Verifactu es obligatorio el 1 de enero de 2027 para sociedades y el 1 de julio de 2027 para el resto. Qué cambia, a quién no le aplica y cómo clasificar a los clientes de un despacho antes de diciembre.">
-  <link rel="canonical" href="https://ismaelnlai.com/verifactu.html">
+  <link rel="canonical" href="https://ismaelnlai.com/verifactu">
 
   <meta property="og:type"        content="article">
-  <meta property="og:url"         content="https://ismaelnlai.com/verifactu.html">
+  <meta property="og:url"         content="https://ismaelnlai.com/verifactu">
   <meta property="og:title"       content="Verifactu en tu despacho: lo que cambia el 1 de enero de 2027">
   <meta property="og:description" content="Fechas del RDL 15/2025, quién queda fuera y cómo clasificar a tus clientes antes de que empiecen las llamadas de diciembre.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
   <meta property="og:locale"      content="es_ES">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
 
   <script type="application/ld+json">
   {
@@ -26,7 +26,9 @@
     "datePublished": "2026-09-28",
     "dateModified": "2026-09-28",
     "inLanguage": "es-ES",
-    "author": { "@id": "https://ismaelnlai.com/#person", "@type": "Person", "name": "Ismael Núñez López" },
+    "mainEntityOfPage": "https://ismaelnlai.com/verifactu",
+    "image": "https://ismaelnlai.com/assets/og-image.png",
+    "author": { "@id": "https://ismaelnlai.com/#person", "@type": "Person", "name": "Ismael Núñez López", "url": "https://ismaelnlai.com/sobre-mi" },
     "publisher": { "@type": "Organization", "name": "ismaelnlai", "url": "https://ismaelnlai.com" },
     "citation": [
       "https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/nota-informativa-ampliacion-plazo-adaptacion-facturacion.html",
@@ -194,7 +196,7 @@
       </div>
       <label class="check">
         <input type="checkbox" id="acepto" name="acepto" required>
-        <span>Acepto que ismaelnlai use mi correo para enviarme el kit y escribirme sobre él. Nada de boletines. Detalles en la <a href="privacidad.html">política de privacidad</a>.</span>
+        <span>Acepto que ismaelnlai use mi correo para enviarme el kit y escribirme sobre él. Nada de boletines. Detalles en la <a href="/privacidad">política de privacidad</a>.</span>
       </label>
       <button type="submit" id="kitBtn">Mándame el kit</button>
       <div class="msg ok" id="kitOk">Hecho. En unos minutos lo tienes en tu correo, y si no aparece, mira en promociones. Lo manda <strong>ismael@ismaelnlai.com</strong>.</div>
@@ -213,7 +215,7 @@
 
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías</p>
-  <p style="margin-top:.5rem;"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="/">Inicio</a></p>
+  <p style="margin-top:.5rem;"><a href="/asesorias-campo-de-gibraltar">Asesorías del Campo de Gibraltar</a> · <a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a> · <a href="/">Inicio</a></p>
 </footer>
 
 <script>
@@ -259,6 +261,7 @@
     });
   })();
 </script>
-<script src="chat-widget.js"></script>
+<script src="/chat-widget.js"></script>
+<script src="/consent.js" defer></script>
 </body>
 </html>

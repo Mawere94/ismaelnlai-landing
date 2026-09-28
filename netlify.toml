@@ -52,3 +52,21 @@
   to = "/cookies"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/verifactu.html"
+  to = "/verifactu"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/verifactu-kit.html"
+  to = "/verifactu-kit"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/asesorias-campo-de-gibraltar.html"
+  to = "/asesorias-campo-de-gibraltar"
+  status = 301
+  force = true
