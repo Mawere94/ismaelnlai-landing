@@ -76,3 +76,10 @@
   to = "/perseguir-facturas-cierre-trimestral"
   status = 301
   force = true
+
+# Pruebas locales del chat y servidor de desarrollo: no se publican.
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
