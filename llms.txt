@@ -2,12 +2,12 @@
 
 > Automatización de procesos con N8N e Inteligencia Artificial para asesorías
 > fiscales, gestorías y pymes españolas. Especialista: Ismael Núñez López,
-> Algeciras (Cádiz), España. Auditoría inicial gratuita, primer proceso funcionando en
-> menos de 2 semanas y el sistema completo por fases, presupuesto cerrado.
+> Algeciras (Cádiz), España. Diagnóstico gratuito de 30 minutos, presupuesto con alcance,
+> fases, hitos y condiciones de pago, e implantación por fases.
 
 ## Core Pages
 
-- [Inicio](https://ismaelnlai.com/): Propuesta de valor, proceso en 3 pasos, tres niveles de alcance (auditoría gratuita, montaje del sistema y mantenimiento opcional) con presupuesto cerrado tras la auditoría gratuita de 30 minutos, FAQ completa con 6 preguntas y formulario de contacto.
+- [Inicio](https://ismaelnlai.com/): Recordatorios y seguimiento de documentación para despachos. Demo ilustrativa (avisos a 15, 7 y 3 días sobre una hoja de cálculo; la entrega la marca el equipo), cómo se trabaja en 3 pasos, cómo se cobra (diagnóstico gratuito de 30 minutos, implantación a medida por fases, mantenimiento opcional), FAQ con 6 preguntas, reserva y formulario de contacto.
 - [Sobre mí](https://ismaelnlai.com/sobre-mi): Perfil de Ismael Núñez López, metodología de trabajo, herramientas con las que trabaja (N8N, Gmail, Google Sheets y Drive, HubSpot, Calendly, Claude y OpenAI, Telegram, WhatsApp Business API, Docuseal) y los principios con los que trabaja.
 - [Calculadora de horas perdidas](https://ismaelnlai.com/calculadora): Herramienta interactiva gratuita para que despachos y pymes calculen cuántas horas y euros pierden al año en gestión manual.
 - [Verifactu en tu despacho](https://ismaelnlai.com/verifactu): Guía para asesorías y gestorías. Fechas vigentes del RDL 15/2025 (1 de enero de 2027 para contribuyentes del Impuesto sobre Sociedades y 1 de julio de 2027 para el resto), el aplazamiento a octubre de 2028 anunciado por Hacienda el 05/10/2026 (pendiente del BOE), quién queda fuera (SII, domicilio foral, facturación solo a mano), la sanción del art. 201 bis LGT y cómo clasificar la cartera de clientes en tres grupos. Con fuentes de la AEAT.
@@ -17,8 +17,9 @@
 ## Datos clave
 
 - Herramienta principal: N8N (integra Gmail, Google Sheets, WhatsApp, HubSpot y cientos de aplicaciones más)
-- Implementación: 3-5 días procesos simples, 1-2 semanas flujos complejos, 8-10 semanas el sistema completo de una empresa (por fases)
-- Auditoría inicial: gratuita, 30 minutos, sin compromiso
+- Plazos: se estiman en el presupuesto según alcance, accesos y herramientas del despacho; se trabaja por fases
+- Diagnóstico inicial: gratuito, 30 minutos, sin compromiso
+- Costes recurrentes: mantenimiento opcional y, aparte, las cuotas de herramientas de terceros
 - Zona: toda España (remoto), base en Algeciras, Campo de Gibraltar
 - Contacto: ismael@ismaelnlai.com
 

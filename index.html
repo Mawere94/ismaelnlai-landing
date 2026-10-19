@@ -1,35 +1,22 @@
 <!DOCTYPE html>
-<html lang="es" class="sin-js">
+<html lang="es">
 <head>
-<script>
-  // La pagina entera nace en opacity:0 y la revela el IntersectionObserver.
-  // Si el JS no corre, o peta antes de llegar ahi, sin esto no se ve nada.
-  document.documentElement.classList.remove('sin-js');
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      if (!document.querySelector('.reveal.visible, .reveal-left.visible, .reveal-right.visible')) {
-        document.documentElement.classList.add('sin-js');
-      }
-    }, 2500);
-  });
-</script>
-<noscript><style>
-  .reveal, .reveal-left, .reveal-right, .manifesto-line, .manifesto-cta {
-    opacity: 1 !important; transform: none !important; filter: none !important;
-  }
-</style></noscript>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automatización para asesorías y gestorías con IA | ismaelnlai</title>
-  <meta name="description" content="Automatizo el trabajo repetitivo de asesorías y gestorías con N8N e IA: avisos de IVA, recogida de facturas y datos entre herramientas. Auditoría gratis.">
+  <meta name="description" content="Automatizo los recordatorios y el seguimiento de documentación de asesorías y gestorías con N8N e IA. Diagnóstico gratuito de 30 minutos.">
   <link rel="canonical" href="https://ismaelnlai.com/">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#08080F">
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://ismaelnlai.com/">
   <meta property="og:title"       content="Tu asesoría, sin perseguir facturas cada trimestre | ismaelnlai">
-  <meta property="og:description" content="Elimina el trabajo manual repetitivo en tu despacho. Automatización con N8N e IA, primer proceso en marcha en menos de 2 semanas, auditoría gratuita.">
+  <meta property="og:description" content="Recordatorios y seguimiento de documentación automatizados para despachos. Presupuesto claro, trabajo por fases y diagnóstico gratuito de 30 minutos.">
   <meta property="og:image"       content="https://ismaelnlai.com/assets/og-image.png">
   <meta property="og:locale"      content="es_ES">
   <meta property="og:site_name"   content="ismaelnlai">
@@ -37,7 +24,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="Tu asesoría, sin perseguir facturas cada trimestre | ismaelnlai">
-  <meta name="twitter:description" content="Elimina el trabajo manual repetitivo. N8N + IA. Primer proceso en marcha en menos de 2 semanas.">
+  <meta name="twitter:description" content="Recordatorios y seguimiento de documentación automatizados para despachos. Diagnóstico gratuito de 30 minutos.">
   <meta name="twitter:image"       content="https://ismaelnlai.com/assets/og-image.png">
 
   <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -47,22 +34,25 @@
     :root {
       --accent:        #C49A6C;
       --accent-dark:   #A87E54;
-      --accent-glow:   rgba(196,154,108,0.12);
-      --accent-border: rgba(196,154,108,0.25);
+      --accent-soft:   rgba(196,154,108,0.10);
+      --accent-border: rgba(196,154,108,0.32);
       --bg:            #08080F;
       --bg-2:          #0D0D18;
-      --bg-card:       #111120;
+      --bg-card:       #12121F;
       --text:          #ECEAE4;
-      --text-2:        #8A8278;
-      --text-3:        #3E3A36;
-      --border:        #1A1A28;
-      --radius:        10px;
+      --text-2:        #ADA59A;   /* texto secundario: ~7:1 sobre el fondo */
+      --text-3:        #8C857B;   /* solo para detalles menores: ~5:1 */
+      --border:        #23233A;
+      --ok:            #8FC79A;
+      --warn:          #E3B873;
+      --error:         #F08A75;
+      --radius:        12px;
+      --header-h:      72px;
       --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
@@ -70,1143 +60,392 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
+    img { max-width: 100%; display: block; }
+    a { color: var(--accent); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
-    /* ─── REVEAL ANIMATIONS ─── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: absolute; left: 1rem; top: -100px; z-index: 200;
+      background: var(--accent); color: var(--bg); font-weight: 700;
+      padding: 0.7rem 1.1rem; border-radius: 8px; text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
 
-    /* Keyframes for scroll-driven path */
-    @keyframes reveal-up {
-      from { opacity: 0; transform: translateY(24px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    /* ─── BOTONES ─── */
+    .btn-primary, .btn-outline {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      border-radius: 100px; font-family: inherit; font-weight: 700; text-decoration: none;
+      cursor: pointer; transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
     }
-    @keyframes reveal-up-heading {
-      from { opacity: 0; transform: translateY(32px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    .btn-primary {
+      min-height: 52px; padding: 0.8rem 1.9rem; font-size: 0.98rem;
+      background: var(--accent); color: var(--bg); border: none;
     }
-    @keyframes reveal-up-sub {
-      from { opacity: 0; transform: translateY(16px); filter: blur(3px); }
-      to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    .btn-primary:hover { background: #D2AA7E; }
+    .btn-outline {
+      min-height: 44px; padding: 0.55rem 1.3rem; font-size: 0.9rem;
+      background: transparent; color: var(--accent); border: 1px solid var(--accent-border);
     }
-    @keyframes reveal-left-kf {
-      from { opacity: 0; transform: translateX(-24px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateX(0);     filter: blur(0);   }
-    }
-    @keyframes reveal-right-kf {
-      from { opacity: 0; transform: translateX(24px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateX(0);    filter: blur(0);   }
-    }
+    .btn-outline:hover { background: var(--accent-soft); border-color: var(--accent); }
+    .btn-primary svg, .btn-outline svg { flex-shrink: 0; }
 
-    /* Baseline: transition-based (all browsers) */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      filter: blur(4px);
-      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
-
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-24px);
-      filter: blur(4px);
-      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
-    }
-    .reveal-left.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
-
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(24px);
-      filter: blur(4px);
-      transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out), filter 0.55s var(--ease-out);
-    }
-    .reveal-right.visible { opacity: 1; transform: translateX(0); filter: blur(0); }
-
-    /* Reveal hierarchy: different offsets by element role */
-    .section-title.reveal  { transform: translateY(32px); }
-    .section-sub.reveal    { transform: translateY(16px); filter: blur(3px); }
-    .section-label.reveal  { transform: translateY(14px); filter: blur(2px); }
-
-    /* CSS stagger for known sibling groups (replaces JS transitionDelay) */
-    .cards-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
-    .cards-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
-    .steps-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
-    .steps-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
-    .faq-list .faq-item:nth-child(2) { transition-delay: 0.05s; }
-    .faq-list .faq-item:nth-child(3) { transition-delay: 0.10s; }
-    .faq-list .faq-item:nth-child(4) { transition-delay: 0.15s; }
-    .faq-list .faq-item:nth-child(5) { transition-delay: 0.20s; }
-    .faq-list .faq-item:nth-child(6) { transition-delay: 0.25s; }
-
-    /* Enhanced: scroll-driven animations (Chrome 115+, Edge 115+, Safari 18+) */
-    @supports (animation-timeline: scroll()) {
-      .reveal {
-        animation: reveal-up 0.55s var(--ease-out) both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 35%;
-        transition: none;
-      }
-      .reveal-left {
-        animation: reveal-left-kf 0.55s var(--ease-out) both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 35%;
-        transition: none;
-      }
-      .reveal-right {
-        animation: reveal-right-kf 0.55s var(--ease-out) both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 35%;
-        transition: none;
-      }
-      /* Hierarchy overrides in scroll-driven mode */
-      .section-title.reveal {
-        animation-name: reveal-up-heading;
-        transform: translateY(0); /* reset baseline override */
-      }
-      .section-sub.reveal {
-        animation-name: reveal-up-sub;
-        transform: translateY(0);
-        filter: blur(0);
-      }
-      .section-label.reveal {
-        animation-name: reveal-up-sub;
-        transform: translateY(0);
-        filter: blur(0);
-      }
-      /* Stagger via animation-delay in scroll-driven mode */
-      .cards-grid .reveal:nth-child(2),
-      .steps-grid .reveal:nth-child(2),
-      .faq-list .faq-item:nth-child(2) { animation-delay: 0.06s; transition-delay: 0s; }
-      .cards-grid .reveal:nth-child(3),
-      .steps-grid .reveal:nth-child(3),
-      .faq-list .faq-item:nth-child(3) { animation-delay: 0.12s; transition-delay: 0s; }
-      .faq-list .faq-item:nth-child(4) { animation-delay: 0.18s; transition-delay: 0s; }
-      .faq-list .faq-item:nth-child(5) { animation-delay: 0.24s; transition-delay: 0s; }
-      .faq-list .faq-item:nth-child(6) { animation-delay: 0.30s; transition-delay: 0s; }
-    }
-
-    /* ─── HEADER ─── */
+    /* ─── CABECERA ─── */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-      border-bottom: 1px solid transparent;
-    }
-    header.scrolled {
-      background: rgba(8,8,15,0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom-color: var(--border);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(8,8,15,0.94);
+      border-bottom: 1px solid var(--border);
     }
     .nav {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 5%;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: 1200px; margin: 0 auto; padding: 0 5%;
+      height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.3px;
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 800;
+      color: var(--text); text-decoration: none; letter-spacing: -0.3px;
     }
     .logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--text-2);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 500;
-      transition: color 0.2s var(--ease-out);
-      position: relative;
-    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-2); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      width: 100%; height: 1px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 0.25s var(--ease-out);
-    }
-    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav .btn-outline { min-height: 40px; }
 
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      height: 40px;
-      padding: 0 1.5rem;
-      border: 1px solid var(--accent-border);
-      color: var(--accent);
-      border-radius: 100px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      background: transparent;
-      font-family: inherit;
-      transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+    /* ─── ESTRUCTURA ─── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+    .section { padding: 5.5rem 0; }
+    .bg-alt { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.9rem;
     }
-    .btn-outline:hover {
-      background: var(--accent);
-      color: var(--bg);
-      border-color: var(--accent);
+    h2.title {
+      font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+      font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 1rem; text-wrap: balance;
     }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      height: 52px;
-      padding: 0 2.2rem;
-      background: var(--accent);
-      color: var(--bg);
-      border-radius: 100px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      font-family: inherit;
-      transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-      box-shadow: 0 4px 24px rgba(196,154,108,0.25);
+    .lead { font-size: 1.05rem; color: var(--text-2); max-width: 620px; line-height: 1.7; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent-border); border-radius: 100px;
+      padding: 0.25rem 0.75rem;
     }
-    .btn-primary:hover {
-      background: var(--accent-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(196,154,108,0.35);
-    }
-    .btn-primary:active { transform: translateY(-1px) scale(0.97); }
 
     /* ─── HERO ─── */
-    .hero-wrapper {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
+    .hero { padding: calc(var(--header-h) + 4.5rem) 0 4.5rem; }
+    .hero-grid {
+      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: 4rem; align-items: center;
     }
-    @property --glow-a {
-      syntax: '<number>';
-      initial-value: 0.07;
-      inherits: false;
+    .hero h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.3rem, 4.4vw, 3.9rem);
+      font-weight: 900; line-height: 1.08; letter-spacing: -1.2px; margin: 1.3rem 0 1.4rem; text-wrap: balance;
     }
-    @property --glow-b {
-      syntax: '<number>';
-      initial-value: 0.04;
-      inherits: false;
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub { font-size: 1.12rem; color: var(--text-2); max-width: 540px; line-height: 1.7; margin-bottom: 2rem; }
+    .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.2rem; }
+    .hero-note { font-size: 0.88rem; color: var(--text-2); margin-top: 0.8rem; }
+    .hero-author {
+      display: flex; align-items: center; gap: 0.9rem;
+      margin-top: 2.2rem; padding-top: 1.6rem; border-top: 1px solid var(--border); max-width: 540px;
     }
-    @keyframes hero-breathe {
-      from { --glow-a: 0.05; --glow-b: 0.02; }
-      to   { --glow-a: 0.11; --glow-b: 0.07; }
+    .hero-author img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-border); }
+    .hero-author p { font-size: 0.9rem; color: var(--text-2); line-height: 1.45; }
+    .hero-author strong { display: block; color: var(--text); font-weight: 600; }
+
+    /* Ilustración del proceso */
+    .process-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.8rem 1.8rem 1.5rem;
     }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 75% 50%, rgba(196,154,108,var(--glow-a)) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,154,108,var(--glow-b)) 0%, transparent 50%);
-      pointer-events: none;
-      animation: hero-breathe 7s ease-in-out infinite alternate;
+    .process-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .process-head h2 { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .timeline { list-style: none; position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 15px; top: 14px; bottom: 14px; width: 2px;
+      background: linear-gradient(var(--border), var(--accent-border));
     }
-    .hero-decoration {
-      position: absolute;
-      right: -2%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 46%;
-      opacity: 0.055;
-      pointer-events: none;
+    .timeline li { position: relative; display: grid; grid-template-columns: 32px 1fr; gap: 1rem; padding: 0.55rem 0; }
+    .t-dot {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--bg-2);
+      border: 2px solid var(--accent-border); display: flex; align-items: center; justify-content: center;
+      color: var(--accent); position: relative; z-index: 1;
     }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 10rem 5% 6rem;
-      width: 100%;
+    .t-dot svg { width: 15px; height: 15px; }
+    .timeline li.final .t-dot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .t-when, .t-what { display: block; }
+    .t-when { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+    .t-what { font-size: 0.97rem; color: var(--text); }
+    .t-what small { display: block; font-size: 0.85rem; color: var(--text-2); }
+    .process-foot {
+      margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-size: 0.86rem; color: var(--text-2);
     }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(196,154,108,0.08);
-      border: 1px solid var(--accent-border);
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.35rem 1rem;
-      border-radius: 100px;
-      margin-bottom: 2rem;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-    }
-    .hero-content h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 4.6vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -1.5px;
-      margin-bottom: 1.8rem;
-      max-width: 960px;
-      text-wrap: balance;
-    }
-    .hero-content h1 em {
-      font-style: normal;
-      color: var(--accent);
-    }
-    .hero-subtitle {
-      font-size: 1.15rem;
-      color: var(--text-2);
-      max-width: 520px;
-      line-height: 1.75;
-      margin-bottom: 3rem;
-    }
-    .hero-ctas {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 5rem;
-    }
-    .trust-bar {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--border);
-      max-width: 580px;
-    }
-    .trust-item strong {
-      display: block;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.5px;
-    }
-    .trust-item span {
-      font-size: 0.75rem;
-      color: var(--text-2);
+    @media (prefers-reduced-motion: no-preference) {
+      .timeline li { animation: step-in 0.5s var(--ease-out) both; }
+      .timeline li:nth-child(2) { animation-delay: 0.12s; }
+      .timeline li:nth-child(3) { animation-delay: 0.24s; }
+      .timeline li:nth-child(4) { animation-delay: 0.36s; }
+      @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     }
 
-    /* ─── MARQUEE ─── */
-    .marquee-section {
-      overflow: hidden;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 1.1rem 0;
-      background: var(--bg-2);
+    /* ─── DEMO ─── */
+    .demo-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .demo-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; }
+    .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+    .panel-title {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+      padding: 1rem 1.3rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600;
     }
-    .marquee-track {
-      display: flex;
-      white-space: nowrap;
-      animation: marquee 30s linear infinite;
+    .panel-title span { font-weight: 400; color: var(--text-2); font-size: 0.82rem; }
+    .sheet { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .sheet caption { text-align: left; }
+    .sheet th {
+      text-align: left; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-2); padding: 0.8rem 1.3rem; border-bottom: 1px solid var(--border);
     }
-    .marquee-track span {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      padding-right: 2rem;
-    }
-    .marquee-track span b { color: var(--accent); font-weight: 700; }
-    .marquee-section:hover .marquee-track { animation-play-state: paused; }
+    .sheet td { padding: 0.85rem 1.3rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .sheet tr:last-child td { border-bottom: none; }
+    .sheet td small { display: block; color: var(--text-2); font-size: 0.8rem; }
+    .state { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; white-space: nowrap; }
+    .state::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .state.ok { color: var(--ok); }
+    .state.pend { color: var(--warn); }
 
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    .mail { padding: 1.3rem; }
+    .mail-card { background: #F4F2EE; color: #1F1F1F; border-radius: 8px; padding: 1.1rem 1.2rem; font-size: 0.9rem; line-height: 1.6; }
+    .mail-meta { font-size: 0.78rem; color: #555; margin-bottom: 0.3rem; }
+    .mail-subject { font-weight: 700; margin-bottom: 0.6rem; }
+    .mail-note { font-size: 0.84rem; color: var(--text-2); margin-top: 0.9rem; }
+
+    .who-does { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    .who-does .panel { padding: 1.4rem 1.5rem; }
+    .who-does h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.5rem; }
+    .who-does ul { list-style: none; }
+    .who-does li { position: relative; padding: 0.35rem 0 0.35rem 1.4rem; color: var(--text-2); font-size: 0.93rem; }
+    .who-does li::before { content: ''; position: absolute; left: 0; top: 0.85rem; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .who-does .team li::before { background: transparent; border: 1.5px solid var(--text-2); }
+    .demo-foot { margin-top: 1.5rem; font-size: 0.92rem; color: var(--text-2); max-width: 820px; }
+
+    /* ─── QUÉ CAMBIA Y CÓMO TRABAJAMOS ─── */
+    .change-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: start; }
+    .change-list { list-style: none; margin-top: 1.8rem; }
+    .change-list li { padding: 1rem 0; border-top: 1px solid var(--border); }
+    .change-list strong { display: block; font-size: 1.02rem; margin-bottom: 0.2rem; }
+    .change-list span { color: var(--text-2); font-size: 0.94rem; }
+    .caveat { font-size: 0.86rem; color: var(--text-2); margin-top: 1rem; padding-left: 0.9rem; border-left: 2px solid var(--accent-border); }
+    .steps { list-style: none; counter-reset: step; }
+    .steps li { counter-increment: step; display: grid; grid-template-columns: 44px 1fr; gap: 1rem; padding: 1.3rem 0; border-top: 1px solid var(--border); }
+    .steps li:first-child { border-top: none; padding-top: 0.3rem; }
+    .steps li::before {
+      content: counter(step); width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent-soft); border: 1px solid var(--accent-border); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.15rem;
+    }
+    .steps h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .steps p { color: var(--text-2); font-size: 0.94rem; }
+
+    /* ─── QUIÉN ─── */
+    .about { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 3.5rem; align-items: center; }
+    .about img { width: 220px; height: 275px; object-fit: cover; border-radius: 14px; border: 1px solid var(--border); }
+    .about p { color: var(--text-2); font-size: 1rem; margin-bottom: 1rem; max-width: 620px; }
+    .about p strong { color: var(--text); font-weight: 600; }
+    .about-facts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.4rem; list-style: none; }
+    .about-facts li { font-size: 0.85rem; color: var(--text); background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; }
+    .about-side {
+      margin-top: 0.4rem; padding: 1rem 1.2rem; border: 1px dashed var(--border); border-radius: 10px;
+      font-size: 0.9rem; color: var(--text-2); max-width: 620px;
+    }
+    .about-side .tag { margin-bottom: 0.5rem; }
+    .about-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.3rem; }
+    .link-btn {
+      background: none; border: none; font: inherit; color: var(--accent); cursor: pointer;
+      text-decoration: underline; text-underline-offset: 3px; padding: 0;
     }
 
-    /* ─── SECTIONS ─── */
-    .section {
-      padding: 7rem 5%;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ─── CÓMO SE COBRA ─── */
+    .price-list { margin-top: 2.5rem; border-top: 1px solid var(--border); }
+    .price-row {
+      display: grid; grid-template-columns: 220px 180px minmax(0, 1fr); gap: 2rem;
+      padding: 1.6rem 0; border-bottom: 1px solid var(--border); align-items: baseline;
     }
-    .bg-alt { background: var(--bg-2); }
-    .bg-alt-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 7rem 5%;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.5px;
-      margin-bottom: 1rem;
-    }
-    .section-sub {
-      font-size: 1.05rem;
-      color: var(--text-2);
-      max-width: 580px;
-      line-height: 1.75;
-      margin-bottom: 4rem;
-    }
-
-    /* ─── PROBLEMA ─── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .card {
-      padding: 2.2rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-    }
-    .card:hover {
-      border-color: var(--accent-border);
-      box-shadow: 0 8px 32px var(--accent-glow);
-      transform: translateY(-4px);
-    }
-    .card-icon {
-      width: 44px; height: 44px;
-      color: var(--accent);
-      margin-bottom: 1.2rem;
-    }
-    .card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-    .card p { color: var(--text-2); font-size: 0.92rem; line-height: 1.75; }
-
-    /* ─── CÓMO FUNCIONA ─── */
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      position: relative;
-    }
-    .steps-grid::before {
-      content: '';
-      position: absolute;
-      top: 2rem;
-      left: calc(16.7% + 1rem);
-      right: calc(16.7% + 1rem);
-      height: 1px;
-      background: var(--border);
-    }
-    .step { text-align: center; position: relative; z-index: 1; }
-    .step-num {
-      width: 4rem; height: 4rem;
-      background: var(--accent);
-      color: var(--bg);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin: 0 auto 1.4rem;
-    }
-    .step h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-    .step p { color: var(--text-2); font-size: 0.9rem; line-height: 1.75; }
-
-    /* ─── MANIFIESTO ─── */
-    .manifesto-section {
-      background: var(--bg-2);
-      padding: 7rem 5%;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .manifesto-inner { max-width: 900px; margin: 0 auto; }
-    .manifesto-line {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      font-weight: 800;
-      line-height: 1.3;
-      margin-bottom: 1.4rem;
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(4px);
-      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
-    }
-    .manifesto-line.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
-    .manifesto-line.accent { color: var(--accent); }
-    .manifesto-line.muted  { color: var(--text); }
-    .manifesto-cta {
-      margin-top: 3.5rem;
-      opacity: 0;
-      transform: translateY(16px);
-      filter: blur(3px);
-      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
-    }
-    .manifesto-cta.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
-
-    /* ─── SOLUCIÓN ─── */
-    .solution-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .solution-list { list-style: none; }
-    .solution-list li {
-      padding: 1rem 0 1rem 2rem;
-      position: relative;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-2);
-      font-size: 0.92rem;
-      line-height: 1.75;
-    }
-    .solution-list li:last-child { border-bottom: none; }
-    .solution-list li strong {
-      display: block;
-      color: var(--text);
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-    }
-    .solution-list li::before {
-      content: "✓";
-      position: absolute;
-      left: 0; top: 1rem;
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .workflow-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2.2rem 1.8rem;
-    }
-    .wf-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      text-align: center;
-      margin-bottom: 0.75rem;
-    }
-    .wf-row { display: flex; gap: 0.6rem; }
-    .wf-node {
-      flex: 1;
-      background: var(--bg-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.6rem 0.4rem;
-      font-size: 0.76rem;
-      font-weight: 500;
-      color: var(--text);
-      text-align: center;
-    }
-    .wf-center {
-      flex: 1;
-      background: var(--accent);
-      color: var(--bg);
-      border-radius: 10px;
-      padding: 0.9rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(196,154,108,0.3);
-    }
-    .wf-arrow {
-      text-align: center;
-      color: var(--accent);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 0.5rem 0;
-    }
+    .price-row dt { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+    .price-row .price { font-weight: 700; color: var(--accent); font-size: 1rem; }
+    .price-row .desc { color: var(--text-2); font-size: 0.95rem; }
+    .price-row .desc p + p { margin-top: 0.4rem; }
+    .price-note { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-2); max-width: 820px; }
+    .price-cta { margin-top: 2rem; }
 
     /* ─── FAQ ─── */
-    .faq-list { border-top: 1px solid var(--border); }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-btn {
-      width: 100%;
-      padding: 1.5rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-align: left;
-      gap: 1.5rem;
+    .faq-list { max-width: 820px; margin-top: 2rem; border-top: 1px solid var(--border); }
+    .faq-list details { border-bottom: 1px solid var(--border); }
+    .faq-list summary {
+      list-style: none; cursor: pointer; padding: 1.3rem 2.5rem 1.3rem 0; position: relative;
+      font-family: 'Playfair Display', serif; font-size: 1.08rem; font-weight: 700; line-height: 1.4;
     }
-    .faq-btn span {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text);
-      transition: color 0.2s var(--ease-out);
-      line-height: 1.4;
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after {
+      content: ''; position: absolute; right: 0.4rem; top: 50%; width: 10px; height: 10px; margin-top: -7px;
+      border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+      transform: rotate(45deg); transition: transform 0.2s var(--ease-out);
     }
-    .faq-btn:hover span { color: var(--accent); }
-    .faq-icon {
-      flex-shrink: 0;
-      width: 22px; height: 22px;
-      color: var(--text-2);
-      transition: transform 0.4s var(--ease-out), color 0.2s var(--ease-out);
-    }
-    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
-    /* FAQ answer: no CSS transition — JS sets ease-out (open) or ease-in (close) */
-    .faq-answer { max-height: 0; overflow: hidden; }
-    .faq-answer p {
-      padding-bottom: 1.5rem;
-      color: var(--text-2);
-      font-size: 0.92rem;
-      line-height: 1.8;
-    }
-
-    /* ─── PRECIOS ─── */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      align-items: stretch;
-    }
-    .pricing-card {
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2.4rem 2rem;
-      position: relative;
-      transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-    }
-    .pricing-card:hover {
-      border-color: var(--accent-border);
-      box-shadow: 0 8px 32px var(--accent-glow);
-      transform: translateY(-4px);
-    }
-    .pricing-card.featured {
-      border-color: var(--accent-border);
-      background: linear-gradient(160deg, rgba(196,154,108,0.07) 0%, var(--bg-card) 60%);
-      box-shadow: 0 8px 40px rgba(196,154,108,0.12);
-    }
-    .pricing-badge {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent);
-      color: var(--bg);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      padding: 0.3rem 1rem;
-      border-radius: 100px;
-      white-space: nowrap;
-    }
-    .pricing-plan {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0;
-    }
-    .pricing-header {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      margin-bottom: 1.4rem;
-    }
-    .pricing-header-icon {
-      width: 26px; height: 26px;
-      color: var(--accent);
-    }
-    .setup-label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-2);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.1rem;
-    }
-    .pricing-monthly-accent {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-top: 0.3rem;
-      margin-bottom: 1.8rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .pricing-price { margin-bottom: 0.4rem; }
-    .pricing-price .setup {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .pricing-price .setup small {
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0;
-      color: var(--text-2);
-    }
-    .pricing-monthly {
-      font-size: 0.88rem;
-      color: var(--text-2);
-      margin-bottom: 1.8rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .pricing-monthly strong { color: var(--text); font-weight: 600; }
-    .pricing-features {
-      list-style: none;
-      margin-bottom: 0;
-    }
-    .pricing-features li {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-      padding: 0.45rem 0;
-      font-size: 0.88rem;
-      color: var(--text-2);
-      line-height: 1.5;
-    }
-    .pricing-features li::before {
-      content: "✓";
-      color: var(--accent);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .pricing-final-cta {
-      display: flex;
-      justify-content: center;
-      margin-top: 2.5rem;
-    }
-    .pricing-final-cta .pricing-cta { width: auto; min-width: 320px; padding: 1rem 2.4rem; font-size: 0.95rem; }
-    @media (max-width: 768px) {
-      .pricing-final-cta .pricing-cta { width: 100%; min-width: 0; }
-    }
-    .pricing-cta {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 48px;
-      padding: 0.7rem 0.8rem;
-      border-radius: 8px;
-      font-size: 0.83rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      text-align: center;
-      line-height: 1.3;
-      text-decoration: none;
-      border: none;
-      transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-    }
-    .pricing-cta-primary {
-      background: var(--accent);
-      color: var(--bg);
-      box-shadow: 0 4px 16px rgba(196,154,108,0.25);
-    }
-    .pricing-cta-primary:hover {
-      background: var(--accent-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(196,154,108,0.35);
-    }
-    .pricing-cta-secondary {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent-border);
-    }
-    .pricing-cta-secondary:hover {
-      background: var(--accent);
-      color: var(--bg);
-    }
-    .pricing-note {
-      text-align: center;
-      color: var(--text-2);
-      font-size: 0.85rem;
-      margin-top: 2.5rem;
-      line-height: 1.65;
-    }
-
-    /* ─── DIAGNÓSTICO BOOKING ─── */
-    .booking-box {
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
-      background: linear-gradient(135deg, rgba(196,154,108,0.08) 0%, rgba(196,154,108,0.03) 100%);
-      border: 1px solid var(--accent-border);
-      border-radius: 14px;
-      padding: 2.5rem;
-      text-align: center;
-    }
-    .booking-icon {
-      width: 52px; height: 52px;
-      background: rgba(196,154,108,0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.2rem;
-      font-size: 1.4rem;
-    }
-    .booking-box h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .booking-box p {
-      color: var(--text-2);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.65;
-    }
-    .booking-or {
-      text-align: center;
-      color: var(--text-2);
-      font-size: 0.82rem;
-      margin-bottom: 2rem;
-    }
+    .faq-list details[open] summary::after { transform: rotate(-135deg); margin-top: -2px; }
+    .faq-list summary:hover { color: var(--accent); }
+    .faq-list details p { color: var(--text-2); font-size: 0.96rem; line-height: 1.75; padding: 0 0 1.3rem; max-width: 720px; }
 
     /* ─── CONTACTO ─── */
-    .form-wrapper { max-width: 560px; margin: 0 auto; }
-    .form-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 3rem;
+    .contact-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 2rem; align-items: start; margin-top: 2.5rem; }
+    .booking {
+      background: linear-gradient(160deg, rgba(196,154,108,0.12), rgba(196,154,108,0.03) 70%);
+      border: 1px solid var(--accent-border); border-radius: 16px; padding: 2.2rem;
     }
-    .form-box h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
+    .booking h3 { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 800; margin-bottom: 0.6rem; }
+    .booking > p { color: var(--text-2); margin-bottom: 1.4rem; }
+    .booking ul { list-style: none; margin: 0 0 1.6rem; }
+    .booking li { padding: 0.3rem 0 0.3rem 1.5rem; position: relative; font-size: 0.94rem; }
+    .booking li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .booking-alt { margin-top: 1.2rem; font-size: 0.88rem; color: var(--text-2); }
+
+    .form-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2.2rem; }
+    .form-box h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .form-desc { color: var(--text-2); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label { display: block; font-size: 0.86rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .form-group label .opt { font-weight: 400; color: var(--text-2); }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-2); border: 1.5px solid #2E2E48;
+      border-radius: 8px; color: var(--text); font-family: inherit; font-size: 1rem; resize: vertical;
     }
-    .form-desc { color: var(--text-2); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.65; }
-    .form-group { margin-bottom: 1.3rem; }
-    .form-group label {
-      display: block;
-      font-size: 0.83rem;
-      font-weight: 600;
-      margin-bottom: 0.45rem;
-      color: var(--text);
-    }
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      background: var(--bg-2);
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.92rem;
-      resize: vertical;
-      transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-    }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder { color: var(--text-2); }
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(196,154,108,0.1);
-    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-3); }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,154,108,0.2); }
+    .form-group [aria-invalid="true"] { border-color: var(--error); }
+    .field-error { display: block; color: var(--error); font-size: 0.84rem; margin-top: 0.35rem; }
+    .field-error:empty { display: none; }
     .btn-form {
-      width: 100%;
-      height: 52px;
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-      box-shadow: 0 4px 16px rgba(196,154,108,0.2);
+      width: 100%; min-height: 52px; background: var(--accent); color: var(--bg); border: none; border-radius: 8px;
+      font-size: 0.98rem; font-weight: 700; cursor: pointer; font-family: inherit;
     }
-    .btn-form:hover { background: var(--accent-dark); transform: translateY(-1px); }
-    .btn-form:active { transform: translateY(-1px) scale(0.97); }
-    .btn-form:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .form-error { display: none; color: #e05c3a; font-size: 0.82rem; margin-top: 0.75rem; text-align: center; }
-    #formContent {
-      transition: opacity 0.25s var(--ease-out);
-    }
-    #formContent.hiding { opacity: 0; }
-    .form-success {
-      display: none; /* managed by JS */
-      text-align: center;
-      padding: 2rem 1rem;
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(4px);
-      transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), filter 0.45s var(--ease-out);
-    }
-    .form-success.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+    .btn-form:hover { background: #D2AA7E; }
+    .btn-form:disabled { opacity: 0.6; cursor: progress; }
+    .form-privacy { font-size: 0.82rem; color: var(--text-2); margin-top: 0.9rem; }
+    .form-status { margin-top: 0.9rem; font-size: 0.9rem; }
+    .form-status.error { color: var(--error); }
+    .form-status:empty { display: none; }
+    .form-success { text-align: center; padding: 1.5rem 0.5rem; }
     .form-success .check {
-      width: 56px; height: 56px;
-      background: rgba(196,154,108,0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.2rem;
-      font-size: 1.5rem;
-      color: var(--accent);
+      width: 56px; height: 56px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;
     }
-    .form-success h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
-    .form-success p { color: var(--text-2); font-size: 0.9rem; }
+    .form-success h3 { margin-bottom: 0.4rem; }
+    .form-success h3:focus { outline: none; }
+    .form-success p { color: var(--text-2); font-size: 0.95rem; }
 
-    /* ─── FOOTER ─── */
+    .resources { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .resources h3 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); margin-bottom: 1rem; }
+    .resources ul { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .resources a {
+      display: block; height: 100%; padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 10px;
+      text-decoration: none; color: var(--text); background: var(--bg-card);
+    }
+    .resources a:hover { border-color: var(--accent-border); }
+    .resources a strong { display: block; font-size: 0.95rem; }
+    .resources a span { font-size: 0.85rem; color: var(--text-2); }
+
+    /* ─── PIE ─── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 5%;
-      text-align: center;
-      color: var(--text-2);
-      font-size: 0.82rem;
-      background: var(--bg-2);
+      border-top: 1px solid var(--border); padding: 2.5rem 5%; text-align: center;
+      color: var(--text-2); font-size: 0.86rem; background: var(--bg-2);
     }
-    footer a { color: var(--text-2); text-decoration: none; transition: color 0.2s var(--ease-out); }
-    footer a:hover { color: var(--accent); }
-    .footer-sep { margin: 0 0.5rem; opacity: 0.4; }
-
-    /* ─── AUTOR EN EL HERO ─── */
-    .hero-author {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      margin: -1.4rem 0 2.6rem;
-    }
-    .hero-author .avatar {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      object-fit: cover;
-      border: 1px solid var(--accent-border);
-      background: var(--bg-card);
-      color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-weight: 800;
-      font-size: 1rem;
-    }
-    .hero-author p { font-size: 0.85rem; color: var(--text-2); line-height: 1.45; }
-    .hero-author p strong { color: var(--text); font-weight: 600; display: block; }
-
-    /* ─── PRUEBAS ─── */
-    .proof-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-    .proof-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-    }
-    .proof-tag {
-      align-self: flex-start;
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent-border);
-      border-radius: 100px;
-      padding: 0.25rem 0.75rem;
-      margin-bottom: 1.1rem;
-    }
-    .proof-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-    }
-    .proof-card > p { color: var(--text-2); font-size: 0.92rem; line-height: 1.75; }
-    .proof-flow {
-      margin-top: auto;
-      padding-top: 1.1rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.8rem;
-      color: var(--text-2);
-      line-height: 1.9;
-    }
-    .proof-card > p + .proof-flow { margin-top: 1.3rem; }
-    .proof-flow b { color: var(--accent); font-weight: 700; margin: 0 0.3rem; }
-    .proof-mail {
-      margin-top: 1.3rem;
-      background: #F4F2EE;
-      color: #222;
-      border-radius: 8px;
-      padding: 1rem 1.1rem;
-      font-size: 0.8rem;
-      line-height: 1.6;
-    }
-    .proof-mail .mail-subject { font-weight: 700; margin-bottom: 0.45rem; }
-    .proof-mail .mail-meta { font-size: 0.7rem; color: #666; margin-bottom: 0.45rem; }
-    .proof-try {
-      margin-top: 1.3rem;
-      align-self: flex-start;
-      background: transparent;
-      border: 1px solid var(--accent-border);
-      color: var(--accent);
-      border-radius: 100px;
-      padding: 0.55rem 1.2rem;
-      font: inherit;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
-    }
-    .proof-try:hover { background: var(--accent); color: var(--bg); }
-
-    /* ─── GUÍA VERIFACTU ─── */
-    .verifactu-card {
-      max-width: 760px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 1.6rem;
-      padding: 1.6rem 1.8rem;
-      background: var(--bg-card);
-      border: 1px solid var(--accent-border);
-      border-radius: 14px;
-      color: var(--text);
-      text-decoration: none;
-      transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
-    }
-    .verifactu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px var(--accent-glow); border-color: var(--accent); }
-    .vf-date {
-      flex-shrink: 0;
-      font-family: 'Playfair Display', serif;
-      font-weight: 800;
-      font-size: 1.35rem;
-      line-height: 1.1;
-      color: var(--accent);
-      text-align: center;
-      padding-right: 1.6rem;
-      border-right: 1px solid var(--border);
-    }
-    .vf-body { display: flex; flex-direction: column; gap: 0.3rem; }
-    .vf-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-    .vf-body strong { font-family: 'Playfair Display', serif; font-size: 1.15rem; line-height: 1.3; }
-    .vf-sub { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; }
-    .vf-arrow { margin-left: auto; font-size: 1.4rem; color: var(--accent); }
-    @media (max-width: 600px) {
-      .verifactu-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .vf-date { border-right: none; padding-right: 0; text-align: left; }
-      .vf-date br { display: none; }
-      .vf-arrow { display: none; }
-    }
+    footer nav { margin-top: 0.6rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem 1.1rem; }
+    footer a { color: var(--text-2); text-decoration: none; }
+    footer a:hover { color: var(--accent); text-decoration: underline; }
 
     /* ─── CTA FIJO EN MÓVIL ─── */
     .cta-fija {
-      display: none;
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 90;
-      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
-      background: rgba(8,8,15,0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-      transform: translateY(110%);
-      transition: transform 0.3s var(--ease-out);
+      display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+      padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+      background: rgba(8,8,15,0.97); border-top: 1px solid var(--border);
+      transform: translateY(110%); transition: transform 0.25s var(--ease-out);
     }
-    .cta-fija button { width: 100%; justify-content: center; height: 48px; }
+    .cta-fija .btn-primary { width: 100%; min-height: 48px; }
     body.cta-visible .cta-fija { transform: translateY(0); }
 
-    /* ─── REDUCED MOTION ─── */
-    @media (prefers-reduced-motion: reduce) {
-      /* Universal reset: covers all current and future animated elements */
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-      /* Ensure hidden-by-default reveal elements become visible immediately */
-      .reveal, .reveal-left, .reveal-right,
-      .manifesto-line, .manifesto-cta {
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-      }
+    /* ─── AVISO SI EL CALENDARIO NO CARGA ─── */
+    .booking-toast {
+      position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); z-index: 10001;
+      width: calc(100% - 2rem); max-width: 520px; background: var(--bg-card); border: 1px solid var(--accent);
+      border-radius: 12px; padding: 1rem 2.8rem 1rem 1.2rem; font-size: 0.92rem; color: var(--text);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+    .booking-toast[hidden] { display: none; }
+    .booking-toast button {
+      position: absolute; top: 0.5rem; right: 0.5rem; width: 32px; height: 32px; border: none; border-radius: 6px;
+      background: transparent; color: var(--text-2); font-size: 1.2rem; cursor: pointer;
     }
 
-    /* Si el JS no corre (bloqueado, error, crawler que pinta CSS pero no ejecuta),
-       .reveal deja la pagina entera en opacity:0. Este bloque la devuelve visible. */
-    html.sin-js .reveal,
-    html.sin-js .reveal-left,
-    html.sin-js .reveal-right,
-    html.sin-js .manifesto-line,
-    html.sin-js .manifesto-cta {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
+    /* ─── MOVIMIENTO REDUCIDO ─── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .nav-links { gap: 1.3rem; }
+      .hero-grid { gap: 2.5rem; }
+      .price-row { grid-template-columns: 180px minmax(0, 1fr); }
+      .price-row .desc { grid-column: 1 / -1; }
+    }
+    @media (max-width: 900px) {
+      .hero-grid, .demo-grid, .change-grid, .contact-grid { grid-template-columns: 1fr; }
+      .change-grid { gap: 3rem; }
+      .hero-visual { max-width: 560px; }
+    }
     @media (max-width: 768px) {
-      /* El menu se va, pero el boton de reservar se queda: en movil era la unica
-         pagina sin ninguna llamada a la accion fija. */
-      header .nav-links { display: none; }
-      header .btn-outline { padding: 0.55rem 1.1rem; font-size: 0.8rem; }
-      .hero-content h1 { font-size: 2.3rem; }
-      .hero-ctas { flex-direction: column; align-items: flex-start; }
-      .trust-bar { gap: 2rem; }
-      .steps-grid { grid-template-columns: 1fr; }
-      .steps-grid::before { display: none; }
-      .solution-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
-      .form-box { padding: 2rem; }
-      .manifesto-line { font-size: 1.4rem; }
-      .section { padding: 5rem 5%; }
-      .bg-alt-inner { padding: 5rem 5%; }
-      .manifesto-section { padding: 5rem 5%; }
-      .proof-grid { grid-template-columns: 1fr; }
+      :root { --header-h: 64px; }
+      .nav-links { display: none; }
+      .nav .btn-outline { padding: 0.45rem 1rem; font-size: 0.86rem; }
+      .hero { padding: calc(var(--header-h) + 2rem) 0 3rem; }
+      .hero h1 { margin-top: 1rem; }
+      .hero-sub { font-size: 1.05rem; margin-bottom: 1.5rem; }
+      .hero-ctas .btn-primary { width: 100%; }
+      .hero-author { margin-top: 1.6rem; padding-top: 1.2rem; }
+      .hero-visual { margin-top: 0.5rem; }
+      .section { padding: 3.75rem 0; }
+      .demo-head { margin-bottom: 1.6rem; }
+      .who-does { grid-template-columns: 1fr; gap: 1rem; }
+      .about { grid-template-columns: 1fr; gap: 1.5rem; }
+      .about img { width: 120px; height: 150px; }
+      .price-row { grid-template-columns: 1fr; gap: 0.3rem; padding: 1.3rem 0; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-box, .booking { padding: 1.5rem; }
+      .resources ul { grid-template-columns: 1fr; }
       .cta-fija { display: block; }
-      /* Mientras el aviso de cookies está abierto, la barra se quita de en medio */
-      body.ck-pendiente .cta-fija { display: none; }
-      body.cta-visible #isnl-btn { bottom: 88px !important; }
-      body.cta-visible footer { padding-bottom: 6rem; }
+      body.ck-pendiente .cta-fija, body.isnl-abierto .cta-fija { display: none; }
+      body.cta-visible #isnl-btn { bottom: 84px !important; }
+      footer { padding-bottom: 6rem; }
+
+      /* La tabla de la demo pasa a fichas: cuatro columnas no caben a 360 px */
+      .sheet thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+      .sheet, .sheet tbody, .sheet tr, .sheet td { display: block; width: 100%; }
+      .sheet tr { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border); }
+      .sheet tr:last-child { border-bottom: none; }
+      .sheet td { padding: 0.15rem 0; border: none; display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.6rem; }
+      .sheet td::before { content: attr(data-label); color: var(--text-2); font-size: 0.8rem; padding-top: 0.1rem; }
+      .sheet td:first-child { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+      .sheet td:first-child::before { content: none; }
+    }
+    @media (max-width: 400px) {
+      .wrap { padding: 0 16px; }
+      .process-card { padding: 1.3rem 1.1rem 1.1rem; }
     }
   </style>
 
-  <!-- Structured Data / JSON-LD -->
+  <!-- Datos estructurados / JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -1216,25 +455,17 @@
         "@id": "https://ismaelnlai.com/#organization",
         "name": "ismaelnlai",
         "url": "https://ismaelnlai.com",
-        "description": "Especialista en automatización de procesos con N8N e Inteligencia Artificial para asesorías fiscales, gestorías y pymes en España.",
+        "description": "Automatización de recordatorios, seguimiento de documentación y tareas repetitivas para asesorías fiscales y gestorías en España, con N8N e inteligencia artificial.",
         "foundingDate": "2026",
-        "founder": {
-          "@id": "https://ismaelnlai.com/#person"
-        },
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://ismaelnlai.com/assets/og-image.png"
-        },
+        "founder": { "@id": "https://ismaelnlai.com/#person" },
+        "logo": { "@type": "ImageObject", "url": "https://ismaelnlai.com/assets/og-image.png" },
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "ismael@ismaelnlai.com",
           "contactType": "customer service",
           "availableLanguage": "Spanish"
         },
-        "areaServed": {
-          "@type": "Country",
-          "name": "Spain"
-        },
+        "areaServed": { "@type": "Country", "name": "Spain" },
         "sameAs": [
           "https://www.linkedin.com/in/ismael-n%C3%BA%C3%B1ez-l%C3%B3pez/",
           "https://github.com/Mawere94"
@@ -1245,9 +476,7 @@
         "@id": "https://ismaelnlai.com/#website",
         "url": "https://ismaelnlai.com",
         "name": "ismaelnlai",
-        "publisher": {
-          "@id": "https://ismaelnlai.com/#organization"
-        },
+        "publisher": { "@id": "https://ismaelnlai.com/#organization" },
         "inLanguage": "es-ES"
       },
       {
@@ -1257,7 +486,7 @@
         "url": "https://ismaelnlai.com/sobre-mi",
         "image": "https://ismaelnlai.com/assets/ismael.jpg",
         "jobTitle": "Especialista en Automatización con IA",
-        "description": "Especialista en automatización de procesos para asesorías, gestorías y pymes con N8N e Inteligencia Artificial.",
+        "description": "Automatiza recordatorios, seguimiento de documentación y tareas repetitivas para asesorías y gestorías con N8N e inteligencia artificial.",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Algeciras",
@@ -1268,64 +497,49 @@
           "https://www.linkedin.com/in/ismael-n%C3%BA%C3%B1ez-l%C3%B3pez/",
           "https://github.com/Mawere94"
         ],
-        "worksFor": {
-          "@id": "https://ismaelnlai.com/#organization"
-        },
-        "knowsAbout": [
-          "Automatización de procesos",
-          "N8N",
-          "Inteligencia Artificial",
-          "Asesorías fiscales",
-          "Gestorías",
-          "Pymes España"
-        ]
+        "worksFor": { "@id": "https://ismaelnlai.com/#organization" },
+        "knowsAbout": ["Automatización de procesos", "N8N", "Inteligencia Artificial", "Asesorías fiscales", "Gestorías"]
       },
       {
         "@type": "WebPage",
         "@id": "https://ismaelnlai.com/#webpage",
         "url": "https://ismaelnlai.com",
         "name": "Automatización para asesorías y gestorías con IA | ismaelnlai",
-        "description": "Automatizo el trabajo repetitivo de asesorías y gestorías con N8N e IA: recordatorios de IVA, recogida de facturas y datos que pasan solos entre herramientas. Auditoría gratuita de 30 min.",
+        "description": "Automatizo los recordatorios y el seguimiento de documentación de asesorías y gestorías con N8N e IA. Diagnóstico gratuito de 30 minutos.",
         "inLanguage": "es-ES",
         "datePublished": "2026-05-29",
-        "dateModified": "2026-10-14T12:00:00+02:00",
-        "speakable": {
-          "@type": "SpeakableSpecification",
-          "cssSelector": ["h1", ".faq-list"]
-        },
-        "isPartOf": {
-          "@id": "https://ismaelnlai.com/#website"
-        }
+        "dateModified": "2026-10-19T12:00:00+02:00",
+        "isPartOf": { "@id": "https://ismaelnlai.com/#website" }
       },
       {
         "@type": "Service",
         "@id": "https://ismaelnlai.com/#service",
-        "serviceType": "Automatización de procesos empresariales",
+        "serviceType": "Automatización de procesos para despachos",
         "url": "https://ismaelnlai.com/#precios",
-        "name": "Automatización de procesos para asesorías y pymes",
-        "description": "Automatización de procesos repetitivos con N8N e Inteligencia Artificial. Primer proceso funcionando en menos de 2 semanas y el sistema completo por fases, sin necesidad de conocimientos técnicos. Conectamos más de 500 herramientas: Gmail, Google Sheets, HubSpot, WhatsApp, Airtable, Slack y más.",
-        "provider": {
-          "@id": "https://ismaelnlai.com/#person"
-        },
-        "areaServed": {
-          "@type": "Country",
-          "name": "Spain"
-        },
+        "name": "Automatización de recordatorios y seguimiento de documentación para asesorías",
+        "description": "Recordatorios a clientes y seguimiento del estado de la documentación antes de cada cierre, adaptados a las herramientas del despacho. Presupuesto con alcance, fases e hitos; plazos estimados según alcance, accesos y herramientas.",
+        "provider": { "@id": "https://ismaelnlai.com/#person" },
+        "areaServed": { "@type": "Country", "name": "Spain" },
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
           "name": "Servicios de automatización",
           "itemListElement": [
             {
               "@type": "Offer",
-              "name": "Auditoría inicial gratuita",
+              "name": "Diagnóstico gratuito de 30 minutos",
               "price": "0",
               "priceCurrency": "EUR",
-              "description": "Auditoría de procesos automatizables. Sin compromiso."
+              "description": "Sesión de 30 minutos para revisar cómo trabaja el despacho y si tiene sentido automatizar algo. Sin compromiso."
             },
             {
               "@type": "Offer",
-              "name": "Automatización de procesos",
-              "description": "Implementación de flujos automatizados con N8N e IA. Presupuesto cerrado por proyecto."
+              "name": "Implantación a medida",
+              "description": "Automatización implantada por fases. El presupuesto define alcance, hitos y condiciones de pago."
+            },
+            {
+              "@type": "Offer",
+              "name": "Mantenimiento opcional",
+              "description": "Revisión y ajustes posteriores a la implantación. Se contrata aparte; las condiciones se fijan en la propuesta."
             }
           ]
         }
@@ -1335,51 +549,33 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "¿Cómo sé si mi proceso se puede automatizar?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Si el proceso es repetitivo, sigue siempre los mismos pasos y le consume tiempo a alguien de tu equipo, casi seguro se puede automatizar. En la auditoría inicial lo vemos juntos. Si no tiene sentido, te lo digo sin rodeos."
-            }
+            "name": "¿Funciona con las herramientas que ya usa el despacho?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Depende de cada herramienta. Trabajo con N8N, que conecta con el correo, hojas de cálculo, almacenamiento en la nube y cientos de aplicaciones más. Si tu programa de gestión permite conectarse, exportar datos o trabaja por correo, normalmente se puede integrar. Lo revisamos en el diagnóstico y, si no hay una forma fiable, te lo digo antes de presupuestar." }
           },
           {
             "@type": "Question",
-            "name": "¿Cuánto tiempo tarda la implementación de una automatización?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Una automatización suelta, 3-5 días hábiles. Un flujo más complejo, 1-2 semanas. Reordenar el sistema entero de una empresa lleva más —de 8 a 10 semanas es lo normal— pero va por fases y cada fase acaba con algo funcionando. Nunca meses sin ver resultados."
-            }
+            "name": "¿Qué tiene que hacer mi equipo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Al principio, contarme cómo trabajáis, darme los accesos necesarios y revisar los textos de los avisos antes de activarlos. Después, mantener al día lo que el sistema no puede saber solo; por ejemplo, en la demo, marcar quién ha entregado la documentación. No hace falta saber programar." }
           },
           {
             "@type": "Question",
-            "name": "¿Necesito conocimientos técnicos para automatizar mis procesos?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. Te entrego la automatización funcionando y te explico cómo usarla en 15 minutos. No tocas código ni configuras nada. Si falla algo de lo que monté, me avisas y lo arreglo sin coste."
-            }
+            "name": "¿Cuánto se tarda en ponerlo en marcha?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Depende del alcance, de los accesos y de las herramientas del despacho. El presupuesto incluye una estimación por fases y cada fase termina con algo que el equipo puede usar. No doy un plazo cerrado antes de ver vuestro caso." }
           },
           {
             "@type": "Question",
-            "name": "¿Qué herramientas de automatización utilizas?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Principalmente N8N, que conecta con más de 500 herramientas: Gmail, Google Sheets, WhatsApp, HubSpot, Airtable, Slack y muchas más. Me adapto a lo que ya usas y no te obligo a cambiar tu stack tecnológico actual."
-            }
+            "name": "¿Hay costes recurrentes?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Puede haber dos. El mantenimiento, que es opcional y se contrata aparte. Y las herramientas de terceros que haga falta usar, como el servidor o la cuenta de N8N, que tienen su propia cuota y se pagan al proveedor. Ambos aparecen separados en el presupuesto antes de empezar." }
           },
           {
             "@type": "Question",
-            "name": "¿Cuánto cuesta automatizar un proceso?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "La auditoría inicial es gratuita. A partir de ahí, presupuesto cerrado por proyecto. Sin sorpresas ni costes ocultos. Cuéntame tu caso y te doy un número concreto."
-            }
+            "name": "¿Qué pasa si algo deja de funcionar?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Hay que distinguir dos casos: un error de la implantación y un cambio posterior de un proveedor externo, como Google o el programa de gestión. Cómo se cubre cada uno se fija por escrito en la propuesta, antes de empezar." }
           },
           {
             "@type": "Question",
-            "name": "¿Qué pasa si la automatización deja de funcionar?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Si el fallo es de lo que monté yo, lo arreglo sin coste. Si lo provoca un cambio en una herramienta de fuera (Google, tu programa de gestión, un proveedor que cambia su sistema), lo cubre el mantenimiento mensual, que es opcional; si no lo tienes contratado, te lo presupuesto aparte antes de tocar nada. En ningún caso te dejo con una automatización rota sin saber qué hacer."
-            }
+            "name": "¿Los recordatorios garantizan que los clientes envíen todo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. Facilitan el seguimiento y te dan una visión clara de quién falta, pero no garantizan que el cliente responda ni que la documentación llegue completa o correcta. El equipo sigue revisando lo que entra." }
           }
         ]
       }
@@ -1393,7 +589,7 @@
     "@id": "https://ismaelnlai.com/#localbusiness",
     "name": "ismaelnlai — Automatización con IA",
     "url": "https://ismaelnlai.com",
-    "description": "Servicio de automatización de procesos con N8N e IA para asesorías fiscales, gestorías y pymes españolas. Auditoría gratuita. Primer proceso en marcha en menos de 2 semanas.",
+    "description": "Automatización de recordatorios y seguimiento de documentación para asesorías y gestorías, con N8N e IA. Diagnóstico gratuito de 30 minutos.",
     "email": "ismael@ismaelnlai.com",
     "image": "https://ismaelnlai.com/assets/og-image.png",
     "address": {
@@ -1403,11 +599,7 @@
       "postalCode": "11205",
       "addressCountry": "ES"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 36.1408,
-      "longitude": -5.4531
-    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 36.1408, "longitude": -5.4531 },
     "areaServed": [
       { "@type": "Country", "name": "Spain" },
       { "@type": "City", "name": "Algeciras" },
@@ -1422,632 +614,586 @@
     },
     "sameAs": [
       "https://www.linkedin.com/in/ismael-n%C3%BA%C3%B1ez-l%C3%B3pez/",
-          "https://github.com/Mawere94"
+      "https://github.com/Mawere94"
     ],
-    "founder": {
-      "@id": "https://ismaelnlai.com/#person"
-    }
+    "founder": { "@id": "https://ismaelnlai.com/#person" }
   }
   </script>
 </head>
 <body>
 
-<!-- HEADER -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
 <header id="mainHeader">
-  <nav class="nav">
-    <a href="#" class="logo">ismael<span>nlai</span></a>
+  <nav class="nav" aria-label="Principal">
+    <a href="/" class="logo" aria-label="ismaelnlai, inicio">ismael<span>nlai</span></a>
     <ul class="nav-links">
-      <li><a href="#problema">El problema</a></li>
-      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#como-funciona">Cómo trabajo</a></li>
       <li><a href="#precios">Cómo se cobra</a></li>
-      <li><a href="/sobre-mi">Sobre mí</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="/sobre-mi">Sobre mí</a></li>
     </ul>
-    <a href="#contacto" class="btn-outline">Hablemos</a>
+    <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-outline" data-calendly target="_blank" rel="noopener">Reservar diagnóstico</a>
   </nav>
 </header>
 
+<main id="contenido" tabindex="-1">
+
 <!-- HERO -->
-<div class="hero-wrapper">
-  <div class="hero-bg"></div>
-
-  <svg class="hero-decoration" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="300" cy="300" r="260" stroke="#C49A6C" stroke-width="1"/>
-    <circle cx="300" cy="300" r="180" stroke="#C49A6C" stroke-width="1"/>
-    <circle cx="300" cy="300" r="100" stroke="#C49A6C" stroke-width="1.5"/>
-    <circle cx="300" cy="300" r="8" fill="#C49A6C"/>
-    <circle cx="300" cy="120" r="6" fill="#C49A6C"/>
-    <circle cx="300" cy="480" r="6" fill="#C49A6C"/>
-    <circle cx="120" cy="300" r="6" fill="#C49A6C"/>
-    <circle cx="480" cy="300" r="6" fill="#C49A6C"/>
-    <circle cx="175" cy="175" r="5" fill="#C49A6C"/>
-    <circle cx="425" cy="175" r="5" fill="#C49A6C"/>
-    <circle cx="175" cy="425" r="5" fill="#C49A6C"/>
-    <circle cx="425" cy="425" r="5" fill="#C49A6C"/>
-    <line x1="300" y1="40" x2="300" y2="120" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
-    <line x1="300" y1="480" x2="300" y2="560" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
-    <line x1="40" y1="300" x2="120" y2="300" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
-    <line x1="480" y1="300" x2="560" y2="300" stroke="#C49A6C" stroke-width="1" stroke-dasharray="4 4"/>
-    <line x1="300" y1="120" x2="480" y2="300" stroke="#C49A6C" stroke-width="0.5"/>
-    <line x1="480" y1="300" x2="300" y2="480" stroke="#C49A6C" stroke-width="0.5"/>
-    <line x1="300" y1="480" x2="120" y2="300" stroke="#C49A6C" stroke-width="0.5"/>
-    <line x1="120" y1="300" x2="300" y2="120" stroke="#C49A6C" stroke-width="0.5"/>
-    <line x1="175" y1="175" x2="425" y2="175" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
-    <line x1="175" y1="425" x2="425" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
-    <line x1="175" y1="175" x2="175" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
-    <line x1="425" y1="175" x2="425" y2="425" stroke="#C49A6C" stroke-width="0.5" stroke-dasharray="3 5"/>
-  </svg>
-
-  <div class="hero-content">
-    <div class="hero-badge">
-      <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
-      Para asesorías y gestorías
-    </div>
-    <h1>Tu asesoría, sin perseguir<br><em>facturas cada trimestre.</em></h1>
-    <p class="hero-subtitle">Automatizo con N8N e IA el trabajo repetitivo del despacho: recordatorios a clientes, recogida de documentación y datos que pasan solos de una herramienta a otra. Tu equipo deja de hacer de recadero.</p>
-    <div class="hero-author">
-      <img class="avatar" src="/assets/ismael-avatar.jpg" alt="Ismael Núñez López" width="48" height="48">
-      <p><strong>Ismael Núñez López</strong>Algeciras · trabajas directamente conmigo</p>
-    </div>
-    <div class="hero-ctas">
-      <button class="btn-primary" id="heroCta" onclick="abrirCalendly()">
-        Reservar auditoría gratuita — 30 min
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-      </button>
-      <a href="#precios" class="btn-outline">Cómo se cobra</a>
-    </div>
-    <div class="trust-bar">
-      <div class="trust-item">
-        <strong>&lt; 2 sem</strong>
-        <span>Primer proceso en marcha</span>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="tag">Para asesorías y gestorías</span>
+      <h1 id="hero-title">Tu asesoría, sin perseguir <em>facturas cada trimestre.</em></h1>
+      <p class="hero-sub">Automatizo los recordatorios y el seguimiento de documentación de tu despacho. Menos tareas repetitivas y más control de lo que falta antes del cierre.</p>
+      <div class="hero-ctas">
+        <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-primary" id="heroCta" data-calendly target="_blank" rel="noopener">
+          Reservar diagnóstico gratuito
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="#demo" class="btn-outline">Ver cómo funciona</a>
       </div>
-      <div class="trust-item">
-        <strong>0 €</strong>
-        <span>Auditoría inicial</span>
-      </div>
-      <div class="trust-item">
-        <strong>Sin código</strong>
-        <span>No necesitas técnicos</span>
+      <p class="hero-note">30 minutos, sin compromiso.</p>
+      <div class="hero-author">
+        <img src="/assets/ismael-avatar.jpg" alt="Ismael Núñez López" width="48" height="48">
+        <p><strong>Ismael Núñez López</strong>Algeciras · trabajas directamente conmigo</p>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
-    <span>Sin código <b>·</b> Sin fricciones <b>·</b> Sin contratar <b>·</b> Resultados en semanas <b>·</b> Presupuesto cerrado <b>·</b> Procesos que funcionan solos <b>·</b> </span>
-  </div>
-</div>
-
-<!-- PROBLEMA -->
-<section class="section" id="problema">
-  <p class="section-label reveal">El problema</p>
-  <h2 class="section-title reveal">Tareas que te frenan cada día.</h2>
-  <p class="section-sub reveal">La verdad es que el mayor cuello de botella de una asesoría no está en la fiscalidad. Está en todo lo que rodea al trabajo real.</p>
-
-  <div class="cards-grid">
-    <div class="card reveal">
-      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <h3>Tu equipo persigue en lugar de trabajar</h3>
-      <p>Emails para pedir facturas. Llamadas para recordar documentación. El mismo proceso manual antes de cada cierre trimestral. Horas que se van sin generar valor al despacho.</p>
-    </div>
-    <div class="card reveal">
-      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-        <line x1="6" y1="20" x2="6" y2="14"/><path d="M2 20h20"/>
-      </svg>
-      <h3>Hay fuga de información entre herramientas</h3>
-      <p>Los datos están en el email, en el Excel, en el software de gestión. Cuando hay que cuadrar el trimestre, alguien los tiene que ir a buscar a mano. Ahí es donde aparecen los errores.</p>
-    </div>
-    <div class="card reveal">
-      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-      </svg>
-      <h3>El volumen crece, el margen no</h3>
-      <p>Quieres coger más clientes pero el equipo ya no llega. Y contratar tiene un coste que no siempre se puede asumir. Creces en trabajo, no en rentabilidad.</p>
+    <div class="hero-visual">
+      <div class="process-card">
+        <div class="process-head">
+          <h2>Así funciona antes de cada cierre</h2>
+          <span class="tag">Ejemplo ilustrativo</span>
+        </div>
+        <ol class="timeline">
+          <li>
+            <span class="t-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></span>
+            <span><span class="t-when">15 días antes</span><span class="t-what">Primer aviso, en tono amable<small>Solo a quien sigue pendiente en la hoja</small></span></span>
+          </li>
+          <li>
+            <span class="t-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></span>
+            <span><span class="t-when">7 días antes</span><span class="t-what">Recordatorio más directo<small>Con la fecha límite del despacho</small></span></span>
+          </li>
+          <li>
+            <span class="t-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></span>
+            <span><span class="t-when">3 días antes</span><span class="t-what">Último aviso<small>Y cada envío queda anotado</small></span></span>
+          </li>
+          <li class="final">
+            <span class="t-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L20 7"/></svg></span>
+            <span><span class="t-when">Fecha límite</span><span class="t-what">Sabes quién falta y a quién se ha avisado<small>Tu equipo llama solo a quien hace falta</small></span></span>
+          </li>
+        </ol>
+        <p class="process-foot">Los textos, las fechas y el canal se adaptan a cada despacho.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CÓMO FUNCIONA -->
-<div class="bg-alt">
-  <div class="bg-alt-inner" id="como-funciona">
-    <p class="section-label reveal">El proceso</p>
-    <h2 class="section-title reveal">Tres pasos. Sin jerga técnica.</h2>
-    <p class="section-sub reveal">Del primer proceso funcionando solo en menos de dos semanas al sistema entero ordenado, fase a fase.</p>
-    <div class="steps-grid">
-      <div class="step reveal">
-        <div class="step-num">1</div>
-        <h3>Auditoría — 30 min</h3>
-        <p>Reservas una llamada gratuita. Me cuentas cómo trabajáis y dónde se atasca el equipo. Te digo qué se puede automatizar, qué costaría y cuánto tiempo te ahorra. Sin rodeos.</p>
+<!-- DEMO -->
+<section class="section bg-alt" id="demo" aria-labelledby="demo-title">
+  <span id="pruebas" aria-hidden="true"></span>
+  <div class="wrap">
+    <div class="demo-head">
+      <div>
+        <p class="label">Demo para asesorías</p>
+        <h2 class="title" id="demo-title">Una demo del proceso que podemos revisar juntos.</h2>
+        <p class="lead">Recordatorios del cierre de IVA sobre una hoja de cálculo. En el diagnóstico la vemos funcionando y hablamos de cómo encajaría con vuestras herramientas.</p>
       </div>
-      <div class="step reveal">
-        <div class="step-num">2</div>
-        <h3>Automatización</h3>
-        <p>Conecto tus herramientas y construyo los flujos. Tú no tocas nada técnico. En menos de dos semanas tienes el primer proceso funcionando solo.</p>
+      <span class="tag">Demo · datos ficticios</span>
+    </div>
+
+    <div class="demo-grid">
+      <div class="panel">
+        <div class="panel-title">Hoja de seguimiento del trimestre <span>7 días antes del cierre</span></div>
+        <table class="sheet">
+          <caption class="sr-only">Ejemplo ficticio del estado de la documentación por cliente</caption>
+          <thead>
+            <tr><th scope="col">Cliente</th><th scope="col">Documentación</th><th scope="col">Avisos enviados</th><th scope="col">Siguiente paso</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Cliente">Talleres Ejemplo, S.L.</td>
+              <td data-label="Documentación"><span class="state ok">Entregada</span><small>Marcada por el equipo</small></td>
+              <td data-label="Avisos enviados">15 días</td>
+              <td data-label="Siguiente paso">Ninguno</td>
+            </tr>
+            <tr>
+              <td data-label="Cliente">Antonio R. · autónomo</td>
+              <td data-label="Documentación"><span class="state pend">Pendiente</span></td>
+              <td data-label="Avisos enviados">15 y 7 días</td>
+              <td data-label="Siguiente paso">Último aviso a 3 días</td>
+            </tr>
+            <tr>
+              <td data-label="Cliente">Comercial Demo, S.L.</td>
+              <td data-label="Documentación"><span class="state pend">Pendiente</span></td>
+              <td data-label="Avisos enviados">15 y 7 días</td>
+              <td data-label="Siguiente paso">Último aviso a 3 días</td>
+            </tr>
+            <tr>
+              <td data-label="Cliente">Laura M. · autónoma</td>
+              <td data-label="Documentación"><span class="state ok">Entregada</span><small>Marcada por el equipo</small></td>
+              <td data-label="Avisos enviados">Ninguno</td>
+              <td data-label="Siguiente paso">Ninguno</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="step reveal">
-        <div class="step-num">3</div>
-        <h3>Resultado</h3>
-        <p>Tu equipo hace menos trabajo de recadero y más trabajo real. Lo notas en el primer cierre. Y si falla algo de lo que monté, lo arreglo yo.</p>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- MANIFIESTO -->
-<div class="manifesto-section">
-  <div class="manifesto-inner">
-    <p class="manifesto-line muted">No necesitas más software que nadie acaba usando.</p>
-    <p class="manifesto-line accent">Necesitas que los procesos que ya tienes funcionen solos.</p>
-    <p class="manifesto-line muted">Trabajas conmigo, de la auditoría al último arreglo.</p>
-    <p class="manifesto-line accent">Sin equipo de cuentas ni intermediarios.</p>
-    <p class="manifesto-line muted">Y cada proceso que automatizamos</p>
-    <p class="manifesto-line accent">es tiempo real que tu equipo recupera para lo que importa.</p>
-    <div class="manifesto-cta">
-      <button class="btn-primary" onclick="abrirCalendly()">
-        Reservar auditoría gratuita
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- SOLUCIÓN -->
-<section class="section" id="solucion">
-  <p class="section-label reveal">La solución</p>
-  <h2 class="section-title reveal">Lo que cambia cuando automatizas.</h2>
-  <p class="section-sub reveal">Mira, no te vendo tecnología. Te vendo el tiempo que tu equipo recupera cuando deja de hacer trabajo que una máquina puede hacer mejor.</p>
-  <div class="solution-grid">
-    <ul class="solution-list reveal-left">
-      <li><strong>Tu equipo deja de perseguir documentación</strong>Los recordatorios, las solicitudes y el seguimiento de clientes van solos. El equipo llega al cierre con todo ya recopilado.</li>
-      <li><strong>Los datos están donde tienen que estar</strong>Sin copiar de una pantalla a otra. Sin fuga de información entre herramientas. Los números cuadran.</li>
-      <li><strong>Cierres trimestrales sin el caos habitual</strong>La documentación ya está recopilada antes de que empiece el sprint. No a las 11 de la noche del último día.</li>
-      <li><strong>Más clientes, mismo equipo</strong>El volumen lo gestiona la automatización. Creces en rentabilidad, no solo en trabajo.</li>
-      <li><strong>Sabes exactamente qué está pasando</strong>Alertas automáticas cuando algo falla o falta. Sin depender de que alguien recuerde avisarte.</li>
-    </ul>
-    <div class="workflow-box reveal-right">
-      <div class="wf-label">Entradas</div>
-      <div class="wf-row"><div class="wf-node">📧 Email</div><div class="wf-node">📋 Formulario</div><div class="wf-node">📊 CRM</div></div>
-      <div class="wf-arrow">↓</div>
-      <div class="wf-row"><div class="wf-center">⚡ Automatización</div></div>
-      <div class="wf-arrow">↓</div>
-      <div class="wf-label">Salidas automáticas</div>
-      <div class="wf-row"><div class="wf-node">🔔 Alerta</div><div class="wf-node">📄 Informe</div><div class="wf-node">✅ Acción</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRUEBAS -->
-<div class="bg-alt">
-  <div class="bg-alt-inner" id="pruebas">
-    <p class="section-label reveal">Hecho y funcionando</p>
-    <h2 class="section-title reveal">Sistemas que ya trabajan solos.</h2>
-    <p class="section-sub reveal">Todavía no puedo enseñarte logos de clientes. Lo que sí puedo enseñarte son automatizaciones mías, en marcha y en uso real.</p>
-    <div class="proof-grid">
-      <div class="proof-card reveal">
-        <span class="proof-tag">Demo para asesorías</span>
-        <h3>Recordatorios del cierre de IVA</h3>
-        <p>Cada mañana mira cuánto falta para el próximo cierre trimestral. A 15, 7 y 3 días escribe a los clientes que aún no han mandado las facturas, con un tono cada vez más directo, y apunta en la hoja a quién ha avisado.</p>
-        <div class="proof-mail" aria-label="Ejemplo del correo que recibe el cliente">
-          <div class="mail-meta">Así le llega al cliente a 7 días del cierre</div>
-          <div class="mail-subject">Faltan 7 días: facturas del IVA pendientes</div>
-          Hola Antonio, necesitamos sus facturas antes del 15 de octubre para poder domiciliar el IVA del trimestre, y aún no las hemos recibido. Por favor, envíenoslas esta semana.
+      <div class="panel">
+        <div class="panel-title">Correo que recibe el cliente <span>a 7 días</span></div>
+        <div class="mail">
+          <div class="mail-card">
+            <div class="mail-meta">Para: Antonio R.</div>
+            <div class="mail-subject">Faltan 7 días: facturas del IVA pendientes</div>
+            Hola, Antonio: necesitamos sus facturas antes del 15 de octubre para poder domiciliar el IVA del trimestre, y aún no las hemos recibido. Por favor, envíenoslas esta semana.
+          </div>
+          <p class="mail-note">El despacho escribe los tres textos con su tono. El sistema rellena el nombre y la fecha.</p>
         </div>
       </div>
-      <div class="proof-card reveal">
-        <span class="proof-tag">El chat de esta web</span>
-        <h3>Un asistente que responde y agenda</h3>
-        <p>Contesta las dudas sobre cómo trabajo y, si tiene sentido hablar, abre el calendario para reservar sin salir de la página. Cuando alguien deja sus datos, me llega un aviso al momento.</p>
-        <button type="button" class="proof-try" onclick="abrirChat()">Pruébalo ahora →</button>
+    </div>
+
+    <div class="who-does">
+      <div class="panel">
+        <h3>Lo hace el sistema</h3>
+        <ul>
+          <li>Cada mañana calcula cuánto falta para el cierre.</li>
+          <li>A 15, 7 y 3 días escribe a los clientes que siguen pendientes, cada vez con un tono más directo.</li>
+          <li>Anota en la hoja cada aviso enviado.</li>
+        </ul>
       </div>
-      <div class="proof-card reveal">
-        <span class="proof-tag">Mi propio contenido</span>
-        <h3>Publicación en LinkedIn e Instagram</h3>
-        <p>Tres días por semana redacta la publicación a partir de hechos comprobados y me la deja en un panel. Cuando la apruebo, la sube a las dos redes y comprueba que de verdad se ha publicado. Si una red falla, lo reintenta y me avisa por Telegram.</p>
-        <div class="proof-flow">Redacta<b>→</b>Apruebo<b>→</b>Publica<b>→</b>Comprueba</div>
-      </div>
-      <div class="proof-card reveal">
-        <span class="proof-tag">Un evento real</span>
-        <h3>Confirmaciones de asistencia de una boda</h3>
-        <p>Los invitados confirman desde la web. La respuesta cae sola en una hoja de cálculo, el recuento se actualiza y a mí me llega el aviso al momento. Sin copiar nada a mano.</p>
-        <div class="proof-flow">Formulario<b>→</b>Hoja de cálculo<b>→</b>Recuento<b>→</b>Aviso</div>
+      <div class="panel team">
+        <h3>Lo sigue haciendo tu equipo</h3>
+        <ul>
+          <li>Marcar quién ha entregado. En esta demo la entrega no se detecta sola.</li>
+          <li>Revisar que la documentación esté completa y sea correcta.</li>
+          <li>Llamar a quien no responde a los avisos.</li>
+        </ul>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- GUÍA VERIFACTU -->
-<section class="section" style="padding-top:5rem;padding-bottom:0;">
-  <a href="/verifactu" class="verifactu-card reveal">
-    <span class="vf-date">Nuevo<br> plazo</span>
-    <span class="vf-body">
-      <span class="vf-label">Guía gratuita para despachos</span>
-      <strong>Verifactu: qué clientes te van a llamar en diciembre</strong>
-      <span class="vf-sub">Las fechas que valen hoy, el aplazamiento anunciado a octubre de 2028, quién queda fuera y cómo clasificar la cartera en tres grupos. Con el kit para repartir el trabajo.</span>
-    </span>
-    <span class="vf-arrow" aria-hidden="true">→</span>
-  </a>
-</section>
-
-<p style="text-align:center;margin:1.4rem auto 0;font-size:.9rem;color:var(--text-2);max-width:760px;padding:0 5%;">Y si lo que te come el trimestre es perseguir documentación: <a href="/perseguir-facturas-cierre-trimestral" style="color:var(--accent);">cómo dejar de perseguir facturas antes del 15 →</a></p>
-
-<!-- LEAD MAGNET CALCULADORA -->
-<section class="section" style="padding-top:3rem;padding-bottom:3rem;">
-  <div style="max-width:760px;margin:0 auto;background:linear-gradient(135deg,rgba(196,154,108,0.08) 0%,rgba(196,154,108,0.04) 100%);border:1px solid rgba(196,154,108,0.2);border-radius:16px;padding:3rem;text-align:center;" class="reveal">
-    <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.5em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Herramienta gratuita</p>
-    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:0.75rem;letter-spacing:-0.3px;">¿Cuántas horas pierde tu despacho<br>en gestión manual cada año?</h2>
-    <p style="color:var(--text-2);font-size:0.95rem;max-width:480px;margin:0 auto 2rem;">Responde 4 preguntas y calcula el coste real, en horas y en euros, de lo que tu equipo aún hace a mano.</p>
-    <a href="/calculadora" style="display:inline-block;background:var(--accent);color:var(--bg);padding:0.9rem 2.2rem;border-radius:8px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='#A87E54'" onmouseout="this.style.background='var(--accent)'">Calcular ahora — es gratis →</a>
+    <p class="demo-foot">Si vuestras herramientas lo permiten, se puede ampliar; por ejemplo, para registrar la entrega cuando llega por correo. Eso se valora caso a caso en el diagnóstico, no se da por hecho.</p>
   </div>
 </section>
 
-<!-- PRECIOS -->
-<section class="section" id="precios">
-  <p class="section-label reveal">Cómo se cobra</p>
-  <h2 class="section-title reveal">Solo pagas cuando algo queda funcionando.</h2>
-  <p class="section-sub reveal">La auditoría inicial no se cobra: nos sentamos sobre tus procesos reales y sales sabiendo dónde se te va el tiempo, trabajemos juntos o no. Lo único que se factura es montar el sistema y dejarlo funcionando.</p>
-
-  <div class="pricing-grid">
-
-    <!-- Auditoría -->
-    <div class="pricing-card reveal">
-      <div class="pricing-header">
-        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
-        </svg>
-        <p class="pricing-plan">Auditoría</p>
-      </div>
-      <div class="pricing-price">
-        <span class="setup-label">Coste</span>
-        <span class="setup">Gratis</span>
-      </div>
-      <p class="pricing-monthly-accent">Sin compromiso</p>
-      <ul class="pricing-features">
-        <li>Sesión sobre tus procesos reales, no sobre una plantilla</li>
-        <li>Salimos con el mapa de dónde se pierde el tiempo</li>
-        <li>Si no hay nada que automatizar, te lo digo y ya está</li>
+<!-- QUÉ CAMBIA Y CÓMO TRABAJAMOS -->
+<section class="section" id="problema" aria-labelledby="cambio-title">
+  <div class="wrap change-grid">
+    <div>
+      <p class="label">Qué cambia</p>
+      <h2 class="title" id="cambio-title">Menos perseguir. Más control antes del cierre.</h2>
+      <p class="lead">Antes de cada cierre, alguien del despacho escribe y llama a los clientes que no han mandado sus facturas, y lleva la cuenta de quién falta entre el correo, una hoja y la memoria.</p>
+      <ul class="change-list">
+        <li><strong>Los recordatorios salen solos</strong><span>En las fechas y con los textos que decide el despacho.</span></li>
+        <li><strong>Un solo sitio para ver el estado</strong><span>Quién ha entregado, quién falta y a quién se ha avisado ya.</span></li>
+        <li><strong>El tiempo va a lo que necesita a una persona</strong><span>Revisar lo que llega y llamar solo a quien hace falta.</span></li>
       </ul>
+      <p class="caveat">Los recordatorios facilitan el seguimiento; no garantizan que todos los clientes respondan ni que la documentación llegue completa.</p>
     </div>
-
-    <!-- Montaje -->
-    <div class="pricing-card featured reveal">
-      <span class="pricing-badge">Lo único que se factura</span>
-      <div class="pricing-header">
-        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
-        </svg>
-        <p class="pricing-plan">Montaje</p>
-      </div>
-      <div class="pricing-price">
-        <span class="setup-label">Presupuesto</span>
-        <span class="setup">A medida</span>
-      </div>
-      <p class="pricing-monthly-accent">Cerrado por escrito</p>
-      <ul class="pricing-features">
-        <li>Por fases: cada una acaba con algo funcionando</li>
-        <li>Precio cerrado por escrito, nunca una factura mayor</li>
-        <li>Se paga por fase entregada, no por adelantado entero</li>
-        <li>Si falla algo de lo que monté, lo arreglo sin coste</li>
-      </ul>
+    <div id="como-funciona">
+      <p class="label">Cómo trabajamos</p>
+      <h2 class="title">Tres pasos, por fases.</h2>
+      <ol class="steps">
+        <li><div><h3>Diagnóstico gratuito · 30&nbsp;min</h3><p>Me cuentas cómo trabajáis y dónde se va el tiempo. Vemos qué tiene sentido automatizar y, si no compensa, te lo digo.</p></div></li>
+        <li><div><h3>Alcance y presupuesto</h3><p>Por escrito: qué se hace, en qué fases, con qué hitos y condiciones de pago, y una estimación de plazos según accesos y herramientas.</p></div></li>
+        <li><div><h3>Puesta en marcha por fases</h3><p>Empezamos por un proceso. Lo probáis con casos reales y se activa cuando el equipo da el visto bueno. Después, el siguiente.</p></div></li>
+      </ol>
     </div>
-
-    <!-- Mantenimiento -->
-    <div class="pricing-card reveal">
-      <div class="pricing-header">
-        <svg class="pricing-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-        </svg>
-        <p class="pricing-plan">Mantenimiento</p>
-      </div>
-      <div class="pricing-price">
-        <span class="setup-label">Mensual</span>
-        <span class="setup">Opcional</span>
-      </div>
-      <p class="pricing-monthly-accent">Sin permanencia</p>
-      <ul class="pricing-features">
-        <li>Vigilancia de que todo sigue funcionando</li>
-        <li>Arreglo lo que se rompa cuando cambie una herramienta</li>
-        <li>Se puede cortar cuando quieras, el sistema es tuyo</li>
-      </ul>
-    </div>
-
   </div>
+</section>
 
-  <div class="pricing-final-cta reveal">
-    <button class="pricing-cta pricing-cta-primary" onclick="abrirCalendly()">Reservar auditoría gratuita — 30 min</button>
+<!-- QUIÉN ESTÁ DETRÁS -->
+<section class="section bg-alt" id="quien" aria-labelledby="quien-title">
+  <div class="wrap about">
+    <img src="/assets/ismael.jpg" alt="Ismael Núñez López" width="220" height="275" loading="lazy">
+    <div>
+      <p class="label">Quién está detrás</p>
+      <h2 class="title" id="quien-title">Trabajas directamente conmigo.</h2>
+      <p>Soy <strong>Ismael Núñez</strong>, de Algeciras. Monto automatizaciones con N8N e inteligencia artificial para despachos. Del diagnóstico a la puesta en marcha hablas con la misma persona, sin intermediarios.</p>
+      <ul class="about-facts">
+        <li>Algeciras, Cádiz</li>
+        <li>Asesorías y gestorías</li>
+        <li>En remoto o en el Campo de Gibraltar</li>
+      </ul>
+      <div class="about-side">
+        <span class="tag">Automatización propia</span>
+        <p>El asistente de esta web también lo he montado yo: responde dudas sobre cómo trabajo y me avisa cuando alguien deja sus datos. Funciona con IA, así que puede equivocarse.</p>
+      </div>
+      <div class="about-actions">
+        <a href="/sobre-mi" class="btn-outline">Más sobre mí</a>
+        <button type="button" class="btn-outline" data-open-chat>Probar el asistente</button>
+      </div>
+    </div>
   </div>
+</section>
 
-  <p class="pricing-note reveal">No publico tarifas porque no vendo paquetes: el precio depende de cuántos procesos hay que corregir y de lo que ya tengas montado.<br>De la auditoría sale un presupuesto cerrado por escrito, con el alcance detallado fase a fase. Sin sorpresas ni costes ocultos.</p>
+<!-- CÓMO SE COBRA -->
+<section class="section" id="precios" aria-labelledby="precios-title">
+  <div class="wrap">
+    <p class="label">Cómo se cobra</p>
+    <h2 class="title" id="precios-title">Presupuesto claro. Trabajo por fases.</h2>
+    <p class="lead">No publico tarifas porque el precio depende de cuántos procesos se automatizan y de lo que el despacho ya tiene montado. Antes de empezar sabes qué se hace y en qué condiciones.</p>
+    <dl class="price-list">
+      <div class="price-row">
+        <dt>Diagnóstico</dt>
+        <dd class="price">Gratuito · 30&nbsp;min</dd>
+        <dd class="desc"><p>Revisamos cómo trabajáis y si hay algo que compense automatizar. Sin compromiso.</p></dd>
+      </div>
+      <div class="price-row">
+        <dt>Implantación</dt>
+        <dd class="price">A medida</dd>
+        <dd class="desc"><p>El presupuesto define el alcance, las fases, los hitos y las condiciones de pago. Cada fase termina con algo que el equipo puede usar.</p></dd>
+      </div>
+      <div class="price-row">
+        <dt>Mantenimiento</dt>
+        <dd class="price">Opcional</dd>
+        <dd class="desc"><p>Revisión de que todo sigue funcionando y ajustes cuando cambia una herramienta externa. Se contrata aparte y sus condiciones van en la propuesta.</p></dd>
+      </div>
+    </dl>
+    <p class="price-note">Aparte de mi trabajo, algunas herramientas de terceros tienen su propia cuota, por ejemplo el servidor o la cuenta de N8N. Se pagan al proveedor y aparecen separadas en el presupuesto.</p>
+    <div class="price-cta">
+      <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-primary" data-calendly target="_blank" rel="noopener">Reservar diagnóstico gratuito</a>
+    </div>
+  </div>
 </section>
 
 <!-- FAQ -->
-<div class="bg-alt">
-  <div class="bg-alt-inner" id="faq">
-    <p class="section-label reveal">FAQ</p>
-    <h2 class="section-title reveal">Preguntas frecuentes.</h2>
-    <p class="section-sub reveal">Todo lo que necesitas saber antes de dar el primer paso.</p>
-    <div class="faq-list" style="max-width:760px">
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Cómo sé si mi proceso se puede automatizar?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>Vamos a ver. Si el proceso es repetitivo, sigue siempre los mismos pasos y le consume tiempo a alguien de tu equipo, casi seguro se puede automatizar. En la auditoría inicial lo vemos juntos. Si no tiene sentido, te lo digo. Sin rodeos.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Cuánto tiempo tarda la implementación?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>Una automatización suelta, 3-5 días. Un flujo más complejo, 1-2 semanas. Reordenar el sistema entero de una empresa lleva más —de 8 a 10 semanas es lo normal— pero va por fases y cada fase acaba con algo funcionando. Nunca meses sin ver resultados.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Necesito conocimientos técnicos?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>Nada. Te entrego la automatización funcionando y te explico cómo usarla en 15 minutos. No tocas código ni configuras nada. Si falla algo de lo que monté, me avisas y lo arreglo sin coste.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Qué herramientas utilizas?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>Principalmente N8N, que conecta con más de 500 herramientas: Gmail, Google Sheets, WhatsApp, HubSpot, Airtable, Slack y muchas más. Me adapto a lo que ya usas. No te obligo a cambiar nada de tu stack tecnológico actual.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Cuánto cuesta?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>La auditoría inicial es gratuita y dura 30 minutos. De ahí sale un presupuesto cerrado por escrito, con el alcance detallado y un mantenimiento mensual opcional. No publico una tarifa fija porque el precio depende de cuántos procesos se automatizan y de lo que hay montado ya: un proyecto acotado no cuesta lo mismo que reordenar el flujo entero del despacho. Sin permanencia mínima y sin costes ocultos.</p></div>
-      </div>
-      <div class="faq-item reveal">
-        <button class="faq-btn" onclick="toggleFaq(this)">
-          <span>¿Qué pasa si la automatización deja de funcionar?</span>
-          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-        <div class="faq-answer"><p>Si el fallo es de lo que monté yo, lo arreglo sin coste. Si lo provoca un cambio en una herramienta de fuera (Google, tu programa de gestión, un proveedor que cambia su sistema), lo cubre el mantenimiento mensual, que es opcional; si no lo tienes contratado, te lo presupuesto aparte antes de tocar nada. En ningún caso te dejo con una automatización rota sin saber qué hacer.</p></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACTO -->
-<section class="section" id="contacto">
-  <p class="section-label reveal" style="text-align:center">Empieza aquí</p>
-  <h2 class="section-title reveal" style="text-align:center">Reserva tu auditoría gratuita.</h2>
-  <p class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">30 minutos. Sin rodeos. Te digo qué automatizaría en tu despacho, qué costaría y cuánto te ahorras. Sin compromiso.</p>
-
-  <div class="booking-box reveal">
-    <div class="booking-icon">📅</div>
-    <h3>Auditoría gratuita — 30 min</h3>
-    <p>Analizamos juntos tus procesos y te digo exactamente qué se puede automatizar y qué ROI tiene. Sin jerga técnica.</p>
-    <button class="btn-primary" onclick="abrirCalendly()">
-      Reservar ahora — es gratis
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-    </button>
-  </div>
-
-  <p class="booking-or">o si prefieres que te contacte yo por email:</p>
-
-  <div class="form-wrapper reveal">
-    <div class="form-box">
-      <div id="formContent">
-        <h3>Solicitar auditoría gratuita</h3>
-        <p class="form-desc">Sin compromiso. Cuéntame tu situación y vemos si tiene sentido trabajar juntos.</p>
-        <form id="contactForm">
-          <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="tu@empresa.com" required>
-          </div>
-          <div class="form-group">
-            <label for="telefono">Teléfono <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
-            <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000">
-          </div>
-          <div class="form-group">
-            <label for="empresa">Empresa <span style="font-weight:400;color:var(--text-2)">(opcional)</span></label>
-            <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa">
-          </div>
-          <div class="form-group">
-            <label for="mensaje">¿Qué proceso quieres automatizar?</label>
-            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Ej.: perseguir facturas antes del cierre, pasar datos del correo al programa de contabilidad..." required></textarea>
-          </div>
-          <button type="submit" class="btn-form" id="submitBtn">Enviar solicitud →</button>
-          <div class="form-error" id="formError">Hubo un error al enviar. Inténtalo de nuevo.</div>
-        </form>
-      </div>
-      <div class="form-success" id="formSuccess">
-        <div class="check">✓</div>
-        <h4>Solicitud recibida</h4>
-        <p>Te respondo en menos de 24 horas con un análisis de tu caso.</p>
-      </div>
+<section class="section bg-alt" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <p class="label">FAQ</p>
+    <h2 class="title" id="faq-title">Preguntas frecuentes.</h2>
+    <div class="faq-list">
+      <details>
+        <summary>¿Funciona con las herramientas que ya usa el despacho?</summary>
+        <p>Depende de cada herramienta. Trabajo con N8N, que conecta con el correo, hojas de cálculo, almacenamiento en la nube y cientos de aplicaciones más. Si tu programa de gestión permite conectarse, exportar datos o trabaja por correo, normalmente se puede integrar. Lo revisamos en el diagnóstico y, si no hay una forma fiable, te lo digo antes de presupuestar.</p>
+      </details>
+      <details>
+        <summary>¿Qué tiene que hacer mi equipo?</summary>
+        <p>Al principio, contarme cómo trabajáis, darme los accesos necesarios y revisar los textos de los avisos antes de activarlos. Después, mantener al día lo que el sistema no puede saber solo; por ejemplo, en la demo, marcar quién ha entregado la documentación. No hace falta saber programar.</p>
+      </details>
+      <details>
+        <summary>¿Cuánto se tarda en ponerlo en marcha?</summary>
+        <p>Depende del alcance, de los accesos y de las herramientas del despacho. El presupuesto incluye una estimación por fases y cada fase termina con algo que el equipo puede usar. No doy un plazo cerrado antes de ver vuestro caso.</p>
+      </details>
+      <details>
+        <summary>¿Hay costes recurrentes?</summary>
+        <p>Puede haber dos. El mantenimiento, que es opcional y se contrata aparte. Y las herramientas de terceros que haga falta usar, como el servidor o la cuenta de N8N, que tienen su propia cuota y se pagan al proveedor. Ambos aparecen separados en el presupuesto antes de empezar.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si algo deja de funcionar?</summary>
+        <p>Hay que distinguir dos casos: un error de la implantación y un cambio posterior de un proveedor externo, como Google o el programa de gestión. Cómo se cubre cada uno se fija por escrito en la propuesta, antes de empezar.</p>
+      </details>
+      <details>
+        <summary>¿Los recordatorios garantizan que los clientes envíen todo?</summary>
+        <p>No. Facilitan el seguimiento y te dan una visión clara de quién falta, pero no garantizan que el cliente responda ni que la documentación llegue completa o correcta. El equipo sigue revisando lo que entra.</p>
+      </details>
     </div>
   </div>
 </section>
 
-<div class="cta-fija" aria-hidden="true">
-  <button class="btn-primary" onclick="abrirCalendly()" tabindex="-1">Reservar auditoría gratuita — 30 min</button>
+<!-- CONTACTO -->
+<section class="section" id="contacto" aria-labelledby="contacto-title">
+  <div class="wrap">
+    <p class="label">Empieza aquí</p>
+    <h2 class="title" id="contacto-title">Reserva tu diagnóstico gratuito.</h2>
+    <p class="lead">30 minutos para ver cómo trabajáis y si tiene sentido automatizar algo. Si no compensa, te lo digo.</p>
+
+    <div class="contact-grid">
+      <div class="booking">
+        <h3>Diagnóstico gratuito · 30&nbsp;min</h3>
+        <p>Eliges el hueco que te venga bien en el calendario.</p>
+        <ul>
+          <li>Sobre vuestros procesos reales, no sobre una plantilla</li>
+          <li>Sales sabiendo qué tiene sentido automatizar y qué no</li>
+          <li>Sin compromiso</li>
+        </ul>
+        <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-primary" data-calendly target="_blank" rel="noopener">
+          Elegir horario
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <p class="booking-alt">¿Prefieres escribir? Usa el formulario o escríbeme a <a href="mailto:ismael@ismaelnlai.com">ismael@ismaelnlai.com</a>.</p>
+      </div>
+
+      <div class="form-box">
+        <div id="formContent">
+          <h3>O cuéntamelo por escrito</h3>
+          <p class="form-desc">Te respondo por email.</p>
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" autocomplete="name" maxlength="100" required aria-describedby="nombre-error">
+                <span class="field-error" id="nombre-error"></span>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" maxlength="160" required aria-describedby="email-error" placeholder="tu@despacho.com">
+                <span class="field-error" id="email-error"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="telefono">Teléfono <span class="opt">(opcional)</span></label>
+                <input type="tel" id="telefono" name="telefono" autocomplete="tel" maxlength="30" aria-describedby="telefono-error">
+                <span class="field-error" id="telefono-error"></span>
+              </div>
+              <div class="form-group">
+                <label for="empresa">Despacho <span class="opt">(opcional)</span></label>
+                <input type="text" id="empresa" name="empresa" autocomplete="organization" maxlength="120">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="mensaje">¿Qué te gustaría resolver?</label>
+              <textarea id="mensaje" name="mensaje" rows="4" maxlength="2000" required aria-describedby="mensaje-error" placeholder="Ej.: perseguir facturas antes del cierre, pasar datos del correo al programa de contabilidad…"></textarea>
+              <span class="field-error" id="mensaje-error"></span>
+            </div>
+            <button type="submit" class="btn-form" id="submitBtn">Enviar consulta</button>
+            <p class="form-privacy">Uso estos datos solo para responder a tu consulta. Más información en la <a href="/privacidad">política de privacidad</a>.</p>
+            <p class="form-status" id="formStatus" role="alert"></p>
+          </form>
+        </div>
+        <div class="form-success" id="formSuccess" hidden>
+          <div class="check" aria-hidden="true">✓</div>
+          <h3 tabindex="-1" id="formSuccessTitle">Consulta recibida</h3>
+          <p>Te responderé a la dirección de email que has indicado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="resources">
+      <h3>Recursos para despachos</h3>
+      <ul>
+        <li><a href="/verifactu"><strong>Guía Verifactu para despachos</strong><span>Fechas, quién queda fuera y cómo clasificar la cartera</span></a></li>
+        <li><a href="/perseguir-facturas-cierre-trimestral"><strong>Dejar de perseguir facturas</strong><span>Un sistema de avisos antes del cierre trimestral</span></a></li>
+        <li><a href="/calculadora"><strong>Calculadora de horas</strong><span>Lo que cuesta al año la gestión manual</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="cta-fija" id="ctaFija" aria-hidden="true" inert>
+  <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-primary" data-calendly target="_blank" rel="noopener">Reservar diagnóstico gratuito · 30 min</a>
+</div>
+
+<div class="booking-toast" id="bookingToast" role="alert" hidden>
+  <span>No se ha podido abrir el calendario aquí. <a id="bookingToastLink" href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" rel="noopener">Ábrelo en una pestaña nueva</a> o escríbeme a <a href="mailto:ismael@ismaelnlai.com">ismael@ismaelnlai.com</a>.</span>
+  <button type="button" aria-label="Cerrar aviso" id="bookingToastClose">×</button>
 </div>
 
 <footer>
-  <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías</p>
-  <p style="margin-top:0.5rem;">
+  <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías · Algeciras</p>
+  <nav aria-label="Pie de página">
     <a href="/sobre-mi">Sobre mí</a>
-    <span class="footer-sep">·</span>
     <a href="/verifactu">Guía Verifactu</a>
-    <span class="footer-sep">·</span>
     <a href="/perseguir-facturas-cierre-trimestral">Perseguir facturas</a>
-    <span class="footer-sep">·</span>
+    <a href="/calculadora">Calculadora</a>
     <a href="/asesorias-campo-de-gibraltar">Asesorías del Campo de Gibraltar</a>
-    <span class="footer-sep">·</span>
-    <a href="/aviso-legal">Aviso Legal</a>
-    <span class="footer-sep">·</span>
+    <a href="/aviso-legal">Aviso legal</a>
     <a href="/privacidad">Privacidad</a>
-    <span class="footer-sep">·</span>
     <a href="/cookies">Cookies</a>
-    <span class="footer-sep">·</span>
     <a href="/cookies" data-cookie-settings>Configurar cookies</a>
-  </p>
+  </nav>
 </footer>
 
 <script>
-  // ─── CONFIGURACIÓN ───
-  const CALENDLY_URL = 'https://calendly.com/ismaelnlai/diagnostico';
+(function () {
+  'use strict';
 
-  // Calendly en ventana emergente, sin sacar al visitante de la web. Sus scripts
-  // (y sus cookies) solo se cargan al pulsar. Si no cargan, pestaña nueva como antes.
-  function abrirCalendly() {
-    if (window.Calendly) { Calendly.initPopupWidget({ url: CALENDLY_URL }); return; }
-    var hecho = false;
-    function respaldo() { if (!hecho) { hecho = true; window.open(CALENDLY_URL, '_blank'); } }
-    var reloj = setTimeout(respaldo, 4000);
-    var l = document.createElement('link');
-    l.rel = 'stylesheet';
-    l.href = 'https://assets.calendly.com/assets/external/widget.css';
-    document.head.appendChild(l);
+  // ─── RESERVA (Calendly) ───
+  // Todos los enlaces de reserva llevan href real a Calendly: sin JS, o con un
+  // clic con Ctrl/Cmd, abren la página de Calendly. Con JS, intentamos la ventana
+  // emergente; sus scripts (y cookies) solo se cargan al pulsar. Si no cargan,
+  // aparece un aviso con un enlace directo: nada de window.open() retrasado.
+  var booking = window.ismaelnlaiBooking = {
+    url: 'https://calendly.com/ismaelnlai/diagnostico',
+    scriptSrc: 'https://assets.calendly.com/assets/external/widget.js',
+    cssHref: 'https://assets.calendly.com/assets/external/widget.css',
+    timeoutMs: 6000
+  };
+  var estado = 'idle', esperando = [];
+  var toast = document.getElementById('bookingToast');
+  var toastLink = document.getElementById('bookingToastLink');
+  var ultimoDisparador = null;
+
+  function mostrarFallo(url) {
+    toastLink.href = url;
+    toast.hidden = false;
+    toastLink.focus();
+  }
+  function cerrarToast() {
+    toast.hidden = true;
+    if (ultimoDisparador && document.contains(ultimoDisparador)) ultimoDisparador.focus();
+  }
+  document.getElementById('bookingToastClose').addEventListener('click', cerrarToast);
+  toast.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarToast(); });
+
+  function cargarCalendly(ok, ko) {
+    if (window.Calendly) { ok(); return; }
+    esperando.push([ok, ko]);
+    if (estado === 'loading') return;
+    estado = 'loading';
+    function resolver(bien) {
+      if (estado !== 'loading') return;
+      estado = bien ? 'ready' : 'idle';  // si falla, se puede reintentar en el siguiente clic
+      var cola = esperando; esperando = [];
+      cola.forEach(function (p) { (bien ? p[0] : p[1])(); });
+    }
+    var reloj = setTimeout(function () { resolver(false); }, booking.timeoutMs);
+    if (!document.querySelector('link[href="' + booking.cssHref + '"]')) {
+      var l = document.createElement('link');
+      l.rel = 'stylesheet'; l.href = booking.cssHref;
+      document.head.appendChild(l);
+    }
     var sc = document.createElement('script');
-    sc.src = 'https://assets.calendly.com/assets/external/widget.js';
-    sc.onload = function () {
-      if (hecho) return;
-      hecho = true; clearTimeout(reloj);
-      Calendly.initPopupWidget({ url: CALENDLY_URL });
-    };
-    sc.onerror = function () { clearTimeout(reloj); respaldo(); };
+    sc.src = booking.scriptSrc;
+    sc.onload = function () { clearTimeout(reloj); resolver(!!window.Calendly); };
+    sc.onerror = function () { clearTimeout(reloj); resolver(false); };
     document.head.appendChild(sc);
   }
 
-  // Abre el chat de la web (el widget pinta su propio botón #isnl-btn)
-  function abrirChat() {
-    var b = document.getElementById('isnl-btn');
-    if (b) b.click();
-  }
+  booking.open = function (url, disparador) {
+    url = url || booking.url;
+    ultimoDisparador = disparador || document.activeElement;
+    toast.hidden = true;
+    cargarCalendly(
+      function () {
+        try { window.Calendly.initPopupWidget({ url: url }); }
+        catch (e) { mostrarFallo(url); }
+      },
+      function () { mostrarFallo(url); }
+    );
+  };
 
-  // CTA fijo en móvil: aparece cuando el botón del hero sale de pantalla
-  // y se esconde al llegar a la sección de contacto, que ya tiene el suyo.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[data-calendly]') : null;
+    if (!a || e.defaultPrevented) return;
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    booking.open(a.href, a);
+  });
+
+  // ─── CHAT ───
+  document.querySelectorAll('[data-open-chat]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (window.isnlChat && window.isnlChat.open) window.isnlChat.open();
+      else location.href = 'mailto:ismael@ismaelnlai.com';
+    });
+  });
+
+  // ─── CTA FIJO EN MÓVIL ───
+  // Aparece cuando el botón del hero sale de pantalla y se esconde en contacto,
+  // que ya tiene el suyo. Oculto = fuera del foco y del árbol de accesibilidad.
   (function () {
+    var barra = document.getElementById('ctaFija');
     var heroCta = document.getElementById('heroCta');
     var contacto = document.getElementById('contacto');
-    if (!heroCta || !contacto || !('IntersectionObserver' in window)) return;
+    if (!barra || !heroCta || !contacto || !('IntersectionObserver' in window)) return;
     var heroFuera = false, enContacto = false;
-    function pintar() { document.body.classList.toggle('cta-visible', heroFuera && !enContacto); }
+    function pintar() {
+      var visible = heroFuera && !enContacto;
+      document.body.classList.toggle('cta-visible', visible);
+      barra.inert = !visible;
+      if (visible) barra.removeAttribute('aria-hidden'); else barra.setAttribute('aria-hidden', 'true');
+    }
     new IntersectionObserver(function (e) { heroFuera = !e[0].isIntersecting; pintar(); }).observe(heroCta);
     new IntersectionObserver(function (e) { enContacto = e[0].isIntersecting; pintar(); }, { rootMargin: '0px 0px -30% 0px' }).observe(contacto);
   })();
 
-  // Header on scroll
-  const header = document.getElementById('mainHeader');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
+  // ─── FORMULARIO ───
+  var form = document.getElementById('contactForm');
+  var btn = document.getElementById('submitBtn');
+  var status = document.getElementById('formStatus');
+  var FORM_ENDPOINT = 'https://n8n.ismaelnlai.com/webhook/contacto-web';
+  var FORM_TIMEOUT_MS = 15000;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  // Scroll reveal — skip if scroll-driven CSS animations are supported
-  const useScrollDriven = CSS.supports('animation-timeline', 'scroll()');
-
-  if (!useScrollDriven) {
-    // Fallback: IntersectionObserver (CSS stagger via :nth-child handles delays)
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-      revealObs.observe(el);
-    });
+  function setError(campo, msg) {
+    var el = document.getElementById(campo.id + '-error');
+    if (el) el.textContent = msg || '';
+    if (msg) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid');
   }
-
-  // Manifesto reveal (always uses IntersectionObserver — scroll-driven for staggered
-  // text blocks with specific threshold needs manual control)
-  const mfObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        mfObs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.manifesto-line, .manifesto-cta').forEach((el, i) => {
-    el.style.transitionDelay = `${i * 0.13}s`;
-    mfObs.observe(el);
+  function validar() {
+    var errores = [];
+    var n = form.nombre, m = form.email, t = form.telefono, x = form.mensaje;
+    setError(n, n.value.trim() ? '' : 'Escribe tu nombre.');
+    if (!n.value.trim()) errores.push(n);
+    var em = m.value.trim();
+    var emMsg = !em ? 'Escribe tu email para poder responderte.' : (!EMAIL_RE.test(em) ? 'Revisa el email: parece incompleto.' : '');
+    setError(m, emMsg);
+    if (emMsg) errores.push(m);
+    var tel = t.value.trim();
+    var telMsg = tel && !/^[+()\d\s.-]{6,30}$/.test(tel) ? 'Revisa el teléfono o déjalo en blanco.' : '';
+    setError(t, telMsg);
+    if (telMsg) errores.push(t);
+    setError(x, x.value.trim() ? '' : 'Cuéntame brevemente qué te gustaría resolver.');
+    if (!x.value.trim()) errores.push(x);
+    return errores;
+  }
+  ['nombre', 'email', 'telefono', 'mensaje'].forEach(function (id) {
+    form[id].addEventListener('blur', function () { if (form[id].getAttribute('aria-invalid')) validar(); });
   });
 
-  // FAQ accordion — ease-out when opening, ease-in when closing
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const answer = item.querySelector('.faq-answer');
-    const isOpen = item.classList.contains('open');
-    // Close all open items with ease-in
-    document.querySelectorAll('.faq-item.open').forEach(o => {
-      o.classList.remove('open');
-      const a = o.querySelector('.faq-answer');
-      a.style.transition = 'max-height 0.35s ease-in';
-      a.style.maxHeight = null;
-    });
-    if (!isOpen) {
-      item.classList.add('open');
-      answer.style.transition = 'max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
-      answer.style.maxHeight = answer.scrollHeight + 'px';
-    }
+  function enviando(si) {
+    btn.disabled = si;
+    btn.textContent = si ? 'Enviando…' : 'Enviar consulta';
+    form.setAttribute('aria-busy', si ? 'true' : 'false');
   }
 
-// Form — animated success state
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    const err = document.getElementById('formError');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-    err.style.display = 'none';
-    fetch('https://n8n.ismaelnlai.com/webhook/contacto-web', {
+    if (btn.disabled) return;
+    status.textContent = ''; status.className = 'form-status';
+    var errores = validar();
+    if (errores.length) { errores[0].focus(); return; }
+
+    enviando(true);
+    var ctrl = 'AbortController' in window ? new AbortController() : null;
+    var vencido = false;
+    var reloj = setTimeout(function () { vencido = true; if (ctrl) ctrl.abort(); }, FORM_TIMEOUT_MS);
+
+    // Contrato del endpoint existente: POST JSON con estos cinco campos; 2xx = recibido.
+    fetch(FORM_ENDPOINT, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nombre: this.nombre.value,
-        email: this.email.value,
-        telefono: this.telefono.value,
-        empresa: this.empresa.value,
-        mensaje: this.mensaje.value
+        nombre: form.nombre.value.trim(),
+        email: form.email.value.trim(),
+        telefono: form.telefono.value.trim(),
+        empresa: form.empresa.value.trim(),
+        mensaje: form.mensaje.value.trim()
       }),
-      headers: { 'Content-Type': 'application/json' }
+      signal: ctrl ? ctrl.signal : undefined
     })
-    .then(res => {
-      if (res.ok) {
-        const fc = document.getElementById('formContent');
-        const fs = document.getElementById('formSuccess');
-        // Fade out form content
-        fc.classList.add('hiding');
-        setTimeout(function() {
-          fc.style.display = 'none';
-          fs.style.display = 'block';
-          // Force reflow, then trigger enter transition
-          fs.getBoundingClientRect();
-          fs.classList.add('visible');
-        }, 280);
-      } else { throw new Error(); }
+    .then(function (res) {
+      clearTimeout(reloj);
+      if (vencido) throw new Error('timeout');
+      if (!res.ok) throw new Error('http ' + res.status);
+      document.getElementById('formContent').hidden = true;
+      var ok = document.getElementById('formSuccess');
+      ok.hidden = false;
+      document.getElementById('formSuccessTitle').focus();
     })
-    .catch(() => {
-      err.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Enviar solicitud →';
+    .catch(function () {
+      clearTimeout(reloj);
+      enviando(false);
+      status.className = 'form-status error';
+      status.innerHTML = '';
+      status.appendChild(document.createTextNode(vencido
+        ? 'El envío está tardando demasiado y lo he cancelado. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '
+        : 'No se ha podido enviar. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '));
+      var a = document.createElement('a');
+      a.href = 'mailto:ismael@ismaelnlai.com';
+      a.textContent = 'ismael@ismaelnlai.com';
+      status.appendChild(a);
+      status.appendChild(document.createTextNode('.'));
     });
   });
+})();
 </script>
 
 <script src="/consent.js" defer></script>
-<script src="chat-widget.js"></script>
+<script src="/chat-widget.js" defer></script>
 </body>
 </html>
