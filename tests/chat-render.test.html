@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Pruebas del chat</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #08080F; color: #ECEAE4; padding: 1.5rem; }
+  .ok { color: #8FC79A; } .ko { color: #F08A75; font-weight: 700; }
+  li { margin: .2rem 0; } #sandbox { display: none; }
+</style>
+<script>
+  // Nada sale a la red: el webhook se sustituye por un XHR simulado ANTES de cargar
+  // el widget. Cada prueba de integración decide la respuesta.
+  window.ISNL_CHAT_TEST = true;
+  window.__requests = [];
+  window.__nextResponse = null;   // { status, body } | 'error' | 'timeout'
+  function FakeXHR() { this.headers = {}; this.timeout = 0; }
+  FakeXHR.prototype.open = function (m, url) { this.method = m; this.url = url; };
+  FakeXHR.prototype.setRequestHeader = function (k, v) { this.headers[k] = v; };
+  FakeXHR.prototype.send = function (body) {
+    var x = this, r = window.__nextResponse;
+    window.__requests.push({ url: x.url, body: body, timeout: x.timeout });
+    setTimeout(function () {
+      if (r === 'error') return x.onerror && x.onerror();
+      if (r === 'timeout') return x.ontimeout && x.ontimeout();
+      x.status = r.status; x.responseText = r.body; x.onload && x.onload();
+    }, 10);
+  };
+  window.XMLHttpRequest = FakeXHR;
+  // Calendly tampoco se carga: el script queda bloqueado en estas pruebas.
+  window.Calendly = { calls: [], initPopupWidget: function (o) { this.calls.push(o.url); } };
+</script>
+<script src="../chat-widget.js"></script>
+</head>
+<body>
+<h1>Pruebas del chat (renderizado y accesibilidad)</h1>
+<p id="summary">Ejecutando…</p>
+<ul id="results"></ul>
+<div id="sandbox"></div>
+<script>
+(async function () {
+  var results = [], R = window.isnlChatRender;
+  function test(name, fn) { try { fn(); results.push([name, true]); } catch (e) { results.push([name, false, e.message]); } }
+  async function atest(name, fn) { try { await fn(); results.push([name, true]); } catch (e) { results.push([name, false, e.message]); } }
+  function eq(a, b, msg) { if (a !== b) throw new Error((msg || '') + ' esperado ' + JSON.stringify(b) + ', obtenido ' + JSON.stringify(a)); }
+  function ok(v, msg) { if (!v) throw new Error(msg || 'falso'); }
+  function render(text) { return R.renderMessage(document.createElement('div'), text); }
+  function noEventAttrs(root) {
+    root.querySelectorAll('*').forEach(function (n) {
+      Array.prototype.forEach.call(n.attributes, function (a) { if (/^on/i.test(a.name)) throw new Error('atributo de evento: ' + a.name); });
+    });
+  }
+  function onlyAllowedTags(root) {
+    root.querySelectorAll('*').forEach(function (n) {
+      if (['A', 'STRONG', 'BR'].indexOf(n.tagName) === -1) throw new Error('etiqueta no permitida: ' + n.tagName);
+    });
+  }
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  // El widget se monta en DOMContentLoaded; este script corre antes.
+  await new Promise(function (r) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', r); else r(); });
+  await sleep(0);
+
+  // ── Renderizador ──
+  test('enlace Markdown normal: un solo <a>, sin anidar', function () {
+    var d = render('Reserva en el [Calendario](https://example.com/reserva).');
+    var as = d.querySelectorAll('a');
+    eq(as.length, 1, 'n.º enlaces');
+    eq(as[0].getAttribute('href'), 'https://example.com/reserva');
+    eq(as[0].textContent, 'Calendario');
+    eq(as[0].querySelectorAll('a').length, 0, 'anidados');
+    eq(as[0].target, '_blank'); ok(/noopener/.test(as[0].rel), 'rel noopener');
+    eq(d.textContent, 'Reserva en el Calendario.');
+  });
+  test('enlace Markdown cuyo texto es una URL', function () {
+    var d = render('[calendly.com/ismaelnlai/diagnostico](https://calendly.com/ismaelnlai/diagnostico)');
+    eq(d.querySelectorAll('a').length, 1);
+    eq(d.querySelector('a').href, 'https://calendly.com/ismaelnlai/diagnostico');
+  });
+  test('URL suelta, sin la puntuación final', function () {
+    var d = render('Mira https://example.com/x?a=1&b=2. Y ya.');
+    var a = d.querySelectorAll('a'); eq(a.length, 1);
+    eq(a[0].getAttribute('href'), 'https://example.com/x?a=1&b=2');
+    eq(d.textContent, 'Mira https://example.com/x?a=1&b=2. Y ya.');
+  });
+  test('enlace de correo Markdown (mensaje de error del widget)', function () {
+    var d = render('Escribe a [ismael@ismaelnlai.com](mailto:ismael@ismaelnlai.com).');
+    var a = d.querySelector('a');
+    eq(a.getAttribute('href'), 'mailto:ismael@ismaelnlai.com');
+    eq(a.hasAttribute('target'), false, 'mailto sin target');
+  });
+  test('correo suelto se convierte en mailto', function () {
+    var d = render('o a ismael@ismaelnlai.com');
+    eq(d.querySelector('a').getAttribute('href'), 'mailto:ismael@ismaelnlai.com');
+  });
+  test('comillas en la URL no crean atributos', function () {
+    var d = render('[x](https://e.com/"onmouseover="alert(1)) y https://e.com/"onfocus="alert(1)" autofocus="');
+    noEventAttrs(d); onlyAllowedTags(d);
+    d.querySelectorAll('a').forEach(function (a) { ok(a.getAttribute('href').indexOf('"') === -1, 'comilla sin codificar en href'); });
+  });
+  test('comillas simples y dobles en texto quedan como texto', function () {
+    var d = render('Dijo "hola" y \'adiós\'');
+    eq(d.children.length, 0); eq(d.textContent, 'Dijo "hola" y \'adiós\'');
+  });
+  test('etiquetas HTML se muestran como texto', function () {
+    var s = '<img src=x onerror=alert(1)><script>alert(1)<\/script><a href="javascript:alert(1)">x</a>';
+    var d = render(s);
+    eq(d.children.length, 0, 'elementos creados'); eq(d.textContent, s);
+  });
+  test('HTML dentro de negrita sigue siendo texto', function () {
+    var d = render('**<b>x</b>**');
+    eq(d.children.length, 1); eq(d.firstChild.tagName, 'STRONG'); eq(d.firstChild.textContent, '<b>x</b>');
+  });
+  test('protocolos no permitidos: sin enlace', function () {
+    ['[a](javascript:alert(1))', '[a](JaVaScRiPt:alert`1`)', '[a](data:text/html,<b>x</b>)', '[a](vbscript:msgbox)',
+     'javascript:alert(1)', '[a](//evil.example)', '[a](https:evil.example)', '[a](mailto:no-es-un-correo)',
+     '[a](file:///etc/passwd)'].forEach(function (s) {
+      var d = render(s);
+      eq(d.querySelectorAll('a').length, 0, s);
+      noEventAttrs(d);
+    });
+  });
+  test('safeHref acepta solo http, https y mailto válidos', function () {
+    eq(R.safeHref('https://a.es/b'), 'https://a.es/b');
+    eq(R.safeHref('mailto:a@b.es'), 'mailto:a@b.es');
+    eq(R.safeHref('javascript:alert(1)'), null);
+    eq(R.safeHref(' data:x'), null);
+  });
+  test('negrita y saltos de línea', function () {
+    var d = render('**Hola**\nlínea 2\n\nlínea 4');
+    eq(d.querySelectorAll('strong').length, 1); eq(d.querySelectorAll('br').length, 3);
+  });
+  test('negrita con enlace dentro', function () {
+    var d = render('**Reserva [aquí](https://calendly.com/x)**');
+    var a = d.querySelector('strong a'); ok(a, 'enlace dentro de strong'); eq(a.textContent, 'aquí');
+  });
+  test('entrada vacía o nula', function () { eq(render('').childNodes.length, 0); eq(render(null).textContent, ''); });
+
+  // ── Integración con el widget (XHR simulado) ──
+  var btn = document.getElementById('isnl-btn');
+  var panel = document.getElementById('isnl-panel');
+  var inp = document.getElementById('isnl-inp');
+  var log = document.getElementById('isnl-msgs');
+  function send(text) { inp.value = text; document.getElementById('isnl-snd').click(); }
+
+  test('cerrado: panel oculto (fuera de foco y del árbol)', function () {
+    eq(panel.hidden, true); eq(btn.getAttribute('aria-expanded'), 'false');
+    eq(btn.getAttribute('aria-label'), 'Chat con el asistente');
+    eq(btn.querySelector('#isnl-badge'), null, 'sin contador');
+  });
+  test('nombres accesibles del campo y botones', function () {
+    var lbl = document.querySelector('label[for="isnl-inp"]'); ok(lbl && lbl.textContent.trim(), 'label del campo');
+    ok(document.getElementById('isnl-snd').getAttribute('aria-label'), 'enviar');
+    ok(document.getElementById('isnl-cls').getAttribute('aria-label'), 'cerrar');
+    eq(log.getAttribute('role'), 'log');
+    ok(panel.querySelector('a[href="/privacidad"]'), 'enlace a privacidad');
+  });
+  await atest('abrir: foco en el campo, saludo una sola vez', async function () {
+    btn.click(); await sleep(30);
+    eq(panel.hidden, false); eq(btn.getAttribute('aria-expanded'), 'true');
+    eq(document.activeElement, inp, 'foco');
+    eq(log.querySelectorAll('.isnl-m.a').length, 1);
+    ok(/IA/.test(log.textContent), 'avisa de que es IA');
+  });
+  await atest('Escape cierra y devuelve el foco al botón', async function () {
+    inp.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await sleep(260);
+    eq(panel.hidden, true); eq(document.activeElement, btn);
+  });
+  await atest('reabrir no repite el saludo', async function () {
+    btn.click(); await sleep(30);
+    eq(log.querySelectorAll('.isnl-m.a').length, 1);
+  });
+  await atest('respuesta correcta con enlace Markdown y botón de reserva real', async function () {
+    window.__nextResponse = { status: 200, body: JSON.stringify({ text: 'Puedes reservar en [el calendario](https://calendly.com/ismaelnlai/diagnostico).', calendlyData: { name: 'Ana (test)', email: 'ana@example.com' } }) };
+    send('Quiero reservar <b>ya</b>');
+    eq(inp.disabled, true, 'ocupado mientras espera');
+    await sleep(60);
+    var req = window.__requests[window.__requests.length - 1];
+    eq(req.url, 'https://n8n.ismaelnlai.com/webhook/chat-assistant', 'URL (simulada, no se envía)');
+    var body = JSON.parse(req.body); ok(Array.isArray(body.messages) && body.sessionId, 'contrato');
+    var user = log.querySelectorAll('.isnl-m.u'); eq(user[user.length - 1].textContent, 'Quiero reservar <b>ya</b>');
+    eq(user[user.length - 1].children.length, 0, 'texto del usuario sin HTML');
+    var last = log.querySelectorAll('.isnl-m.a'); last = last[last.length - 1];
+    eq(last.querySelectorAll('a').length, 1);
+    var cal = log.querySelector('a.isnl-cal-btn'); ok(cal, 'reserva como <a>');
+    ok(cal.href.indexOf('https://calendly.com/ismaelnlai/diagnostico?name=') === 0, 'href útil');
+    cal.click(); eq(window.Calendly.calls.length, 1, 'abre la ventana de Calendly');
+    eq(inp.disabled, false);
+  });
+  await atest('error HTTP: mensaje con correo y reserva, el campo vuelve a funcionar', async function () {
+    var n = log.querySelectorAll('.isnl-m.a').length;
+    window.__nextResponse = { status: 500, body: 'fallo' };
+    send('hola'); await sleep(60);
+    var m = log.querySelectorAll('.isnl-m.a'); eq(m.length, n + 1);
+    var links = m[m.length - 1].querySelectorAll('a');
+    eq(links.length, 2); eq(links[0].getAttribute('href'), 'mailto:ismael@ismaelnlai.com');
+    eq(inp.disabled, false);
+  });
+  await atest('respuesta 200 sin JSON válido cuenta como error', async function () {
+    window.__nextResponse = { status: 200, body: '<html>no json</html>' };
+    send('hola'); await sleep(60);
+    var m = log.querySelectorAll('.isnl-m.a'); ok(/error técnico/.test(m[m.length - 1].textContent));
+  });
+  await atest('timeout: aviso específico y se puede reintentar', async function () {
+    window.__nextResponse = 'timeout';
+    send('hola'); await sleep(60);
+    var req = window.__requests[window.__requests.length - 1]; eq(req.timeout, 30000);
+    var m = log.querySelectorAll('.isnl-m.a'); ok(/tardando/.test(m[m.length - 1].textContent));
+    eq(inp.disabled, false);
+  });
+  await atest('error de red', async function () {
+    window.__nextResponse = 'error';
+    send('hola'); await sleep(60);
+    var m = log.querySelectorAll('.isnl-m.a'); ok(/error técnico/.test(m[m.length - 1].textContent));
+  });
+  await atest('respuesta maliciosa del modelo no ejecuta nada', async function () {
+    window.__pwned = false;
+    window.__nextResponse = { status: 200, body: JSON.stringify({ text: '<img src=x onerror="window.__pwned=true">[x](javascript:window.__pwned=true) [y](https://a.es/"onclick="window.__pwned=true)' }) };
+    send('hola'); await sleep(80);
+    var m = log.querySelectorAll('.isnl-m.a'); m = m[m.length - 1];
+    onlyAllowedTags(m); noEventAttrs(m);
+    m.querySelectorAll('a').forEach(function (a) { a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); });
+    eq(window.__pwned, false);
+  });
+  await atest('botón cerrar devuelve el foco', async function () {
+    document.getElementById('isnl-cls').click(); await sleep(260);
+    eq(panel.hidden, true); eq(document.activeElement, btn);
+  });
+
+  // ── Resultado ──
+  var ul = document.getElementById('results'), fails = 0;
+  results.forEach(function (r) {
+    var li = document.createElement('li');
+    li.className = r[1] ? 'ok' : 'ko';
+    li.textContent = (r[1] ? '✓ ' : '✗ ') + r[0] + (r[2] ? ' — ' + r[2] : '');
+    if (!r[1]) fails++;
+    ul.appendChild(li);
+  });
+  document.getElementById('summary').textContent = (results.length - fails) + '/' + results.length + ' pruebas correctas';
+  window.__testResults = { total: results.length, fails: fails, results: results };
+})();
+</script>
+</body>
+</html>
