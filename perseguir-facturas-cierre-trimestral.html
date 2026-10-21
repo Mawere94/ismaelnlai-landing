@@ -31,7 +31,7 @@
         "headline": "Cómo dejar de perseguir facturas antes del 15",
         "description": "La fecha que cierra el trimestre de un despacho es el 15, no el 20. Cómo montar avisos a 15, 7 y 3 días, qué hacer con el cliente que nunca contesta y cuándo conviene implantarlo.",
         "datePublished": "2026-09-28",
-        "dateModified": "2026-09-28",
+        "dateModified": "2026-10-21",
         "inLanguage": "es-ES",
         "mainEntityOfPage": "https://ismaelnlai.com/perseguir-facturas-cierre-trimestral",
         "image": "https://ismaelnlai.com/assets/og-image.png",
@@ -142,7 +142,7 @@
 <header>
   <nav class="nav">
     <a href="/" class="logo">ismael<span>nlai</span></a>
-    <button type="button" class="btn-outline" onclick="abrirCalendly()">Reservar auditoría</button>
+    <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=web&amp;utm_campaign=articulo-facturas" class="btn-outline" data-calendly target="_blank" rel="noopener">Reservar diagnóstico</a>
   </nav>
 </header>
 
@@ -209,7 +209,7 @@
     <li><strong>Las fechas de cada trimestre bien puestas.</strong> Contando hacia la domiciliación, saltando fines de semana y festivos. El cuarto trimestre es distinto: en 2027 el IVA se presenta el lunes 1 de febrero, porque el 30 de enero cae en sábado, y la domiciliación termina el lunes 25 de enero. Las retenciones, en cambio, vencen el miércoles 20.</li>
     <li><strong>Tres textos.</strong> Uno por aviso, cada vez más directos. Los escribe el despacho, con su tono, no una plantilla genérica.</li>
   </ul>
-  <p>En la <a href="/#pruebas">página principal</a> tienes una demo funcionando con esta misma lógica, con el correo tal como le llega al cliente.</p>
+  <p>En la <a href="/#demo">página principal</a> tienes una demo con esta misma lógica, con el correo tal como le llega al cliente.</p>
 
   <h2>Cuándo montarlo: ahora no</h2>
   <p>Si estás leyendo esto a primeros de octubre, no toques nada. Del 1 al 15 no hay cabeza para cambiar procesos, y está bien que así sea.</p>
@@ -217,9 +217,9 @@
 
   <section class="final">
     <h2>¿Lo vemos con tu cartera?</h2>
-    <p>En 30 minutos miramos cuántos clientes persigues cada trimestre, cómo lo hacéis ahora y qué parte tiene sentido automatizar. Si no merece la pena, te lo digo. Si tu despacho está en el Campo de Gibraltar, la auditoría puede ser en tu oficina.</p>
+    <p>En 30 minutos miramos cuántos clientes persigues cada trimestre, cómo lo hacéis ahora y qué parte tiene sentido automatizar. Si no merece la pena, te lo digo. Si tu despacho está en el Campo de Gibraltar, el diagnóstico puede ser en tu oficina.</p>
     <div class="ctas">
-      <button type="button" class="btn-primary" onclick="abrirCalendly()">Reservar auditoría gratuita — 30 min</button>
+      <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=web&amp;utm_campaign=articulo-facturas" class="btn-primary" data-calendly target="_blank" rel="noopener">Reservar diagnóstico gratuito · 30 min</a>
       <a href="/calculadora" class="btn-outline">Calcular mis horas perdidas</a>
     </div>
   </section>
@@ -236,31 +236,7 @@
   <p style="margin-top:.5rem;"><a href="/">Inicio</a> · <a href="/sobre-mi">Sobre mí</a> · <a href="/verifactu">Guía Verifactu</a> · <a href="/asesorias-campo-de-gibraltar">Asesorías del Campo de Gibraltar</a> · <a href="/aviso-legal">Aviso legal</a> · <a href="/privacidad">Privacidad</a> · <a href="/cookies">Cookies</a> · <a href="/cookies" data-cookie-settings>Configurar cookies</a></p>
 </footer>
 
-<script>
-  var CALENDLY_URL = 'https://calendly.com/ismaelnlai/diagnostico?utm_source=web&utm_campaign=articulo-facturas';
-
-  // Calendly en ventana emergente; sus scripts solo se cargan al pulsar.
-  // Si no cargan, pestaña nueva.
-  function abrirCalendly() {
-    if (window.Calendly) { Calendly.initPopupWidget({ url: CALENDLY_URL }); return; }
-    var hecho = false;
-    function respaldo() { if (!hecho) { hecho = true; window.open(CALENDLY_URL, '_blank'); } }
-    var reloj = setTimeout(respaldo, 4000);
-    var l = document.createElement('link');
-    l.rel = 'stylesheet';
-    l.href = 'https://assets.calendly.com/assets/external/widget.css';
-    document.head.appendChild(l);
-    var sc = document.createElement('script');
-    sc.src = 'https://assets.calendly.com/assets/external/widget.js';
-    sc.onload = function () {
-      if (hecho) return;
-      hecho = true; clearTimeout(reloj);
-      Calendly.initPopupWidget({ url: CALENDLY_URL });
-    };
-    sc.onerror = function () { clearTimeout(reloj); respaldo(); };
-    document.head.appendChild(sc);
-  }
-</script>
+<script src="/booking.js" defer></script>
 <script src="/chat-widget.js"></script>
 <script src="/consent.js" defer></script>
 </body>
