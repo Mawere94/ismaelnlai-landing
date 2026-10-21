@@ -93,6 +93,7 @@
     .kit h2 { margin-top:0; }
     .kit ul { margin:1rem 0 1.4rem 1.2rem; color:var(--text-2); }
     .kit li { margin-bottom:6px; }
+    #kitForm[hidden], #kitNoJs[hidden] { display:none; }
     form { display:grid; gap:12px; }
     label { font-size:.84rem; font-weight:600; display:block; margin-bottom:4px; }
     input[type=text], input[type=email] { width:100%; height:46px; padding:0 14px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; font:inherit; }
@@ -180,7 +181,10 @@
       <li><strong>La hoja de clasificación</strong>, con las cinco preguntas que colocan a cada cliente en su grupo. Se descarga en CSV y se abre en Excel.</li>
       <li><strong>El correo para tus clientes</strong>, escrito para que te contesten esas cinco preguntas en dos minutos. Lo copias, lo firmas y lo mandas.</li>
     </ul>
-    <form id="kitForm" novalidate>
+    <!-- Sin JS el envío nativo haría un GET con los datos en la URL: el formulario
+         nace oculto y lo muestra su propio script; mientras, se ve la alternativa. -->
+    <p id="kitNoJs">Para pedir el kit por aquí hace falta JavaScript. Escríbeme a <a href="mailto:ismael@ismaelnlai.com?subject=Kit%20Verifactu">ismael@ismaelnlai.com</a> y te lo mando yo.</p>
+    <form id="kitForm" novalidate hidden>
       <div>
         <label for="nombre">Tu nombre</label>
         <input type="text" id="nombre" name="nombre" autocomplete="name" required maxlength="120">
@@ -206,7 +210,7 @@
       <div class="msg err" id="kitErr">No ha salido. Prueba otra vez, o escríbeme directamente a <a href="mailto:ismael@ismaelnlai.com?subject=Kit%20Verifactu">ismael@ismaelnlai.com</a> y te lo mando yo.</div>
     </form>
   </section>
-  <p class="small">¿Prefieres que lo veamos juntos con tu cartera real? <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=web&amp;utm_campaign=verifactu">Auditoría gratuita de media hora</a>.</p>
+  <p class="small">¿Prefieres que lo veamos juntos con tu cartera real? <a href="https://calendly.com/ismaelnlai/diagnostico?utm_source=web&amp;utm_campaign=verifactu" target="_blank" rel="noopener">Diagnóstico gratuito de media hora</a>.</p>
 
   <h2>Fuentes</h2>
   <ul class="sources">
@@ -227,19 +231,30 @@
     var btn = document.getElementById('kitBtn');
     var ok = document.getElementById('kitOk');
     var err = document.getElementById('kitErr');
+    form.hidden = false;
+    document.getElementById('kitNoJs').hidden = true;
 
     // Origen del lead: el post de LinkedIn o Instagram lleva utm_source en el enlace.
     var params = new URLSearchParams(window.location.search);
 
+    form.email.addEventListener('input', function () { form.email.setCustomValidity(''); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       err.style.display = 'none';
+      if (btn.disabled) return;
+      // type=email acepta "a@b": pedimos además un dominio con punto.
+      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.value.trim());
+      form.email.setCustomValidity(emailOk || !form.email.value ? '' : 'Revisa el correo: parece incompleto.');
       if (!form.checkValidity()) { form.reportValidity(); return; }
       btn.disabled = true;
-      btn.textContent = 'Enviando...';
+      btn.textContent = 'Enviando…';
+      // Sin respuesta en 15 s se deja de esperar. El servidor pudo recibirla igualmente.
+      var ctrl = 'AbortController' in window ? new AbortController() : null;
+      var reloj = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
       fetch('https://n8n.ismaelnlai.com/webhook/kit-verifactu', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: ctrl ? ctrl.signal : undefined,
         body: JSON.stringify({
           nombre: form.nombre.value,
           email: form.email.value,
@@ -250,6 +265,7 @@
         })
       })
       .then(function (res) {
+        clearTimeout(reloj);
         if (!res.ok) throw new Error();
         form.querySelectorAll('div, label.check, button').forEach(function (el) {
           if (!el.classList.contains('msg')) el.style.display = 'none';
@@ -257,6 +273,7 @@
         ok.style.display = 'block';
       })
       .catch(function () {
+        clearTimeout(reloj);
         err.style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Mándame el kit';
