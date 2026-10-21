@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Pruebas de formularios y reservas</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #08080F; color: #ECEAE4; padding: 1.5rem; }
+  .ok { color: #8FC79A; } .ko { color: #F08A75; font-weight: 700; }
+  li { margin: .2rem 0; }
+  iframe { width: 420px; height: 700px; border: 1px solid #333; margin: 4px; }
+  #frames { display: flex; flex-wrap: wrap; opacity: .35; }
+</style>
+</head>
+<body>
+<h1>Formularios y reservas (sin red: fetch y Calendly sustituidos)</h1>
+<p id="summary">Ejecutando… (incluye esperas de 15 s para los timeouts)</p>
+<ul id="results"></ul>
+<div id="frames"></div>
+<script>
+(async function () {
+  var results = [];
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  function eq(a, b, m) { if (a !== b) throw new Error((m || '') + ' esperado ' + JSON.stringify(b) + ', obtenido ' + JSON.stringify(a)); }
+  function ok(v, m) { if (!v) throw new Error(m || 'falso'); }
+  async function t(name, fn) { try { await fn(); results.push([name, true]); } catch (e) { results.push([name, false, e.message]); } }
+
+  // Carga una página en un iframe y sustituye su fetch. modo: 'ok' | '500' | 'hang'
+  async function abrir(path, consent) {
+    var f = document.createElement('iframe');
+    document.getElementById('frames').appendChild(f);
+    try { localStorage.setItem('cookieConsent', consent || 'denied'); } catch (e) {}
+    await new Promise(function (r) { f.onload = r; f.src = path; });
+    await sleep(300);
+    var w = f.contentWindow;
+    var ctl = { calls: [], mode: 'ok', w: w, d: w.document };
+    w.fetch = function (url, opts) {
+      ctl.calls.push({ url: url, body: JSON.parse(opts.body) });
+      if (ctl.mode === 'ok') return new Promise(function (r) { setTimeout(function () { r({ ok: true, status: 200 }); }, 20); });
+      if (ctl.mode === '500') return new Promise(function (r) { setTimeout(function () { r({ ok: false, status: 500 }); }, 20); });
+      return new Promise(function (r, rej) {
+        if (opts.signal) opts.signal.addEventListener('abort', function () { rej(new w.DOMException('aborted', 'AbortError')); });
+      });
+    };
+    return ctl;
+  }
+
+  // ── Portada ──
+  var idx = await abrir('/');
+  var d = idx.d, f = d.getElementById('contactForm'), btn = d.getElementById('submitBtn');
+  await t('portada: con JS el formulario se ve y la alternativa sin JS no', async function () {
+    eq(f.hidden, false); eq(d.getElementById('formNoJs').hidden, true);
+  });
+  await t('portada: HTML de los campos se envía como texto (sin interpretar)', async function () {
+    f.nombre.value = '<b>Ana</b>'; f.email.value = 'ana@example.com'; f.mensaje.value = '<h1>X</h1><a href="https://x.es">y</a>';
+    idx.mode = 'ok'; btn.click(); await sleep(120);
+    eq(idx.calls.length, 1); eq(idx.calls[0].body.mensaje, '<h1>X</h1><a href="https://x.es">y</a>');
+    ok(!d.getElementById('formSuccess').hidden, 'éxito tras 2xx');
+  });
+  var idx2 = await abrir('/');
+  d = idx2.d; f = d.getElementById('contactForm'); btn = d.getElementById('submitBtn');
+  await t('portada: email inválido no se envía', async function () {
+    f.nombre.value = 'Ana'; f.email.value = 'no-es-email'; f.mensaje.value = 'hola';
+    btn.click(); await sleep(50);
+    eq(idx2.calls.length, 0); eq(f.email.getAttribute('aria-invalid'), 'true'); eq(d.activeElement, f.email);
+  });
+  await t('portada: HTTP 500 conserva lo escrito y avisa', async function () {
+    f.email.value = 'ana@example.com'; idx2.mode = '500'; btn.click(); await sleep(120);
+    ok(/No se ha podido enviar/.test(d.getElementById('formStatus').textContent)); eq(f.mensaje.value, 'hola'); eq(btn.disabled, false);
+  });
+  var pIdx = (async function () {
+    await t('portada: timeout a los 15 s, botón recuperado', async function () {
+      idx2.mode = 'hang'; btn.click(); eq(btn.disabled, true); await sleep(15400);
+      ok(/tardando demasiado/.test(d.getElementById('formStatus').textContent)); eq(btn.disabled, false);
+    });
+  })();
+
+  // ── Calculadora ──
+  var calc = await abrir('/calculadora');
+  var cd = calc.d;
+  await t('calculadora: email inválido no se envía', async function () {
+    cd.getElementById('clientes').value = '80';
+    calc.w.calcular(); await sleep(50);
+    cd.getElementById('lead-nombre').value = 'Ana'; cd.getElementById('lead-email').value = 'no-es-email';
+    calc.w.enviarLead(); await sleep(50);
+    eq(calc.calls.length, 0); ok(/email/i.test(cd.getElementById('lead-status').textContent)); eq(cd.getElementById('lead-email').getAttribute('aria-invalid'), 'true');
+  });
+  await t('calculadora: el coste enviado es el mismo que el mostrado (80 clientes, 20 min, 20 €/h)', async function () {
+    var mostrado = cd.getElementById('res-coste').textContent.trim();
+    cd.getElementById('lead-email').value = 'ana@example.com';
+    calc.mode = '500'; calc.w.enviarLead(); await sleep(120);
+    eq(calc.calls.length, 1);
+    ok(calc.calls[0].body.mensaje.indexOf(mostrado) !== -1, 'mensaje: ' + calc.calls[0].body.mensaje + ' / pantalla: ' + mostrado);
+    ok(/2\.?133/.test(mostrado), 'pantalla ' + mostrado);
+    ok(/No se ha podido enviar/.test(cd.getElementById('lead-status').textContent), 'aviso de error');
+    eq(cd.getElementById('lead-btn').disabled, false);
+  });
+  var pCalc = (async function () {
+    await t('calculadora: timeout a los 15 s, botón recuperado', async function () {
+      calc.mode = 'hang'; calc.w.enviarLead(); await sleep(15400);
+      ok(/No hay respuesta/.test(cd.getElementById('lead-status').textContent)); eq(cd.getElementById('lead-btn').disabled, false);
+    });
+    await t('calculadora: éxito solo con 2xx', async function () {
+      calc.mode = 'ok'; calc.w.enviarLead(); await sleep(120);
+      ok(cd.getElementById('success').classList.contains('show'));
+    });
+  })();
+
+  // ── Kit de Verifactu ──
+  var kit = await abrir('/verifactu');
+  var kd = kit.d, kf = kd.getElementById('kitForm'), kb = kd.getElementById('kitBtn');
+  await t('kit: con JS el formulario se ve', async function () { eq(kf.hidden, false); eq(kd.getElementById('kitNoJs').hidden, true); });
+  await t('kit: "a@b" no se envía', async function () {
+    kf.nombre.value = 'Ana'; kf.email.value = 'a@b'; kf.acepto.checked = true;
+    kb.click(); await sleep(50); eq(kit.calls.length, 0);
+  });
+  var pKit = (async function () {
+    await t('kit: timeout a los 15 s, aviso y botón recuperado', async function () {
+      kf.email.value = 'ana@example.com'; kf.email.dispatchEvent(new Event('input'));
+      kit.mode = 'hang'; kb.click(); await sleep(50); eq(kit.calls.length, 1); await sleep(15400);
+      eq(kd.getElementById('kitErr').style.display, 'block'); eq(kb.disabled, false);
+    });
+  })();
+
+  // ── Reservas en páginas secundarias ──
+  for (var path of ['/asesorias-campo-de-gibraltar', '/perseguir-facturas-cierre-trimestral', '/sobre-mi']) {
+    var pg = await abrir(path);
+    await t('reserva en ' + path + ': enlaces reales y aviso visible si Calendly falla', async function () {
+      var links = pg.d.querySelectorAll('a[data-calendly]');
+      ok(links.length >= 1, 'hay enlaces de reserva');
+      links.forEach(function (a) { ok(/^https:\/\/calendly\.com\/ismaelnlai\/diagnostico/.test(a.href), a.href); });
+      eq(pg.d.querySelectorAll('[onclick*="abrirCalendly"]').length, 0, 'botones antiguos');
+      pg.w.ismaelnlaiBooking.scriptSrc = 'http://127.0.0.1:1/no-existe.js';
+      links[0].click(); await sleep(800);
+      var toast = pg.d.getElementById('bookingToast');
+      ok(toast && !toast.hidden, 'aviso visible'); eq(pg.d.activeElement.id, 'bookingToastLink');
+      eq(pg.d.getElementById('bookingToastLink').href, links[0].href);
+    });
+  }
+  var home = await abrir('/');
+  await t('reserva en portada: Calendly real sustituido abre la ventana', async function () {
+    var calls = []; home.w.Calendly = { initPopupWidget: function (o) { calls.push(o.url); } };
+    home.d.getElementById('heroCta').click(); await sleep(50);
+    eq(calls.length, 1); eq(calls[0], 'https://calendly.com/ismaelnlai/diagnostico');
+  });
+
+  await Promise.all([pIdx, pCalc, pKit]);
+
+  var ul = document.getElementById('results'), fails = 0;
+  results.forEach(function (r) {
+    var li = document.createElement('li');
+    li.className = r[1] ? 'ok' : 'ko';
+    li.textContent = (r[1] ? '✓ ' : '✗ ') + r[0] + (r[2] ? ' — ' + r[2] : '');
+    if (!r[1]) fails++;
+    ul.appendChild(li);
+  });
+  document.getElementById('summary').textContent = (results.length - fails) + '/' + results.length + ' pruebas correctas';
+  window.__testResults = { total: results.length, fails: fails, results: results };
+})();
+</script>
+</body>
+</html>

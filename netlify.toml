@@ -7,6 +7,10 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # CSP en modo observación (Report-Only): no bloquea nada, solo avisa en la
+    # consola del navegador de lo que bloquearía. Cuando esté limpia con HubSpot
+    # y Calendly en uso real, se pasa a Content-Security-Policy.
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.calendly.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://*.hscollectedforms.net https://*.usemessages.com https://*.hubspot.com https://*.hsforms.net; style-src 'self' 'unsafe-inline' https://assets.calendly.com; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://n8n.ismaelnlai.com https://*.hubspot.com https://*.hubapi.com https://*.hs-banner.com https://*.hscollectedforms.net https://*.hsforms.com https://*.hs-analytics.net https://*.calendly.com; frame-src https://calendly.com https://*.calendly.com https://*.hubspot.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 
 # llms.txt servido como texto plano
 [[headers]]

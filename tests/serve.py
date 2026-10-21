@@ -2,15 +2,19 @@
 
 - Rutas limpias: /sobre-mi sirve sobre-mi.html (como Netlify).
 - Lo que no existe devuelve 404.html con estado 404.
-- No aplica los 301 de netlify.toml ni sus cabeceras: eso solo se ve en Netlify.
+- De netlify.toml solo copia la cabecera CSP (Report-Only) para ver avisos en consola.
+  No aplica los 301 ni el resto de cabeceras: eso solo se ve en Netlify.
 
 Uso (desde la raíz del repo):  python ismaelnlai-web/tests/serve.py [puerto]
 """
 import http.server
 import os
+import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_m = re.search(r'Content-Security-Policy-Report-Only = "([^"]+)"', open(os.path.join(ROOT, 'netlify.toml'), encoding='utf-8').read())
+CSP_RO = _m.group(1) if _m else None
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
@@ -35,6 +39,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store')
+        if CSP_RO:
+            self.send_header('Content-Security-Policy-Report-Only', CSP_RO)
         super().end_headers()
 
 

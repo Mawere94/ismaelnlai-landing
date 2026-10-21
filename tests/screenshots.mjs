@@ -102,7 +102,11 @@ const S = [
   { name: '05-movil-390-pagina-completa', width: 390, height: 844, mobile: true, consent: 'denied', full: true },
   { name: '06-movil-360-primera-visita', width: 360, height: 800, mobile: true },
   { name: '07-movil-390-demo', width: 390, height: 844, mobile: true, consent: 'denied', scrollTo: '#demo' },
-  { name: '08-movil-390-sin-javascript', width: 390, height: 844, mobile: true, js: false, full: true },
+  { name: '08-movil-390-sin-javascript', width: 390, height: 844, mobile: true, js: false, full: true,
+    check: `({ formHidden: document.getElementById('contactForm').hidden, noJsVisible: !document.getElementById('formNoJs').hidden,
+      bookingHrefs: [...document.querySelectorAll('a[data-calendly]')].every((a) => a.href.startsWith('https://calendly.com/')) })` },
+  { name: '12-movil-390-kit-sin-javascript', width: 390, height: 844, mobile: true, js: false, path: '/verifactu', scrollTo: '#kit',
+    check: `({ formHidden: document.getElementById('kitForm').hidden, noJsVisible: !document.getElementById('kitNoJs').hidden })` },
   { name: '09-escritorio-1440-movimiento-reducido', width: 1440, height: 900, consent: 'denied', reduced: true },
   { name: '10-movil-390-cta-fijo', width: 390, height: 844, mobile: true, consent: 'denied', check: `(async () => {
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
