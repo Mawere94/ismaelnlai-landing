@@ -333,6 +333,8 @@
     .btn-form:disabled { opacity: 0.6; cursor: progress; }
     .form-privacy { font-size: 0.82rem; color: var(--text-2); margin-top: 0.9rem; }
     .form-status { margin-top: 0.9rem; font-size: 0.9rem; }
+    .form-nojs { color: var(--text-2); font-size: 0.95rem; }
+    .form-nojs[hidden], #contactForm[hidden] { display: none; }
     .form-status.error { color: var(--error); }
     .form-status:empty { display: none; }
     .form-success { text-align: center; padding: 1.5rem 0.5rem; }
@@ -373,19 +375,6 @@
     }
     .cta-fija .btn-primary { width: 100%; min-height: 48px; }
     body.cta-visible .cta-fija { transform: translateY(0); }
-
-    /* ─── AVISO SI EL CALENDARIO NO CARGA ─── */
-    .booking-toast {
-      position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); z-index: 10001;
-      width: calc(100% - 2rem); max-width: 520px; background: var(--bg-card); border: 1px solid var(--accent);
-      border-radius: 12px; padding: 1rem 2.8rem 1rem 1.2rem; font-size: 0.92rem; color: var(--text);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    }
-    .booking-toast[hidden] { display: none; }
-    .booking-toast button {
-      position: absolute; top: 0.5rem; right: 0.5rem; width: 32px; height: 32px; border: none; border-radius: 6px;
-      background: transparent; color: var(--text-2); font-size: 1.2rem; cursor: pointer;
-    }
 
     /* ─── MOVIMIENTO REDUCIDO ─── */
     @media (prefers-reduced-motion: reduce) {
@@ -438,6 +427,9 @@
       .sheet td::before { content: attr(data-label); color: var(--text-2); font-size: 0.8rem; padding-top: 0.1rem; }
       .sheet td:first-child { display: block; font-weight: 600; margin-bottom: 0.3rem; }
       .sheet td:first-child::before { content: none; }
+      .sheet td small { grid-column: 2; }
+      /* En móvil bastan dos casos contrastados: uno entregado y uno pendiente */
+      .sheet tbody tr:nth-child(3), .sheet tbody tr:nth-child(4) { display: none; }
     }
     @media (max-width: 400px) {
       .wrap { padding: 0 16px; }
@@ -508,7 +500,7 @@
         "description": "Automatizo los recordatorios y el seguimiento de documentación de asesorías y gestorías con N8N e IA. Diagnóstico gratuito de 30 minutos.",
         "inLanguage": "es-ES",
         "datePublished": "2026-05-29",
-        "dateModified": "2026-10-19T12:00:00+02:00",
+        "dateModified": "2026-10-21T12:00:00+02:00",
         "isPartOf": { "@id": "https://ismaelnlai.com/#website" }
       },
       {
@@ -698,8 +690,8 @@
     <div class="demo-head">
       <div>
         <p class="label">Demo para asesorías</p>
-        <h2 class="title" id="demo-title">Una demo del proceso que podemos revisar juntos.</h2>
-        <p class="lead">Recordatorios del cierre de IVA sobre una hoja de cálculo. En el diagnóstico la vemos funcionando y hablamos de cómo encajaría con vuestras herramientas.</p>
+        <h2 class="title" id="demo-title">Así se sigue la documentación antes del cierre.</h2>
+        <p class="lead">Una demo del proceso que podemos revisar juntos: recordatorios del cierre de IVA sobre una hoja de cálculo. En el diagnóstico la vemos funcionando y hablamos de cómo encajaría con vuestras herramientas.</p>
       </div>
       <span class="tag">Demo · datos ficticios</span>
     </div>
@@ -918,7 +910,10 @@
         <div id="formContent">
           <h3>O cuéntamelo por escrito</h3>
           <p class="form-desc">Te respondo por email.</p>
-          <form id="contactForm" novalidate>
+          <!-- Sin JS el envío nativo haría un GET con los datos en la URL: el formulario
+               nace oculto y lo muestra su propio script; mientras, se ve la alternativa. -->
+          <p class="form-nojs" id="formNoJs">El formulario necesita JavaScript. Escríbeme a <a href="mailto:ismael@ismaelnlai.com">ismael@ismaelnlai.com</a> o reserva el diagnóstico en el <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" rel="noopener">calendario</a>.</p>
+          <form id="contactForm" novalidate hidden>
             <div class="form-row">
               <div class="form-group">
                 <label for="nombre">Nombre</label>
@@ -977,11 +972,6 @@
   <a href="https://calendly.com/ismaelnlai/diagnostico" class="btn-primary" data-calendly target="_blank" rel="noopener">Reservar diagnóstico gratuito · 30 min</a>
 </div>
 
-<div class="booking-toast" id="bookingToast" role="alert" hidden>
-  <span>No se ha podido abrir el calendario aquí. <a id="bookingToastLink" href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" rel="noopener">Ábrelo en una pestaña nueva</a> o escríbeme a <a href="mailto:ismael@ismaelnlai.com">ismael@ismaelnlai.com</a>.</span>
-  <button type="button" aria-label="Cerrar aviso" id="bookingToastClose">×</button>
-</div>
-
 <footer>
   <p>&copy; 2026 ismaelnlai · Automatización para asesorías y gestorías · Algeciras</p>
   <nav aria-label="Pie de página">
@@ -1000,79 +990,6 @@
 <script>
 (function () {
   'use strict';
-
-  // ─── RESERVA (Calendly) ───
-  // Todos los enlaces de reserva llevan href real a Calendly: sin JS, o con un
-  // clic con Ctrl/Cmd, abren la página de Calendly. Con JS, intentamos la ventana
-  // emergente; sus scripts (y cookies) solo se cargan al pulsar. Si no cargan,
-  // aparece un aviso con un enlace directo: nada de window.open() retrasado.
-  var booking = window.ismaelnlaiBooking = {
-    url: 'https://calendly.com/ismaelnlai/diagnostico',
-    scriptSrc: 'https://assets.calendly.com/assets/external/widget.js',
-    cssHref: 'https://assets.calendly.com/assets/external/widget.css',
-    timeoutMs: 6000
-  };
-  var estado = 'idle', esperando = [];
-  var toast = document.getElementById('bookingToast');
-  var toastLink = document.getElementById('bookingToastLink');
-  var ultimoDisparador = null;
-
-  function mostrarFallo(url) {
-    toastLink.href = url;
-    toast.hidden = false;
-    toastLink.focus();
-  }
-  function cerrarToast() {
-    toast.hidden = true;
-    if (ultimoDisparador && document.contains(ultimoDisparador)) ultimoDisparador.focus();
-  }
-  document.getElementById('bookingToastClose').addEventListener('click', cerrarToast);
-  toast.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarToast(); });
-
-  function cargarCalendly(ok, ko) {
-    if (window.Calendly) { ok(); return; }
-    esperando.push([ok, ko]);
-    if (estado === 'loading') return;
-    estado = 'loading';
-    function resolver(bien) {
-      if (estado !== 'loading') return;
-      estado = bien ? 'ready' : 'idle';  // si falla, se puede reintentar en el siguiente clic
-      var cola = esperando; esperando = [];
-      cola.forEach(function (p) { (bien ? p[0] : p[1])(); });
-    }
-    var reloj = setTimeout(function () { resolver(false); }, booking.timeoutMs);
-    if (!document.querySelector('link[href="' + booking.cssHref + '"]')) {
-      var l = document.createElement('link');
-      l.rel = 'stylesheet'; l.href = booking.cssHref;
-      document.head.appendChild(l);
-    }
-    var sc = document.createElement('script');
-    sc.src = booking.scriptSrc;
-    sc.onload = function () { clearTimeout(reloj); resolver(!!window.Calendly); };
-    sc.onerror = function () { clearTimeout(reloj); resolver(false); };
-    document.head.appendChild(sc);
-  }
-
-  booking.open = function (url, disparador) {
-    url = url || booking.url;
-    ultimoDisparador = disparador || document.activeElement;
-    toast.hidden = true;
-    cargarCalendly(
-      function () {
-        try { window.Calendly.initPopupWidget({ url: url }); }
-        catch (e) { mostrarFallo(url); }
-      },
-      function () { mostrarFallo(url); }
-    );
-  };
-
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest ? e.target.closest('a[data-calendly]') : null;
-    if (!a || e.defaultPrevented) return;
-    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    booking.open(a.href, a);
-  });
 
   // ─── CHAT ───
   document.querySelectorAll('[data-open-chat]').forEach(function (b) {
@@ -1104,6 +1021,8 @@
   // ─── FORMULARIO ───
   var form = document.getElementById('contactForm');
   var btn = document.getElementById('submitBtn');
+  form.hidden = false;
+  document.getElementById('formNoJs').hidden = true;
   var status = document.getElementById('formStatus');
   var FORM_ENDPOINT = 'https://n8n.ismaelnlai.com/webhook/contacto-web';
   var FORM_TIMEOUT_MS = 15000;
@@ -1193,6 +1112,7 @@
 })();
 </script>
 
+<script src="/booking.js" defer></script>
 <script src="/consent.js" defer></script>
 <script src="/chat-widget.js" defer></script>
 </body>
