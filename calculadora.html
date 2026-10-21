@@ -38,7 +38,7 @@
       "@id": "https://ismaelnlai.com/#organization"
     },
     "datePublished": "2026-05-29",
-    "dateModified": "2026-09-28"
+    "dateModified": "2026-10-21"
   }
   </script>
 
@@ -267,6 +267,9 @@
       transition: border-color 0.2s;
     }
     .email-form input:focus { border-color: var(--accent); }
+    .email-form input[aria-invalid="true"] { border-color: #F08A75; }
+    .lead-status { color: #F08A75; font-size: 0.88rem; text-align: center; }
+    .lead-status:empty { display: none; }
     .email-form input::placeholder { color: var(--text-2); }
     .btn-cta {
       width: 100%;
@@ -428,11 +431,12 @@
     <div id="form-section">
       <p class="result-cta-text">Te mando un <strong>análisis personalizado</strong> de qué procesos automatizar primero en tu despacho. Sin coste.</p>
       <div class="email-form" id="lead-form">
-        <input type="text" id="lead-nombre" placeholder="Tu nombre" required>
-        <input type="email" id="lead-email" placeholder="Email del despacho" required>
-        <input type="tel" id="lead-telefono" placeholder="Teléfono (opcional)">
-        <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)">
+        <input type="text" id="lead-nombre" placeholder="Tu nombre" aria-label="Tu nombre" autocomplete="name" maxlength="100" required>
+        <input type="email" id="lead-email" placeholder="Email del despacho" aria-label="Email del despacho" autocomplete="email" maxlength="160" required>
+        <input type="tel" id="lead-telefono" placeholder="Teléfono (opcional)" aria-label="Teléfono (opcional)" autocomplete="tel" maxlength="30">
+        <input type="text" id="lead-despacho" placeholder="Nombre del despacho (opcional)" aria-label="Nombre del despacho (opcional)" autocomplete="organization" maxlength="120">
         <button class="btn-cta" id="lead-btn" onclick="enviarLead()">Recibir análisis gratuito →</button>
+        <p class="lead-status" id="lead-status" role="alert"></p>
         <p class="privacy-note">Sin spam: solo te escribo sobre este análisis. <a href="/privacidad">Privacidad</a>.</p>
       </div>
     </div>
@@ -441,7 +445,7 @@
       <div class="success-icon">✓</div>
       <h3>Hecho. Te escribo pronto.</h3>
       <p>Si prefieres ir más rápido, reserva directamente una llamada de 30 minutos. Sin compromiso.</p>
-      <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" class="btn-calendly">Reservar auditoría gratuita →</a>
+      <a href="https://calendly.com/ismaelnlai/diagnostico" target="_blank" rel="noopener" class="btn-calendly">Reservar diagnóstico gratuito →</a>
     </div>
   </div>
 
@@ -485,21 +489,29 @@
     document.getElementById('s4').classList.add('active');
   }
 
-  // Calculate
-  function calcular() {
-    const clientes = parseInt(slider.value);
-    const cierres = 4;
+  // Un solo cálculo para la pantalla y para el envío. Antes el envío redondeaba
+  // las horas antes de multiplicar y mandaba otro coste (2.140 € frente a 2.133 €).
+  const CIERRES = 4;
+  function valores() {
+    const clientes = parseInt(slider.value, 10);
     // Los minutos por cliente ya son el total del equipo: las personas no multiplican,
     // solo reparten. Antes se multiplicaba y con 2 personas salía el doble de horas.
-    const horasAnio = (clientes * minutos * cierres) / 60;
-    const costeAnio = horasAnio * coste;
+    const horasAnio = (clientes * minutos * CIERRES) / 60;
+    return { clientes, horasAnio, costeAnio: horasAnio * coste };
+  }
+  const formatoEuros = new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0});
+
+  // Calculate
+  function calcular() {
+    const cierres = CIERRES;
+    const { horasAnio, costeAnio } = valores();
     const semanas = (horasAnio / 40).toLocaleString('es-ES', { maximumFractionDigits: 1 });
 
     document.getElementById('res-horas').textContent = Math.round(horasAnio) + ' horas al año';
     document.getElementById('res-dias').textContent =
       'Equivalente a ' + semanas + ' semanas de trabajo de tu equipo';
     document.getElementById('res-coste').textContent =
-      new Intl.NumberFormat('es-ES', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(costeAnio);
+      formatoEuros.format(costeAnio);
     document.getElementById('res-cierres').textContent = '×' + cierres;
     document.getElementById('res-automatizado').textContent = Math.round(horasAnio / personas) + ' h';
 
@@ -515,35 +527,59 @@
     const telefono = document.getElementById('lead-telefono').value.trim();
     const despacho = document.getElementById('lead-despacho').value.trim();
 
-    if (!nombre || !email) {
-      alert('Rellena tu nombre y tu email, por favor.');
+    const status = document.getElementById('lead-status');
+    const campoNombre = document.getElementById('lead-nombre');
+    const campoEmail = document.getElementById('lead-email');
+    campoNombre.removeAttribute('aria-invalid');
+    campoEmail.removeAttribute('aria-invalid');
+    status.textContent = '';
+    if (!nombre) {
+      campoNombre.setAttribute('aria-invalid', 'true');
+      status.textContent = 'Escribe tu nombre.';
+      campoNombre.focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      campoEmail.setAttribute('aria-invalid', 'true');
+      status.textContent = email ? 'Revisa el email: parece incompleto.' : 'Escribe tu email para poder enviarte el análisis.';
+      campoEmail.focus();
       return;
     }
 
     const btn = document.getElementById('lead-btn');
+    if (btn.disabled) return;
     btn.disabled = true;
-    btn.textContent = 'Enviando...';
+    btn.textContent = 'Enviando…';
 
-    const clientes = parseInt(slider.value);
-    const horasAnio = Math.round((clientes * minutos * 4) / 60);
-    const costeAnio = Math.round(horasAnio * coste);
-    const mensaje = `Calculadora lead magnet. Clientes: ${clientes}, Minutos/cliente: ${minutos}, Personas: ${personas}, Coste/hora: ${coste}€. Resultado: ${horasAnio}h/año = ${costeAnio}€/año`;
+    const { clientes, horasAnio, costeAnio } = valores();
+    const mensaje = `Calculadora lead magnet. Clientes: ${clientes}, Minutos/cliente: ${minutos}, Personas: ${personas}, Coste/hora: ${coste}€. Resultado: ${Math.round(horasAnio)}h/año = ${formatoEuros.format(costeAnio)}/año`;
+
+    // Sin respuesta en 15 s se corta la espera. El servidor pudo recibirla igualmente,
+    // así que el aviso no dice que se haya cancelado.
+    const ctrl = 'AbortController' in window ? new AbortController() : null;
+    let vencido = false;
+    const reloj = setTimeout(() => { vencido = true; if (ctrl) ctrl.abort(); }, 15000);
 
     fetch('https://n8n.ismaelnlai.com/webhook/contacto-web', {
       method: 'POST',
       body: JSON.stringify({ nombre, email, telefono, empresa: despacho, mensaje }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      signal: ctrl ? ctrl.signal : undefined
     })
     .then(res => {
-      if (!res.ok) throw new Error();
+      clearTimeout(reloj);
+      if (vencido || !res.ok) throw new Error();
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('success').classList.add('show');
     })
     .catch(() => {
       // Antes el fallo tambien mostraba "Perfecto, te contactamos": el lead se perdia sin aviso.
+      clearTimeout(reloj);
       btn.disabled = false;
       btn.textContent = 'Recibir análisis gratuito →';
-      alert('No se ha podido enviar. Prueba otra vez o escríbeme a ismael@ismaelnlai.com.');
+      status.textContent = vencido
+        ? 'No hay respuesta del servidor. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.'
+        : 'No se ha podido enviar. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.';
     });
   }
 </script>
