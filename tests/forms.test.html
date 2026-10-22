@@ -25,7 +25,20 @@
   function ok(v, m) { if (!v) throw new Error(m || 'falso'); }
   async function t(name, fn) { try { await fn(); results.push([name, true]); } catch (e) { results.push([name, false, e.message]); } }
 
-  // Carga una página en un iframe y sustituye su fetch. modo: 'ok' | '500' | 'hang'
+  // Respuestas simuladas con Response real (como las da n8n). 'ok' es la del formulario;
+  // el kit (onReceived) contesta con 'arrancado'.
+  var RESPUESTAS = {
+    ok: ['{"ok":true}', 200],
+    duplicado: ['{"ok":true}', 200],
+    vacio: [null, 200],
+    noJson: ['Workflow was started', 200],
+    okFalse: ['{"ok":false}', 200],
+    rechazo: ['{"ok":false}', 400],
+    arrancado: ['{"message":"Workflow was started"}', 200],
+    '500': ['', 500]
+  };
+
+  // Carga una página en un iframe y sustituye su fetch. modo: clave de RESPUESTAS | 'hang'
   async function abrir(path, consent) {
     var f = document.createElement('iframe');
     document.getElementById('frames').appendChild(f);
@@ -36,8 +49,8 @@
     var ctl = { calls: [], mode: 'ok', w: w, d: w.document };
     w.fetch = function (url, opts) {
       ctl.calls.push({ url: url, body: JSON.parse(opts.body) });
-      if (ctl.mode === 'ok') return new Promise(function (r) { setTimeout(function () { r({ ok: true, status: 200 }); }, 20); });
-      if (ctl.mode === '500') return new Promise(function (r) { setTimeout(function () { r({ ok: false, status: 500 }); }, 20); });
+      var resp = RESPUESTAS[ctl.mode];
+      if (resp) return new Promise(function (r) { setTimeout(function () { r(new w.Response(resp[0], { status: resp[1] })); }, 20); });
       return new Promise(function (r, rej) {
         if (opts.signal) opts.signal.addEventListener('abort', function () { rej(new w.DOMException('aborted', 'AbortError')); });
       });
@@ -68,10 +81,30 @@
     f.email.value = 'ana@example.com'; idx2.mode = '500'; btn.click(); await sleep(120);
     ok(/No se ha podido enviar/.test(d.getElementById('formStatus').textContent)); eq(f.mensaje.value, 'hola'); eq(btn.disabled, false);
   });
+  // Contrato de confirmación: solo {"ok":true} es éxito.
+  var NO_CONFIRMADO = [['vacio', 'HTTP 200 sin cuerpo', /No se ha podido confirmar/],
+                       ['noJson', 'HTTP 200 sin JSON válido', /No se ha podido confirmar/],
+                       ['okFalse', 'HTTP 200 con {ok:false}', /No se ha podido confirmar/],
+                       ['rechazo', 'HTTP 400 con {ok:false}', /No se ha podido enviar/]];
+  for (var c of NO_CONFIRMADO) {
+    await t('portada: ' + c[1] + ' no muestra éxito, conserva lo escrito y avisa', async function () {
+      var antes = idx2.calls.length;
+      idx2.mode = c[0]; btn.click(); await sleep(120);
+      eq(idx2.calls.length, antes + 1);
+      ok(c[2].test(d.getElementById('formStatus').textContent), d.getElementById('formStatus').textContent);
+      ok(d.getElementById('formSuccess').hidden, 'sin pantalla de éxito'); eq(d.getElementById('formContent').hidden, false);
+      eq(f.mensaje.value, 'hola'); eq(btn.disabled, false);
+    });
+  }
   var pIdx = (async function () {
-    await t('portada: timeout a los 15 s, botón recuperado', async function () {
+    await t('portada: timeout a los 15 s, botón recuperado y sin decir que se canceló', async function () {
       idx2.mode = 'hang'; btn.click(); eq(btn.disabled, true); await sleep(15400);
-      ok(/tardando demasiado/.test(d.getElementById('formStatus').textContent)); eq(btn.disabled, false);
+      var txt = d.getElementById('formStatus').textContent;
+      ok(/No hay respuesta del servidor/.test(txt), txt); ok(!/cancelado/.test(txt), 'no afirma cancelación'); eq(btn.disabled, false);
+    });
+    await t('portada: duplicado ({ok:true}) tras reintentar cuenta como recibido', async function () {
+      idx2.mode = 'duplicado'; btn.click(); await sleep(120);
+      ok(!d.getElementById('formSuccess').hidden, 'éxito'); eq(d.getElementById('formContent').hidden, true);
     });
   })();
 
@@ -95,12 +128,22 @@
     ok(/No se ha podido enviar/.test(cd.getElementById('lead-status').textContent), 'aviso de error');
     eq(cd.getElementById('lead-btn').disabled, false);
   });
+  for (var cc of NO_CONFIRMADO) {
+    await t('calculadora: ' + cc[1] + ' no muestra éxito y avisa', async function () {
+      var antes = calc.calls.length;
+      calc.mode = cc[0]; calc.w.enviarLead(); await sleep(120);
+      eq(calc.calls.length, antes + 1);
+      ok(cc[2].test(cd.getElementById('lead-status').textContent), cd.getElementById('lead-status').textContent);
+      ok(!cd.getElementById('success').classList.contains('show'), 'sin pantalla de éxito');
+      eq(cd.getElementById('lead-email').value, 'ana@example.com'); eq(cd.getElementById('lead-btn').disabled, false);
+    });
+  }
   var pCalc = (async function () {
     await t('calculadora: timeout a los 15 s, botón recuperado', async function () {
       calc.mode = 'hang'; calc.w.enviarLead(); await sleep(15400);
       ok(/No hay respuesta/.test(cd.getElementById('lead-status').textContent)); eq(cd.getElementById('lead-btn').disabled, false);
     });
-    await t('calculadora: éxito solo con 2xx', async function () {
+    await t('calculadora: éxito con {ok:true}', async function () {
       calc.mode = 'ok'; calc.w.enviarLead(); await sleep(120);
       ok(cd.getElementById('success').classList.contains('show'));
     });
@@ -119,6 +162,18 @@
       kf.email.value = 'ana@example.com'; kf.email.dispatchEvent(new Event('input'));
       kit.mode = 'hang'; kb.click(); await sleep(50); eq(kit.calls.length, 1); await sleep(15400);
       eq(kd.getElementById('kitErr').style.display, 'block'); eq(kb.disabled, false);
+    });
+    await t('kit: HTTP 500 muestra el error y deja reintentar', async function () {
+      kit.mode = '500'; kb.click(); await sleep(120);
+      eq(kd.getElementById('kitErr').style.display, 'block'); eq(kd.getElementById('kitOk').style.display, ''); eq(kb.disabled, false);
+    });
+    await t('kit: la recepción (onReceived) no promete que el correo haya salido', async function () {
+      kit.mode = 'arrancado'; kb.click(); await sleep(120);
+      var okMsg = kd.getElementById('kitOk');
+      eq(okMsg.style.display, 'block');
+      ok(/Solicitud recibida/.test(okMsg.textContent), okMsg.textContent);
+      ok(!/lo tienes en tu correo|Hecho/.test(okMsg.textContent), 'no afirma envío');
+      ok(okMsg.querySelector('a[href^="mailto:ismael@ismaelnlai.com"]'), 'vía manual si no llega');
     });
   })();
 

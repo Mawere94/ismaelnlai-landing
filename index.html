@@ -1069,10 +1069,12 @@
 
     enviando(true);
     var ctrl = 'AbortController' in window ? new AbortController() : null;
-    var vencido = false;
+    var vencido = false, sinConfirmar = false;
     var reloj = setTimeout(function () { vencido = true; if (ctrl) ctrl.abort(); }, FORM_TIMEOUT_MS);
 
-    // Contrato del endpoint existente: POST JSON con estos cinco campos; 2xx = recibido.
+    // Contrato con n8n: POST JSON con estos cinco campos. Solo cuenta como recibido un 2xx
+    // con {"ok":true} (también un duplicado). Si el workflow falla antes de responder, n8n
+    // devuelve 200 sin cuerpo: eso no confirma nada y no se trata como éxito.
     fetch(FORM_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1086,9 +1088,15 @@
       signal: ctrl ? ctrl.signal : undefined
     })
     .then(function (res) {
+      if (!res.ok) throw new Error('http ' + res.status);
+      return res.text();
+    })
+    .then(function (texto) {
       clearTimeout(reloj);
       if (vencido) throw new Error('timeout');
-      if (!res.ok) throw new Error('http ' + res.status);
+      var datos = null;
+      try { datos = JSON.parse(texto); } catch (err) {}
+      if (!datos || datos.ok !== true) { sinConfirmar = true; throw new Error('sin confirmar'); }
       document.getElementById('formContent').hidden = true;
       var ok = document.getElementById('formSuccess');
       ok.hidden = false;
@@ -1099,9 +1107,13 @@
       enviando(false);
       status.className = 'form-status error';
       status.innerHTML = '';
+      // Dejar de esperar no cancela nada en el servidor: puede que haya llegado igualmente.
+      // Si se reintenta y ya había llegado, n8n lo reconoce como duplicado.
       status.appendChild(document.createTextNode(vencido
-        ? 'El envío está tardando demasiado y lo he cancelado. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '
-        : 'No se ha podido enviar. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '));
+        ? 'No hay respuesta del servidor y he dejado de esperar. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '
+        : sinConfirmar
+          ? 'No se ha podido confirmar el envío. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '
+          : 'No se ha podido enviar. Lo que escribiste sigue aquí: vuelve a intentarlo o escríbeme a '));
       var a = document.createElement('a');
       a.href = 'mailto:ismael@ismaelnlai.com';
       a.textContent = 'ismael@ismaelnlai.com';

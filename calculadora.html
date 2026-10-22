@@ -557,9 +557,11 @@
     // Sin respuesta en 15 s se corta la espera. El servidor pudo recibirla igualmente,
     // así que el aviso no dice que se haya cancelado.
     const ctrl = 'AbortController' in window ? new AbortController() : null;
-    let vencido = false;
+    let vencido = false, sinConfirmar = false;
     const reloj = setTimeout(() => { vencido = true; if (ctrl) ctrl.abort(); }, 15000);
 
+    // Mismo endpoint y contrato que la portada: solo {"ok":true} confirma la recepción.
+    // n8n devuelve 200 sin cuerpo si el workflow falla antes de responder.
     fetch('https://n8n.ismaelnlai.com/webhook/contacto-web', {
       method: 'POST',
       body: JSON.stringify({ nombre, email, telefono, empresa: despacho, mensaje }),
@@ -567,8 +569,15 @@
       signal: ctrl ? ctrl.signal : undefined
     })
     .then(res => {
+      if (!res.ok) throw new Error();
+      return res.text();
+    })
+    .then(texto => {
       clearTimeout(reloj);
-      if (vencido || !res.ok) throw new Error();
+      if (vencido) throw new Error();
+      let datos = null;
+      try { datos = JSON.parse(texto); } catch (err) {}
+      if (!datos || datos.ok !== true) { sinConfirmar = true; throw new Error(); }
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('success').classList.add('show');
     })
@@ -579,7 +588,9 @@
       btn.textContent = 'Recibir análisis gratuito →';
       status.textContent = vencido
         ? 'No hay respuesta del servidor. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.'
-        : 'No se ha podido enviar. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.';
+        : sinConfirmar
+          ? 'No se ha podido confirmar el envío. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.'
+          : 'No se ha podido enviar. Tus datos siguen aquí: vuelve a intentarlo o escríbeme a ismael@ismaelnlai.com.';
     });
   }
 </script>

@@ -206,7 +206,7 @@
         <span>Acepto que ismaelnlai use mi correo para enviarme el kit y escribirme sobre él. Nada de boletines. Detalles en la <a href="/privacidad">política de privacidad</a>.</span>
       </label>
       <button type="submit" id="kitBtn">Mándame el kit</button>
-      <div class="msg ok" id="kitOk">Hecho. En unos minutos lo tienes en tu correo, y si no aparece, mira en promociones. Lo manda <strong>ismael@ismaelnlai.com</strong>.</div>
+      <div class="msg ok" id="kitOk">Solicitud recibida. Te lo mando desde <strong>ismael@ismaelnlai.com</strong> en unos minutos; mira también en promociones. Si en media hora no lo tienes, <a href="mailto:ismael@ismaelnlai.com?subject=Kit%20Verifactu">escríbeme</a> y te lo envío yo.</div>
       <div class="msg err" id="kitErr">No ha salido. Prueba otra vez, o escríbeme directamente a <a href="mailto:ismael@ismaelnlai.com?subject=Kit%20Verifactu">ismael@ismaelnlai.com</a> y te lo mando yo.</div>
     </form>
   </section>
@@ -266,6 +266,9 @@
       })
       .then(function (res) {
         clearTimeout(reloj);
+        // El webhook del kit responde al recibir (onReceived), antes de que el workflow haga
+        // nada, y a los bots les contesta igual. Un 2xx solo dice que la solicitud llegó:
+        // por eso el aviso no afirma que el correo haya salido y deja la vía manual.
         if (!res.ok) throw new Error();
         form.querySelectorAll('div, label.check, button').forEach(function (el) {
           if (!el.classList.contains('msg')) el.style.display = 'none';
