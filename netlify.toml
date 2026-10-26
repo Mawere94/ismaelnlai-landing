@@ -7,10 +7,11 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    # CSP en modo observación (Report-Only): no bloquea nada, solo avisa en la
-    # consola del navegador de lo que bloquearía. Cuando esté limpia con HubSpot
-    # y Calendly en uso real, se pasa a Content-Security-Policy.
-    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.calendly.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://*.hscollectedforms.net https://*.usemessages.com https://*.hubspot.com https://*.hsforms.net; style-src 'self' 'unsafe-inline' https://assets.calendly.com; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://n8n.ismaelnlai.com https://*.hubspot.com https://*.hubapi.com https://*.hs-banner.com https://*.hscollectedforms.net https://*.hsforms.com https://*.hs-analytics.net https://*.calendly.com; frame-src https://calendly.com https://*.calendly.com https://*.hubspot.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    # CSP en bloqueo desde el 26/10/2026. Antes estuvo en Report-Only; el recorrido real
+    # dio 0 infracciones: portada sin cookies, Calendly abierto, HubSpot cargado tras
+    # aceptar y las 9 páginas. Si se añade un servicio externo, su dominio va aquí o
+    # el navegador lo bloquea sin avisar.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.calendly.com https://*.hs-scripts.com https://*.hs-analytics.net https://*.hs-banner.com https://*.hscollectedforms.net https://*.usemessages.com https://*.hubspot.com https://*.hsforms.net; style-src 'self' 'unsafe-inline' https://assets.calendly.com; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://n8n.ismaelnlai.com https://*.hubspot.com https://*.hubapi.com https://*.hs-banner.com https://*.hscollectedforms.net https://*.hsforms.com https://*.hs-analytics.net https://*.calendly.com; frame-src https://calendly.com https://*.calendly.com https://*.hubspot.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 
 # llms.txt servido como texto plano
 [[headers]]
